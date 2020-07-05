@@ -99,6 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,6 +130,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -138,6 +140,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="group.h" />
+    <ClInclude Include="guassian_integer.h" />
+    <ClInclude Include="integer.h" />
+    <ClInclude Include="integral_ring.h" />
+    <ClInclude Include="free_algebra.h" />
+    <ClInclude Include="polynomial.h" />
+    <ClInclude Include="ring.h" />
+    <ClInclude Include="maths_concepts.h" />
+    <ClInclude Include="vector_space.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="guassian_integer.cpp" />
+    <ClCompile Include="integer.cpp" />
+    <ClCompile Include="integral_ring.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="free_algebra.cpp" />
+    <ClCompile Include="vector_space.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
