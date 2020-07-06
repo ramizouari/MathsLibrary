@@ -5,8 +5,9 @@ template<typename R>
 class polynomial:virtual public free_algebra<R>,virtual public integral_ring
 {
 public:
-	using free_algebra<R>::free_algebra;
+	polynomial() {};
 	polynomial(const free_algebra<R> &p):free_algebra<R>(p){}
+	polynomial(const R &p):free_algebra(p){}
 	static polynomial _0()
 	{
 		return free_algebra<R>::_0();
@@ -27,14 +28,3 @@ public:
 	}
 };
 
-polynomial<integer> spow(const polynomial<integer>& u, int n)
-{
-	if (n == 0)
-		return u;
-	polynomial<integer> v =spow(u, n / 2);
-	polynomial<integer> w=(v * v);
-	if ((n % 2) == 0)
-		return w;
-	else
-		return static_cast(w * u);
-}

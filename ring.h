@@ -12,10 +12,10 @@ public:
 	}
 	ring(Identity1)
 	{
-		*this = I1();
+	//	*this = I1();
 	}
-	virtual const ring& I1() const = 0;
-	virtual const ring& I0() const = 0;
+	//virtual const ring& I1() const = 0;
+	//virtual const ring& I0() const = 0;
 	ring& operator*=(Identity1)
 	{
 		return *this;
@@ -26,9 +26,12 @@ public:
 	}
 	ring& operator*=(Identity0)
 	{
-		*this = I0();
+		//*this = I0();
 		return *this;
 	}
+	//virtual ring& operator+=(int n) = 0;
+	//virtual ring& operator-=(int n) = 0;
+	//virtual ring& operator*=(int n) = 0;
 protected:
 	ring() {};
 };

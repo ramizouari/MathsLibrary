@@ -1,6 +1,8 @@
 #pragma once
-#include "group.h"
-class vector_space:virtual public group
+#include "abstract_module.h"
+
+template<typename F>
+class vector_space:virtual public abstract_module<F>
 {
 };
 

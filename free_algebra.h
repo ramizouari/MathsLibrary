@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <execution>
 
 template<typename R>
 class free_algebra: virtual public ring
@@ -44,6 +45,20 @@ public:
 		sync();
 		return *this;
 	}
+	free_algebra& operator+=(const R& p)
+	{
+		return *this+=free_algebra(p);
+	}
+	free_algebra& operator-=(const R& p)
+	{
+		return *this += free_algebra(p);
+	}
+	free_algebra& operator*=(const R& p)
+	{
+		std::for_each(a.begin(), a.end(), [&p](auto& v) {v *= p; });
+		sync();
+		return *this;
+	}
 	free_algebra& operator-=(const free_algebra& p)
 	{
 		for (int i = 0; i <= degree(); i++)
@@ -78,6 +93,18 @@ public:
 			return R::_0();
 		return a.at(n);
 	}
+	virtual ring& operator+=(int n) 
+	{
+		*this += R(n);
+	}
+	virtual ring& operator-=(int n)
+	{
+		*this -= R(n);
+	}
+	virtual ring& operator*=(int n)
+	{
+		*this *= R(n);
+	}
 protected:
 	void sync() {
 		while (!a.empty()&&(a.front() == R::_0()))
@@ -104,6 +131,50 @@ free_algebra<R> operator-(const free_algebra<R>& a, const free_algebra<R>& b)
 
 template<typename R>
 free_algebra<R> operator*(const free_algebra<R>& a, const free_algebra<R>& b)
+{
+	free_algebra<R> p(a);
+	return p *= b;
+}
+
+template<typename R>
+free_algebra<R> operator+(const free_algebra<R>& a, const R& b)
+{
+	free_algebra<R> p(a);
+	return p += b;
+}
+
+
+template<typename R>
+free_algebra<R> operator-(const free_algebra<R>& a, const R& b)
+{
+	free_algebra<R> p(a);
+	return p -= b;
+}
+
+template<typename R>
+free_algebra<R> operator*(const free_algebra<R>& a, const R& b)
+{
+	free_algebra<R> p(a);
+	return p *= b;
+}
+
+template<typename R>
+free_algebra<R> operator+(const R& b,const free_algebra<R>& a)
+{
+	free_algebra<R> p(a);
+	return p += b;
+}
+
+
+template<typename R>
+free_algebra<R> operator-(const R& b,const free_algebra<R>& a)
+{
+	free_algebra<R> p(a);
+	return p -= b;
+}
+
+template<typename R>
+free_algebra<R> operator*(const R& b,const free_algebra<R>& a)
 {
 	free_algebra<R> p(a);
 	return p *= b;

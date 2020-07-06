@@ -3,13 +3,16 @@
 #include "polynomial.h"
 #include "ring.h"
 #include <iostream>
+#include "square_matrix.h"
+#include "real_field.h"
+#include "finite_dimensional_vector_space.h"
 
 using namespace std;
 
 int main()
 {
-	guassian_integer a(2,3);
-	polynomial<integer> p({ 1,1,1 }), q({ 1,1 });
-	cout << spow(q,10);
+	square_matrix<real_field, 3> P({ {1,1,2},{5,1,3},{2,4,2} });
+	coordinate_space<integer, 2> u({ 1,2 });
+	cout << P.det() << 6*u;
 	return false;
 }

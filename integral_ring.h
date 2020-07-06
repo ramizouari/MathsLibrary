@@ -1,7 +1,7 @@
 #pragma once
 #include "ring.h"
 class integral_ring :
-    public ring
+    virtual public ring
 {
 public:
     integral_ring() {}
