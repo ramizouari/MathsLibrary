@@ -22,20 +22,11 @@
     <Filter Include="Fichiers d%27en-tête\Basic">
       <UniqueIdentifier>{5044a3b5-b5c9-4e74-ba38-7c3ded8ad308}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Polynomials">
+      <UniqueIdentifier>{0f24f333-06c1-4823-b177-b86b9ee669c5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="maths_concepts.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="integral_ring.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="integer.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="guassian_integer.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="finite_dimensional_module.h">
       <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
     </ClInclude>
@@ -57,26 +48,38 @@
     <ClInclude Include="matrix.h">
       <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
     </ClInclude>
-    <ClInclude Include="square_matrix.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
-    <ClInclude Include="free_algebra.h">
-      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="polynomial.h">
-      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
-    </ClInclude>
     <ClInclude Include="field.h">
       <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
     </ClInclude>
+    <ClInclude Include="square_matrix.h">
+      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="polynomial.h">
+      <Filter>Fichiers d%27en-tête\Polynomials</Filter>
+    </ClInclude>
+    <ClInclude Include="free_algebra.h">
+      <Filter>Fichiers d%27en-tête\Polynomials</Filter>
+    </ClInclude>
+    <ClInclude Include="integral_ring.h">
+      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="rational_extension.h">
+      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="integer.h">
+      <Filter>Fichiers d%27en-tête\Basic</Filter>
+    </ClInclude>
     <ClInclude Include="real_field.h">
-      <Filter>Fichiers d%27en-tête</Filter>
+      <Filter>Fichiers d%27en-tête\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="guassian_integer.h">
+      <Filter>Fichiers d%27en-tête\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="maths_concepts.h">
+      <Filter>Fichiers d%27en-tête\Basic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="integral_ring.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="integer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
@@ -86,16 +89,7 @@
     <ClCompile Include="guassian_integer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="vector_space.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
     <ClCompile Include="free_algebra.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="finite_dimensional_vector_space.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="finite_dimensional_module.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="real_field.cpp">

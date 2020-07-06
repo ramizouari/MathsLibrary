@@ -1,5 +1,7 @@
 #pragma once
 #include "matrix.h"
+#include "polynomial.h"
+#include "rational_extension.h"
 
 template<typename F,int n>
 class square_matrix :public matrix<F, n, n>, public ring
@@ -69,6 +71,15 @@ public:
 				return F::_0();
 			else d *= M.at(i).at(i);
 		return d;
+	}
+
+	polynomial<F> caracteristic_polynomial() const
+	{
+		square_matrix<rational_extension<polynomial<F>>,n> J(square_matrix<rational_extension<polynomial<F>>,n>::_1());
+		//for (int i = 0; i < n; i++)
+			//for (int j = 0; j < n; j++)
+				//J.at(i).at(j) -= polynomial<F>(this->at(i).at(j));
+		return J.det().nominator();
 	}
 };
 

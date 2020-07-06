@@ -151,6 +151,7 @@
     <ClInclude Include="abstract_module.h" />
     <ClInclude Include="matrix.h" />
     <ClInclude Include="polynomial.h" />
+    <ClInclude Include="rational_extension.h" />
     <ClInclude Include="real_field.h" />
     <ClInclude Include="ring.h" />
     <ClInclude Include="maths_concepts.h" />
@@ -158,15 +159,11 @@
     <ClInclude Include="vector_space.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="finite_dimensional_module.cpp" />
-    <ClCompile Include="finite_dimensional_vector_space.cpp" />
     <ClCompile Include="guassian_integer.cpp" />
     <ClCompile Include="integer.cpp" />
-    <ClCompile Include="integral_ring.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="free_algebra.cpp" />
     <ClCompile Include="real_field.cpp" />
-    <ClCompile Include="vector_space.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -87,7 +87,7 @@ public:
 			}
 			for (int j = i + 1; j < n; j++)
 			{
-					auto&& r = P.at(j).at(p) / P.at(i).at(p);
+					F&& r = P.at(j).at(p) / P.at(i).at(p);
 				for (int k = p; k < m; k++)
 					P.at(j).at(k) = P.at(j).at(k) - r * P.at(i).at(k);
 			}
@@ -96,14 +96,7 @@ public:
 	}
 	int rank() const
 	{
-		int r(0);
-		for(int i=0;i<n;i++)
-			if (any_of(u.at(i).rbegin(), u.at(i).rend(), [](const auto &c) 
-				{
-					return c != 0;
-				}))
-				r++;
-				return r++;
+		return m - nullity();
 	}
 	int nullity() const
 	{
@@ -169,6 +162,16 @@ matrix<F, n, m> operator*(const matrix<F, n, m>& M, const F& k)
 {
 	auto c(M);
 	return c *= k;
+}
+
+template <typename F, int n, int m>
+coordinate_space<F, n> operator*(const matrix<F, n, m>& M,const coordinate_space<F,m> &u)
+{
+	coordinate_space<F,n> v;
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < m; j++)
+			v.at(i) += M.at(i).at(j) * u.at(j);
+	return v;
 }
 
 template <typename F, int n, int m>

@@ -1,10 +1,10 @@
 #pragma once
 #pragma once
-#include "integral_ring.h"
+#include "field.h"
 #include <algorithm>
 #include <iostream>
 class real_field :
-    public integral_ring
+    public field
 {
 public:
     real_field(double m = 0);

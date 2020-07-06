@@ -4,6 +4,16 @@ integer::integer(const int m):_v(m)
 {
 }
 
+integer integer::mod(const integer& a) const
+{
+	return _v % a._v;
+}
+
+integer integer::div(const integer&a) const
+{
+	return _v/a._v;
+}
+
 bool integer::operator==(const integer& a) const
 {
 	return _v==a._v;

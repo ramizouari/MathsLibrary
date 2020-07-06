@@ -13,6 +13,7 @@ public:
 	free_algebra(R m):a(1,m){}
 	free_algebra(std::vector<R>&& c):a(std::move(c)){}
 	free_algebra(const free_algebra<R>& p) :a(p.a) {}
+	free_algebra(int c) :a(1,R(c)) {}
 
 	static free_algebra _0()
 	{
@@ -21,14 +22,6 @@ public:
 	static free_algebra _1()
 	{
 		return free_algebra(1);
-	}
-	const free_algebra& I0() const
-	{
-		return _0();
-	}
-	const free_algebra& I1() const
-	{
-		return _1();
 	}
 	int degree() const
 	{
@@ -42,7 +35,7 @@ public:
 			else a[i] += p.a[i];
 		for (int i = degree() + 1; i <= p.degree(); i++)
 			a.push_back(p.a[i]);
-		sync();
+		reduce();
 		return *this;
 	}
 	free_algebra& operator+=(const R& p)
@@ -56,7 +49,7 @@ public:
 	free_algebra& operator*=(const R& p)
 	{
 		std::for_each(a.begin(), a.end(), [&p](auto& v) {v *= p; });
-		sync();
+		reduce();
 		return *this;
 	}
 	free_algebra& operator-=(const free_algebra& p)
@@ -67,7 +60,7 @@ public:
 			else a[i] -= p.a[i];
 		for (int i = degree() + 1; i <= p.degree(); i++)
 			a.push_back(p.a[i]);
-		sync();
+		reduce();
 		return *this;
 	}
 	free_algebra& operator*=(const free_algebra& p)
@@ -84,10 +77,10 @@ public:
 			for (int j = 0; j <= p.degree(); j++)
 				q.a[i + j] += a[i] * p.a[j];
 		*this = std::move(q);
-		sync();
+		reduce();
 		return *this;
 	}
-	R coeff(int n) const
+	const R& coeff(int n) const
 	{
 		if (n > degree())
 			return R::_0();
@@ -95,22 +88,21 @@ public:
 	}
 	virtual ring& operator+=(int n) 
 	{
-		*this += R(n);
+		return *this += R(n);
 	}
 	virtual ring& operator-=(int n)
 	{
-		*this -= R(n);
+		return *this -= R(n);
 	}
 	virtual ring& operator*=(int n)
 	{
-		*this *= R(n);
+		return *this *= R(n);
 	}
 protected:
-	void sync() {
-		while (!a.empty()&&(a.front() == R::_0()))
+	void reduce() {
+		while (!a.empty()&&(a.back() == R::_0()))
 			a.pop_back();
 	}
-private:
 	std::vector<R> a;
 };
 
