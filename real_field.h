@@ -13,6 +13,9 @@ public:
     real_field&& mod(const integral_ring& a) {
         return 0;
     }
+    bool is_zero() const;
+    bool is_one() const;
+
     real_field&& div(const integral_ring&) { return real_field(0); }
     const real_field& I0() const
     {

@@ -72,7 +72,7 @@ public:
 		matrix P = (*this);
 		for (int i = 0, p = 0; (i < n)&&(p<m); i++,p++)
 		{
-			if (P.at(i).at(p) == F::_0())
+			if (P.at(i).at(p).is_zero())
 			{
 				int j;
 				for (j = i + 1; j < n; j++)
@@ -109,6 +109,16 @@ public:
 				return r;
 			else r++;
 		return r;
+	}
+	bool is_zero() const
+	{
+		for(const auto& v:u)
+			if (any_of(v.begin(), v.end(), [](auto& x) 
+				{
+					return !x.is_zero();
+				}))
+				return false;
+		return true;
 	}
 protected:
 	using finite_dimensional_vector_space<std::vector<F>, n > ::u;

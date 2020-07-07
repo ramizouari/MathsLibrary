@@ -16,6 +16,7 @@ public:
 	}
 	//virtual const ring& I1() const = 0;
 	//virtual const ring& I0() const = 0;
+	virtual bool is_one() const = 0;
 	ring& operator*=(Identity1)
 	{
 		return *this;

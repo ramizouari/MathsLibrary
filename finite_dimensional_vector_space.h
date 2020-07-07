@@ -21,6 +21,10 @@ public:
 			throw std::domain_error("Dimensions are not compatible");
 	}
 	finite_dimensional_vector_space():u(n){}
+	static finite_dimensional_vector_space _0()
+	{
+		return finite_dimensional_vector_space();
+	}
 	finite_dimensional_vector_space& operator+=(const finite_dimensional_vector_space& o)
 	{
 		for (int i = 0; i < n; i++)
@@ -81,6 +85,10 @@ public:
 	F& at(int i)
 	{
 		return u.at(i);
+	}
+	bool is_zero() const
+	{
+		return all_of(u.begin(), u.end(), [](const auto& x) {return x == F(0); });
 	}
 protected:
 	std::vector<F> u;

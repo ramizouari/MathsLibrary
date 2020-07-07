@@ -1,6 +1,7 @@
 #pragma once
 #include "free_algebra.h"
 #include "integral_ring.h"
+#include "rational_extension.h"
 template<typename F>
 class polynomial:virtual public free_algebra<F>,virtual public integral_ring
 {
@@ -65,7 +66,7 @@ public:
 		std::pair<polynomial,polynomial> R(euclidean_division(p, q));
 		if (R.second.a.empty())
 			return q.normalize();
-		else return gcd(q, R.second).normalize();
+		else return gcd(q, R.second);
 	}
 	polynomial div(const polynomial& q) const
 	{
@@ -77,15 +78,18 @@ public:
 	}
 	polynomial& operator+=(const polynomial& p)
 	{
-		return this->free_algebra<F>::operator+=(p);
+		this->free_algebra<F>::operator+=(p);
+		return *this;
 	}
 	polynomial& operator-=(const polynomial& p)
 	{
-		return this->free_algebra<F>::operator-=(p);
+		this->free_algebra<F>::operator-=(p);
+		return *this;
 	}
 	polynomial& operator*=(const polynomial& p)
 	{
-		return *this;//->free_algebra<F>::operator*=(p);
+		this->free_algebra<F>::operator*=(p);
+		return *this;
 	}
 	polynomial& operator+=(const F& p)
 	{
@@ -101,14 +105,15 @@ public:
 	}
 	polynomial& operator/=(const F& p)
 	{
-		std::for_each(a.begin(), a.end(), [&p](auto& v) {v *= p; });
+		std::for_each(a.begin(), a.end(), [&p](auto& v) {v /= p; });
 		this->reduce();
 		return *this;
 	}
 	polynomial normalize() const
 	{
 		polynomial p(*this);
-		p /= p.a.at(p.degree());
+		auto dominant_coeff = p.a.at(p.degree());
+		p /= dominant_coeff;
 		return p;
 	}
 };
@@ -178,3 +183,6 @@ polynomial<F> operator*(const F& b, const polynomial<F>& a)
 	polynomial<F> p(a);
 	return p *= b;
 }
+
+template <typename F>
+using rational_function = rational_extension<polynomial<F>>;

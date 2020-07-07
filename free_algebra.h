@@ -63,7 +63,7 @@ public:
 		reduce();
 		return *this;
 	}
-	free_algebra& operator*=(const free_algebra& p)
+	free_algebra & operator*=(const free_algebra& p)
 	{
 		if ((degree() < 0) || (p.degree() < 0))
 		{
@@ -76,7 +76,7 @@ public:
 		for (int i = 0; i <= degree(); i++)
 			for (int j = 0; j <= p.degree(); j++)
 				q.a[i + j] += a[i] * p.a[j];
-		*this = std::move(q);
+		*this =(q);
 		reduce();
 		return *this;
 	}
@@ -97,6 +97,14 @@ public:
 	virtual ring& operator*=(int n)
 	{
 		return *this *= R(n);
+	}
+	bool is_zero() const
+	{
+		return a.empty();
+	}
+	bool is_one() const
+	{
+		return !a.empty() && a.at(0).is_one();
 	}
 protected:
 	void reduce() {

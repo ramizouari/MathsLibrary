@@ -34,6 +34,15 @@ public:
 	{
 		return q;
 	}
+	bool is_zero() const
+	{
+		return p.is_zero();
+	}
+
+	bool is_one() const
+	{
+		return p == q;
+	}
 
 	rational_extension& operator+=(const rational_extension& a)
 	{
@@ -115,6 +124,11 @@ public:
 private:
 	void reduce()
 	{
+		if (p == R::_0())
+		{
+			q = R::_1();
+			return;
+		}
 		R d(R::gcd(p, q));
 		p = p.div(d);
 		q = q.div(d);
@@ -125,25 +139,29 @@ private:
 template<typename R>
 rational_extension<R> operator+(const rational_extension<R>& a, const rational_extension<R>& b)
 {
-	return a += b;
+	rational_extension c(a);
+	return c += b;
 }
 
 template<typename R>
 rational_extension<R> operator-(const rational_extension<R>& a, const rational_extension<R>& b)
 {
-	return a -= b;
+	rational_extension c(a);
+	return c -= b;
 }
 
 template<typename R>
 rational_extension<R> operator*(const rational_extension<R>& a, const rational_extension<R>& b)
 {
-	return a *= b;
+	rational_extension c(a);
+	return c *= b;
 }
 
 template<typename R>
 rational_extension<R> operator/(const rational_extension<R>& a, const rational_extension<R>& b)
 {
-	return a /= b;
+	rational_extension c(a);
+	return c /= b;
 }
 
 template<typename R>

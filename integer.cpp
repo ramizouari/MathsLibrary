@@ -19,6 +19,16 @@ bool integer::operator==(const integer& a) const
 	return _v==a._v;
 }
 
+bool integer::is_zero() const
+{
+	return _v==0;
+}
+
+bool integer::is_one() const
+{
+	return _v == 1;;
+}
+
 integer integer::operator-()
 {
 	return -_v;

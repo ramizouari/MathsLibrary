@@ -27,6 +27,7 @@ class group
 	{
 		return *this;
 	}
+	virtual bool is_zero() const = 0;
 	//virtual group&& operator-() = 0;
 	//virtual group& operator==(Identity0) = 0;
 protected:

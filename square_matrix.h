@@ -61,7 +61,19 @@ public:
 	{
 		return std::move(square_matrix(1));
 	}
-
+	bool is_one() const
+	{
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
+				if (i != j)
+				{
+					if (!this->u.at(i).at(j).is_zero())
+						return false;
+				}
+				else if (!this->u.at(i).at(i).is_one())
+					return false;
+		return true;
+	}
 	F det() const
 	{
 		square_matrix M (std::move(this->row_echelon_form()));
@@ -75,10 +87,16 @@ public:
 
 	polynomial<F> caracteristic_polynomial() const
 	{
-		square_matrix<rational_extension<polynomial<F>>,n> J(square_matrix<rational_extension<polynomial<F>>,n>::_1());
-		//for (int i = 0; i < n; i++)
-			//for (int j = 0; j < n; j++)
-				//J.at(i).at(j) -= polynomial<F>(this->at(i).at(j));
+		square_matrix<rational_extension<polynomial<F>>,n> J;
+		std::cout << J;
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
+			{
+				if(i!=j)
+					J.at(i).at(j) = polynomial<F>(this->at(i).at(j));
+				else J.at(i).at(j) = polynomial<F>({ this->at(i).at(j),-1 });
+			}
+		std::cout << J;
 		return J.det().nominator();
 	}
 };

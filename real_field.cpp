@@ -4,6 +4,16 @@ real_field::real_field(double m) :_v(m)
 {
 }
 
+bool real_field::is_zero() const
+{
+	return _v==0;
+}
+
+bool real_field::is_one() const
+{
+	return _v==1;
+}
+
 bool real_field::operator==(const real_field& a) const
 {
 	return _v == a._v;
