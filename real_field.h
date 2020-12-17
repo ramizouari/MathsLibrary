@@ -3,6 +3,7 @@
 #include "field.h"
 #include <algorithm>
 #include <iostream>
+#include <compare>
 class real_field :
     public field
 {
@@ -10,13 +11,13 @@ public:
     real_field(double m = 0);
     inline static const real_field _0() { return real_field(); };
     inline static const real_field _1() { return real_field(1); };
-    real_field&& mod(const integral_ring& a) {
+    real_field mod(const integral_ring& a) {
         return 0;
     }
     bool is_zero() const;
     bool is_one() const;
 
-    real_field&& div(const integral_ring&) { return real_field(0); }
+    real_field div(const integral_ring&) { return real_field(0); }
     const real_field& I0() const
     {
         return _0();
@@ -28,13 +29,15 @@ public:
 
     bool operator==(const real_field& a) const;
     bool operator!=(const real_field& a) const;
-    operator double& () { return _v; };
+    explicit operator double () { return _v; };
     real_field operator-();
+    real_field& operator+();
     real_field& operator+=(const real_field& a);
     real_field& operator-=(const real_field& a);
     real_field& operator*=(const real_field& a);
     real_field& operator/=(const real_field& a);
     real_field& operator%=(const real_field& a);
+    std::partial_ordering operator<=>(const real_field& a);
     virtual ring& operator+=(int n);
     virtual ring& operator-=(int n);
     virtual ring& operator*=(int n);
@@ -42,6 +45,7 @@ public:
 };
 
 real_field operator+(const real_field& a, const real_field& b);
+real_field operator-(const real_field& a, const real_field& b);
 real_field operator*(const real_field& a, const real_field& b);
 real_field operator/(const real_field& a, const real_field& b);
 real_field operator%(const real_field& a, const real_field& b);

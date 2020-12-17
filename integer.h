@@ -3,11 +3,13 @@
 #include <algorithm>
 #include <iostream>
 #include <numeric>
+#include <compare>
 class integer :
     public integral_ring
 {
 public:
     integer(const int m = 0);
+    integer(const double s);
     inline static integer _0() { return integer(); };
     inline static integer _1() { return integer(1); };
     integer mod(const integer& a) const;
@@ -19,15 +21,20 @@ public:
         return std::make_pair(R.quot, R.rem);
     }
     bool operator==(const integer& a) const;
-    operator int&() { return _v; };
+    inline explicit operator int&() { return _v; }
+    inline explicit operator double() { return _v; }
+    inline explicit operator long double() { return _v; }
+    inline explicit operator float() { return _v; }
     bool is_zero() const;
     bool is_one() const;
     integer operator-();
+    integer& operator+();
     integer& operator+=(const integer& a);
     integer& operator-=(const integer& a);
     integer& operator*=(const integer& a);
     integer& operator/=(const integer& a);
     integer& operator%=(const integer& a);
+    std::strong_ordering operator<=>(const integer& b);
     virtual ring& operator+=(int n);
     virtual ring& operator-=(int n);
     virtual ring& operator*=(int n);
@@ -35,6 +42,7 @@ public:
 };
 
 integer operator+(const integer& a, const integer& b);
+integer operator-(const integer& a, const integer& b);
 integer operator*(const integer& a, const integer& b);
 integer operator/(const integer& a, const integer& b);
 integer operator%(const integer& a, const integer& b);

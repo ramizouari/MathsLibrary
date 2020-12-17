@@ -29,6 +29,11 @@ real_field real_field::operator-()
 	return -_v;
 }
 
+real_field& real_field::operator+()
+{
+	return *this;
+}
+
 real_field& real_field::operator+=(const real_field& a)
 {
 	_v += a._v;
@@ -59,6 +64,11 @@ real_field& real_field::operator%=(const real_field& a)
 	return *this;
 }
 
+std::partial_ordering real_field::operator<=>(const real_field& a)
+{
+	return _v <=> a._v;
+}
+
 ring& real_field::operator+=(int n)
 {
 	_v += n;
@@ -81,6 +91,11 @@ real_field operator+(const real_field& a, const real_field& b)
 {
 	real_field c = a;
 	return c += b;
+}
+
+real_field operator-(const real_field& a, const real_field& b)
+{
+	return a._v - b._v;
 }
 
 real_field operator*(const real_field& a, const real_field& b)

@@ -85,6 +85,42 @@ public:
 		return d;
 	}
 
+	square_matrix inv() const
+	{
+		auto Q = matrix<F, n, 2 * n>();
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
+				Q[i][j] = this->at(i).at(j);
+		for (int i = 0; i <  n; i++)
+			for (int j = n; j < 2*n; j++)
+				Q[i][j] = i == (j-n);
+		auto S = Q.row_echelon_form();
+		square_matrix M1,M2;
+		for (int i = 0; i < n; i++)
+		{
+			auto  r = S[i][i];
+			for (int j = 0; j < n; j++)
+			{
+				M1[i][j] = S[i][j]/r;
+				M2[i][j] = S[i][j + n]/r;
+			}
+		}
+		for (int i = n - 1; i >= 0; i--)
+		{
+			for (int j = i-1; j >= 0; j--)
+			{
+				auto r = M1[j][i];
+				for (int k = 0; k < n; k++)
+				{
+					M2[j][k] -= r * M2[i][k];
+					M1[j][k] -= r * M1[i][k];
+				}
+			}
+		}
+		
+		return M2;
+	}
+
 	polynomial<F> caracteristic_polynomial() const
 	{
 		square_matrix<rational_extension<polynomial<F>>,n> J;
@@ -94,7 +130,7 @@ public:
 			{
 				if(i!=j)
 					J.at(i).at(j) = polynomial<F>(this->at(i).at(j));
-				else J.at(i).at(j) = polynomial<F>({ this->at(i).at(j),-1 });
+				else J.at(i).at(j) = polynomial<F>({ this->at(i).at(j),- F::_1() });
 			}
 		std::cout << J;
 		return J.det().nominator();

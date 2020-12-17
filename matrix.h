@@ -24,6 +24,16 @@ public:
 			if (v.size() != m)
 				throw std::domain_error("Dimensions are not compatible");
 	}
+
+	matrix<F, m, n> transpose() const
+	{
+		matrix<F, m, n> T;
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < m; j++)
+				T[j][i] = this->at(i).at(j);
+		return T;
+	}
+
 	matrix& operator+=(const matrix& o)
 	{
 		for (int i = 0; i < n; i++)

@@ -76,7 +76,10 @@
       <Filter>Fichiers d%27en-tête\Basic</Filter>
     </ClInclude>
     <ClInclude Include="polynomial.h">
-      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
+      <Filter>Fichiers d%27en-tête\Polynomials</Filter>
+    </ClInclude>
+    <ClInclude Include="complex.h">
+      <Filter>Fichiers d%27en-tête\Basic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -89,10 +92,10 @@
     <ClCompile Include="guassian_integer.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="free_algebra.cpp">
+    <ClCompile Include="real_field.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="real_field.cpp">
+    <ClCompile Include="complex.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>

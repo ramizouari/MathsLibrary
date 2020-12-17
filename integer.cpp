@@ -4,6 +4,10 @@ integer::integer(const int m):_v(m)
 {
 }
 
+integer::integer(const double s):_v(s)
+{
+}
+
 integer integer::mod(const integer& a) const
 {
 	return _v % a._v;
@@ -32,6 +36,11 @@ bool integer::is_one() const
 integer integer::operator-()
 {
 	return -_v;
+}
+
+integer& integer::operator+()
+{
+	return *this;
 }
 
 integer& integer::operator+=(const integer& a)
@@ -64,6 +73,11 @@ integer& integer::operator%=(const integer& a)
 	return *this;
 }
 
+std::strong_ordering integer::operator<=>(const integer& b)
+{
+	return _v <=> b._v;
+}
+
 ring& integer::operator+=(int n)
 {
 	_v += n;
@@ -86,6 +100,11 @@ integer operator+(const integer& a, const integer& b)
 {
 	integer c = a;
 	return c += b;
+}
+
+integer operator-(const integer& a, const integer& b)
+{
+	return a._v - b._v;
 }
 
 integer operator*(const integer& a, const integer& b)

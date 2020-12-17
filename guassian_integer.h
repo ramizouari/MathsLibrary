@@ -11,7 +11,7 @@ public:
 	static guassian_integer _1() { return std::complex<integer>(1); }
 	bool is_zero() const;
 	bool is_one() const;
-	operator std::complex<integer>() { return *this; }
+	inline operator std::complex<integer>() { return *this; }
 	
 };
 
