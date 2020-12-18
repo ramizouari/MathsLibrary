@@ -27,6 +27,20 @@ public:
 	{
 		return a.size() - 1;
 	}
+
+	free_algebra operator-() const
+	{
+		free_algebra p(*this);
+		for (auto& s : p.a)
+			s = -s;
+		return p;
+	}
+
+	const free_algebra& operator+() const
+	{
+		return *this;
+	}
+
 	free_algebra& operator+=(const free_algebra &p)
 	{
 		for (int i = 0; i <= degree(); i++)
@@ -46,6 +60,7 @@ public:
 	{
 		return *this += free_algebra(p);
 	}
+
 	free_algebra& operator*=(const R& p)
 	{
 		std::for_each(a.begin(), a.end(), [&p](auto& v) {v *= p; });

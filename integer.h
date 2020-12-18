@@ -27,8 +27,8 @@ public:
     inline explicit operator float() { return _v; }
     bool is_zero() const;
     bool is_one() const;
-    integer operator-();
-    integer& operator+();
+    integer operator-() const;
+    const integer& operator+() const;
     integer& operator+=(const integer& a);
     integer& operator-=(const integer& a);
     integer& operator*=(const integer& a);

@@ -4,6 +4,10 @@ guassian_integer::guassian_integer(const integer& a, const integer& b) :std::com
 {
 }
 
+guassian_integer::guassian_integer(int a):std::complex<integer>(a)
+{
+}
+
 bool guassian_integer::is_zero() const
 {
     return real().is_zero()&&imag().is_zero();

@@ -15,3 +15,5 @@ public:
 	inline operator std::complex<real_field>() { return *this; }
 };
 
+::complex operator""_c(long double a);
+::complex operator""_c(unsigned long long a);

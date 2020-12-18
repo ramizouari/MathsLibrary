@@ -34,6 +34,19 @@ public:
 		return T;
 	}
 
+	bool operator!=(const matrix& M) const
+	{
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < m; j++)
+				if (this->at(i).at(j) != M.at(i).at(j))
+					return true;
+		return false;
+	}
+
+	bool operator==(const matrix& M) const
+	{
+		return !(*this != M);
+	}
 	matrix& operator+=(const matrix& o)
 	{
 		for (int i = 0; i < n; i++)

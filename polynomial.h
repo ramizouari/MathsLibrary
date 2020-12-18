@@ -35,6 +35,7 @@ public:
 	{
 		return free_algebra<F>::_1();
 	}
+
 	static std::pair<polynomial, polynomial> euclidean_division(const polynomial& p, const polynomial& q) 
 	{
 		if (p.degree() < q.degree())
@@ -76,6 +77,13 @@ public:
 	{
 		return euclidean_division(*this, q).second;
 	}
+
+	polynomial operator-() const
+	{
+		return free_algebra<F>::operator-();
+	}
+
+
 	polynomial& operator+=(const polynomial& p)
 	{
 		this->free_algebra<F>::operator+=(p);

@@ -33,12 +33,12 @@ bool integer::is_one() const
 	return _v == 1;;
 }
 
-integer integer::operator-()
+integer integer::operator-() const
 {
 	return -_v;
 }
 
-integer& integer::operator+()
+const integer& integer::operator+() const
 {
 	return *this;
 }

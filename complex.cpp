@@ -17,3 +17,18 @@ bool complex::is_one() const
 {
     return real().is_one() && imag().is_zero();
 }
+
+::complex operator""_c(long double a)
+{
+    return ::complex(a);
+}
+
+::complex operator""_c(unsigned long long a)
+{
+    return ::complex(a,0);
+}
+
+::complex operator""_i(long double a)
+{
+    return ::complex(0,a);
+}

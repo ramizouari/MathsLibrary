@@ -20,17 +20,23 @@ public:
 			this->u[i][i] = k;
 
 	}
+
+
+
 	square_matrix& operator+=(const square_matrix& o)
 	{
-		return matrix<F, n, n>::operator+=(o);
+		matrix<F, n, n>::operator+=(o);
+		return *this;
 	}
 	square_matrix& operator-=(const square_matrix& o)
 	{
-		return matrix<F, n, n>::operator-=(o);
+		matrix<F, n, n>::operator-=(o);
+		return *this;
 	}
 	square_matrix operator-() const
 	{
-		return matrix<F, n, n>::operator-();
+		matrix<F, n, n>::operator-();
+		return *this;
 	}
 	square_matrix& operator*=(const square_matrix& M)
 	{
@@ -45,12 +51,14 @@ public:
 
 	square_matrix& operator*=(const F& k)
 	{
-		return this->matrix<F,n,n>::operator*=(k);
+		this->matrix<F,n,n>::operator*=(k);
+		return *this;
 	}
 
 	square_matrix& operator/=(const F& k)
 	{
-		return this->matrix<F, n, n>::operator/=(k);
+		this->matrix<F, n, n>::operator/=(k);
+		return *this;
 	}
 
 	static square_matrix _0()
@@ -121,6 +129,11 @@ public:
 		return M2;
 	}
 
+	square_matrix operator/=(const square_matrix& M)
+	{
+		return *this *= M.inv();
+	}
+
 	polynomial<F> caracteristic_polynomial() const
 	{
 		square_matrix<rational_extension<polynomial<F>>,n> J;
@@ -171,4 +184,11 @@ square_matrix <F, n> operator*(
 			for (int k = 0; k < n; k++)
 				P.at(i).at(j) += M.at(i).at(k) * N.at(k).at(j);
 	return P;
+}
+
+template <typename F, int n>
+square_matrix <F, n> operator/(
+	const square_matrix<F, n>& M, const square_matrix<F, n>& N)
+{
+	return M * N.inv();
 }

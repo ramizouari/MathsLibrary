@@ -13,9 +13,7 @@ using namespace std;
 
 int main()
 {
-	square_matrix<::complex, 3> M({ {::complex(1),::complex(2),
-		::complex (-1)},{::complex (-2),::complex(0),::complex(1)},
-		{::complex(1),::complex (-1),::complex(0)} });
-	cout << M.caracteristic_polynomial() << '\n' << (M*M.inv());
+	square_matrix<integer, 2> M({ {0,1},{1,1} });
+	cout << (algebra::pow(M, 40) * finite_dimensional_vector_space<integer, 2>({0,1})).at(0);
 	return false;
 }
