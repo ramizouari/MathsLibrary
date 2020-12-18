@@ -18,6 +18,16 @@ bool complex::is_one() const
     return real().is_one() && imag().is_zero();
 }
 
+real_field complex::abs() const
+{
+    return std::abs(*this);
+}
+
+complex complex::conj() const
+{
+    return std::conj(*this);
+}
+
 ::complex operator""_c(long double a)
 {
     return ::complex(a);

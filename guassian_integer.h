@@ -1,7 +1,7 @@
 #pragma once
 #include <complex>
 #include "integer.h"
-#include "integral_ring.h"
+#include "absalg/integral_ring.h"
 class guassian_integer :public std::complex<integer>, public ring
 {
 public:
@@ -13,6 +13,6 @@ public:
 	bool is_zero() const;
 	bool is_one() const;
 	inline operator std::complex<integer>() { return *this; }
-	
+	guassian_integer conj() const;
 };
 

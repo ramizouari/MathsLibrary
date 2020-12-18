@@ -1,10 +1,10 @@
 #pragma once
 #include "matrix.h"
-#include "polynomial.h"
-#include "rational_extension.h"
+#include "poly/polynomial.h"
+#include "absalg/rational_extension.h"
 
 template<typename F,int n>
-class square_matrix :public matrix<F, n, n>, public ring
+class square_matrix :virtual public matrix<F, n, n>,virtual  public ring
 {
 public:
 	square_matrix(){}
@@ -137,7 +137,6 @@ public:
 	polynomial<F> caracteristic_polynomial() const
 	{
 		square_matrix<rational_extension<polynomial<F>>,n> J;
-		std::cout << J;
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++)
 			{
@@ -145,8 +144,7 @@ public:
 					J.at(i).at(j) = polynomial<F>(this->at(i).at(j));
 				else J.at(i).at(j) = polynomial<F>({ this->at(i).at(j),- F::_1() });
 			}
-		std::cout << J;
-		return J.det().nominator();
+		return (polynomial<F>)J.det();
 	}
 };
 

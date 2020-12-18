@@ -27,42 +27,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="finite_dimensional_module.h">
-      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="finite_dimensional_vector_space.h">
-      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="vector_space.h">
-      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="group.h">
-      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="ring.h">
-      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="abstract_module.h">
-      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="matrix.h">
-      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="field.h">
-      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="square_matrix.h">
-      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="free_algebra.h">
-      <Filter>Fichiers d%27en-tête\Polynomials</Filter>
-    </ClInclude>
-    <ClInclude Include="integral_ring.h">
-      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
-    </ClInclude>
-    <ClInclude Include="rational_extension.h">
-      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
-    </ClInclude>
     <ClInclude Include="integer.h">
       <Filter>Fichiers d%27en-tête\Basic</Filter>
     </ClInclude>
@@ -75,11 +39,68 @@
     <ClInclude Include="maths_concepts.h">
       <Filter>Fichiers d%27en-tête\Basic</Filter>
     </ClInclude>
-    <ClInclude Include="polynomial.h">
-      <Filter>Fichiers d%27en-tête\Polynomials</Filter>
-    </ClInclude>
     <ClInclude Include="complex.h">
       <Filter>Fichiers d%27en-tête\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="absalg\ring.h">
+      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="absalg\group.h">
+      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="absalg\integral_ring.h">
+      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="absalg\field.h">
+      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="poly\free_algebra.h">
+      <Filter>Fichiers d%27en-tête\Polynomials</Filter>
+    </ClInclude>
+    <ClInclude Include="poly\polynomial.h">
+      <Filter>Fichiers d%27en-tête\Polynomials</Filter>
+    </ClInclude>
+    <ClInclude Include="absalg\rational_extension.h">
+      <Filter>Fichiers d%27en-tête\Abstract Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\finite_dimensional_module.h">
+      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\finite_dimensional_vector_space.h">
+      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\matrix.h">
+      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\square_matrix.h">
+      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\vector_space.h">
+      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\abstract_module.h">
+      <Filter>Fichiers d%27en-tête\Linear Algebra</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\normed_space.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\normed_finite_dimensional_space.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\finite_dimensional_inner_product_space.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\sequence.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\function.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\integrable_function.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\integrator.h">
+      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

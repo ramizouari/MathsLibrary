@@ -20,6 +20,7 @@ public:
 		if (n != u.size())
 			throw std::domain_error("Dimensions are not compatible");
 	}
+
 	finite_dimensional_vector_space():u(n){}
 	static finite_dimensional_vector_space _0()
 	{
@@ -31,6 +32,7 @@ public:
 			u.at(i) += o.u.at(i);
 		return *this;
 	}
+
 	finite_dimensional_vector_space& operator-=(const finite_dimensional_vector_space& o)
 	{
 		for (int i = 0; i < n; i++)
@@ -70,6 +72,15 @@ public:
 		std::transform(u.begin(), u.end(), p.u.begin(), [](auto a) {return -a; });
 		return p;
 	}
+
+	finite_dimensional_vector_space conj() const requires field_constraints::is_complex<F>
+	{
+		finite_dimensional_vector_space w = (*this);
+		for (auto& s : w.u)
+			s = s.conj();
+		return w;
+	}
+
 	const F& operator[](int i) const
 	{
 		return u[i];
@@ -150,4 +161,10 @@ std::ostream& operator<<(std::ostream& H, const finite_dimensional_vector_space<
 		if (i == n-1) H << p.at(i) << " )";
 		else H << p.at(i) << ", ";
 	return H;
+}
+
+namespace vector_space_constraint
+{
+	template<typename F, int n, typename M>
+	concept is_vector = std::is_base_of_v<finite_dimensional_vector_space<F, n>, M>;
 }

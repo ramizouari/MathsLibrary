@@ -1,6 +1,7 @@
 #pragma once
 #include "field.h"
 #include <iostream>
+#include <real_field.h>
 
 template <typename R>
 class rational_extension: public field
@@ -9,6 +10,7 @@ public:
 	rational_extension(R _p) :rational_extension(_p, R::_1()) {}
 	rational_extension(R _p, R _q) :p(_p), q(_q) { reduce(); }
 	rational_extension(int _p=0,int _q=1):p(_p),q(_q){}
+
 	bool operator!=(const rational_extension& s) const
 	{
 		return (s.p != p) || (s.q != q);
@@ -43,7 +45,10 @@ public:
 	{
 		return p == q;
 	}
-
+	explicit operator R()
+	{
+		return p.div(q);
+	}
 	rational_extension& operator+=(const rational_extension& a)
 	{
 		p = p * a.q + a.p * q;
@@ -121,6 +126,13 @@ public:
 		reduce();
 		return *this;
 	}
+
+
+	real_field abs() const requires ring_constraints::has_abs<R> 
+	{
+		return p.abs() / q.abs();
+	}
+
 private:
 	void reduce()
 	{

@@ -1,5 +1,5 @@
 #pragma once
-#include "group.h"
+#include "absalg/group.h"
 template <typename R>
 class abstract_module :virtual public group
 {

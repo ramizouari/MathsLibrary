@@ -1,5 +1,6 @@
 #pragma once
 #include "group.h"
+#include <concepts>
 class ring :
     virtual public group
 {
@@ -53,4 +54,18 @@ namespace algebra
 	}
 
 	
+}
+
+
+namespace ring_constraints
+{
+
+	template<typename R>
+	concept is_ring = std::is_base_of_v<ring, R>;
+
+	template<typename R>
+	concept has_abs = requires(R a)
+	{
+		a.abs();
+	};
 }

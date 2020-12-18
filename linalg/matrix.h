@@ -2,7 +2,7 @@
 #include "finite_dimensional_vector_space.h"
 
 template<typename F,int n,int m>
-class matrix :public finite_dimensional_vector_space<std::vector<F> , n >
+class matrix : public finite_dimensional_vector_space<std::vector<F> , n >
 {
 public:
 	matrix()
@@ -146,6 +146,11 @@ public:
 protected:
 	using finite_dimensional_vector_space<std::vector<F>, n > ::u;
 };
+
+namespace matrix_constraint {
+	template<typename F,int n,int m,typename M>
+	concept is_matrix = std::is_base_of_v<matrix<F, n, m>, M>;
+}
 
 template <typename F, int n,int m>
 matrix<F, n,m> operator+(

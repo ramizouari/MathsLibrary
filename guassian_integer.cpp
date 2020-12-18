@@ -17,3 +17,8 @@ bool guassian_integer::is_one() const
 {
     return real().is_one()&&imag().is_zero();
 }
+
+guassian_integer guassian_integer::conj() const
+{
+    return guassian_integer(real(),-imag());
+}

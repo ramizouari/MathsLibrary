@@ -1,5 +1,5 @@
 #pragma once
-#include "ring.h"
+#include "absalg/ring.h"
 #include <vector>
 #include <algorithm>
 #include <iostream>
@@ -34,6 +34,18 @@ public:
 		for (auto& s : p.a)
 			s = -s;
 		return p;
+	}
+
+	template<typename H=R>
+	H operator()(const H& u)
+	{
+		H r = 0,w=1;
+		for (const auto& s : a)
+		{
+			r += w*s;
+			w *= u;
+		}
+		return r;
 	}
 
 	const free_algebra& operator+() const

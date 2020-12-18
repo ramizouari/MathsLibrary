@@ -1,7 +1,8 @@
 #pragma once
+#include <cassert>
 #include "free_algebra.h"
-#include "integral_ring.h"
-#include "rational_extension.h"
+#include "absalg/integral_ring.h"
+#include "absalg/rational_extension.h"
 template<typename F>
 class polynomial:virtual public free_algebra<F>,virtual public integral_ring
 {
@@ -58,6 +59,8 @@ public:
 			r.a.pop_back();
 		}
 		r.reduce();
+		polynomial<F> eps = p - (q * s + r);
+		
 		return std::make_pair(s, r);
 	}
 	static polynomial gcd(const polynomial& p, const polynomial& q)
