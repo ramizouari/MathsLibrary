@@ -1,8 +1,8 @@
 #pragma once
 #include "linalg/vector_space.h"
 
-
-template<typename A, typename B>
+namespace math_rz {
+	template<typename A, typename B>
 	class abstract_function
 	{
 	public:
@@ -11,14 +11,15 @@ template<typename A, typename B>
 	};
 
 
-template<typename A,typename B> 
-class summable_function : public abstract_function<A, B>, public vector_space<B>
-{
-public:
+	template<typename A, typename B>
+	class summable_function : public abstract_function<A, B>, public vector_space<B>
+	{
+	public:
 
-};
+	};
 
-template<typename A, typename B>
-class function : public summable_function<A, B>
-{
-};
+	template<typename A, typename B>
+	class function : public summable_function<A, B>
+	{
+	};
+}

@@ -1,5 +1,7 @@
 #include "complex.h"
 
+
+using namespace math_rz;
 complex::complex(const real_field& a, const real_field& b):std::complex<real_field>(a,b)
 {
 }

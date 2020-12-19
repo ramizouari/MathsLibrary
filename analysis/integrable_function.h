@@ -3,11 +3,20 @@
 #include "real_field.h"
 #include "integrator.h"
 
-class rr_integrable_function :public function<real_field,real_field>
-{
-public:
-	real_field integral(const integrator<real_field,real_field> &w) const
+namespace math_rz {
+	template<typename F>
+	class curve :public function<real_field, F>
 	{
-		return w.integrate(*this);
-	}
-};
+	public:
+		F integral(const integrator<real_field, F>& w) const
+		{
+			return w.integrate(*this);
+		}
+	};
+
+	template<typename F>
+	class complex_curve :public function<complex, F>
+	{
+
+	};
+}

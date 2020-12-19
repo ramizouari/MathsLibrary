@@ -3,30 +3,61 @@
 #include "real_field.h"
 #include "integer.h"
 
-template <typename A,typename B>
-class integrator
-{
-public:
-	virtual B integrate(const function<A, B>& f) const = 0;
-};
-
-class rectangle_integrator:public  integrator<real_field,real_field>
-{
-	integer cuts;
-	real_field a, b;
-public:
-	rectangle_integrator(real_field _a, real_field _b, integer _cuts = 100):a(_a),b(_b),cuts(_cuts)
+namespace math_rz {
+	template <typename A, typename B>
+	class integrator
 	{
+	public:
+		virtual B integrate(const function<A, B>& f) const = 0;
+	};
 
-	}
-	real_field integrate(const function<real_field, real_field>& f) const override
+	template<typename F>
+	class rectangle_integrator :public  integrator<real_field, F>
 	{
-		real_field R,u=std::min(a,b),v=std::max(a,b);
-		real_field eps = (v - u) / cuts;
-		for (real_field k = u; k <= v; k += eps)
-			R += f(k) * eps;
-		if (a < b)
-			return R;
-		else return -R;
-	}
-};
+		integer cuts;
+		real_field a, b;
+	public:
+		rectangle_integrator(real_field _a, real_field _b, integer _cuts = 100) :a(_a), b(_b), cuts(_cuts)
+		{
+
+		}
+		F integrate(const function<real_field, F>& f) const override
+		{
+			F R;
+			real_field u = std::min(a, b), v = std::max(a, b);
+			real_field eps = (v - u) / cuts;
+			for (real_field k = u; k <= v; k += eps)
+				R += eps * f(k);
+			if (a < b)
+				return R;
+			else return -R;
+		}
+	};
+
+
+	template<typename F>
+	class trapezoid_integrator :public  integrator<real_field, F>
+	{
+		integer cuts;
+		real_field a, b;
+	public:
+		trapezoid_integrator(real_field _a, real_field _b, integer _cuts = 100) :a(_a), b(_b), cuts(_cuts)
+		{
+
+		}
+		F integrate(const function<real_field, F>& f) const override
+		{
+			F R;
+			real_field u = std::min(a, b), v = std::max(a, b);
+			real_field eps = (v - u) / cuts;
+			for (real_field k = u; k < v; k += eps)
+			{
+				real_field s = eps / 2;
+				R += s * (f(k) + f(k + eps));
+			}
+			if (a < b)
+				return R;
+			else return -R;
+		}
+	};
+}

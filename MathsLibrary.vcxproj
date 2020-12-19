@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="analysis\derivator.h" />
     <ClInclude Include="analysis\finite_dimensional_inner_product_space.h" />
     <ClInclude Include="analysis\function.h" />
     <ClInclude Include="analysis\integrable_function.h" />

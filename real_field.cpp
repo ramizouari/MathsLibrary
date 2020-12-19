@@ -1,5 +1,6 @@
 #include "real_field.h"
 
+using namespace math_rz;
 //real_field::real_field(double m) :_v(m)
 //{
 //}

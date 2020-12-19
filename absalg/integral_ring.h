@@ -1,8 +1,10 @@
 #pragma once
 #include "ring.h"
-class integral_ring :
-    virtual public ring
-{
-    
-};
+namespace math_rz {
+    class integral_ring :
+        virtual public ring
+    {
 
+    };
+
+}

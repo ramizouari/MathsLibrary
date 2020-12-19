@@ -12,15 +12,18 @@
 #include <analysis/finite_dimensional_inner_product_space.h>
 #include "analysis/integrable_function.h"
 #include "analysis/integrator.h"
+#include "analysis/derivator.h"
 #include <cmath>
 
 using namespace std;
+using namespace math_rz;
 
-class arctan_fun :public rr_integrable_function
+using E = finite_dimensional::hilbert_space<3>;
+class arctan_fun :public function<E,E>
 {
-	real_field operator()(const real_field &s) const override
+	finite_dimensional::hilbert_space <3> operator()(const E &s) const override
 	{
-		return std::atan(s);
+		return E({s.at(0),s.at(1),s.at(2)});
 	}
 
 	bool is_zero() const override
@@ -32,8 +35,10 @@ class arctan_fun :public rr_integrable_function
 
 int main()
 {
-	rectangle_integrator I(0, 1);
+	rectangle_integrator<finite_dimensional::hilbert_space<3>> I(0, 1);
+	trapezoid_integrator<finite_dimensional::hilbert_space<3>> J(0, 1);
 	arctan_fun s;
-	cout << s.integral(I);
+	derivator<math_rz::complex, 3, 3> D(math_rz::finite_dimensional::hilbert_space<3>({0,0,0}), .1i);
+	cout << D.jacobian(s);
 	return false;
 }

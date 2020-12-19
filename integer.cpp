@@ -1,5 +1,7 @@
 #include "integer.h"
 
+
+using namespace math_rz;
 integer::integer(const int m):_v(m)
 {
 }

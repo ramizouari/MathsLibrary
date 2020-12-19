@@ -1,5 +1,6 @@
 #include "guassian_integer.h"
 
+using namespace math_rz;
 guassian_integer::guassian_integer(const integer& a, const integer& b) :std::complex<integer>(a, b)
 {
 }
