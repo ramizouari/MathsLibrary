@@ -6,6 +6,18 @@ complex::complex(const real_field& a, const real_field& b):std::complex<real_fie
 {
 }
 
+math_rz::complex::complex(double s):std::complex<real_field>(s)
+{
+}
+
+math_rz::complex::complex(float s): std::complex<real_field>(s)
+{
+}
+
+math_rz::complex::complex(long double s): std::complex<real_field>(s)
+{
+}
+
 complex::complex(int a) : std::complex<real_field>(a)
 {
 }
@@ -30,17 +42,17 @@ complex complex::conj() const
     return std::conj(*this);
 }
 
-::complex operator""_c(long double a)
+complex operator""_c(long double a)
 {
-    return ::complex(a);
+    return complex(a);
 }
 
-::complex operator""_c(unsigned long long a)
+complex operator""_c(unsigned long long a)
 {
-    return ::complex(a,0);
+    return complex(a,0);
 }
 
-::complex operator""_i(long double a)
+complex operator""_i(long double a)
 {
-    return ::complex(0,a);
+    return complex(0,a);
 }

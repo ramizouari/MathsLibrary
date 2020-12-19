@@ -150,11 +150,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="analysis\derivator.h" />
+    <ClInclude Include="analysis\derivator\default_derivator.h" />
+    <ClInclude Include="analysis\derivator\derivator.h" />
+    <ClInclude Include="analysis\derivator\two_way_derivator.h" />
     <ClInclude Include="analysis\finite_dimensional_inner_product_space.h" />
+    <ClInclude Include="analysis\fourier_transform.h" />
     <ClInclude Include="analysis\function.h" />
+    <ClInclude Include="analysis\general_function.h" />
     <ClInclude Include="analysis\integrable_function.h" />
-    <ClInclude Include="analysis\integrator.h" />
+    <ClInclude Include="analysis\integrator\integral_function.h" />
+    <ClInclude Include="analysis\integrator\integrator.h" />
+    <ClInclude Include="analysis\integrator\rectangular_integrator.h" />
+    <ClInclude Include="analysis\integrator\trapezoidal_integrator.h" />
+    <ClInclude Include="analysis\laplace_tranform.h" />
     <ClInclude Include="analysis\normed_finite_dimensional_space.h" />
     <ClInclude Include="analysis\normed_space.h" />
     <ClInclude Include="analysis\sequence.h" />

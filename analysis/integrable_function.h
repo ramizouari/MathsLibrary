@@ -1,7 +1,7 @@
 #pragma once
 #include "function.h"
 #include "real_field.h"
-#include "integrator.h"
+#include "integrator/integrator.h"
 
 namespace math_rz {
 	template<typename F>

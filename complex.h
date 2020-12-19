@@ -13,6 +13,9 @@ namespace math_rz
 		complex(const std::complex<long double>& a) :std::complex<real_field>(a) {}
 
 		complex(const real_field& a = 0, const real_field& b = 0);
+		complex(double s);
+		complex(float s);
+		complex(long double s);
 		complex(int a);
 		static complex _0() { return std::complex<real_field >(); }
 		static complex _1() { return std::complex<real_field>(1); }
