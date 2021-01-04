@@ -38,7 +38,7 @@ namespace math_rz {
 		}
 
 		template<typename H = R>
-		H operator()(const H& u)
+		H operator()(const H& u) const
 		{
 			H r = 0, w = 1;
 			for (const auto& s : a)
@@ -111,7 +111,7 @@ namespace math_rz {
 		const R& coeff(int n) const
 		{
 			if (n > degree())
-				return R::_0();
+				return 0;
 			return a.at(n);
 		}
 		virtual ring& operator+=(int n)
@@ -136,7 +136,7 @@ namespace math_rz {
 		}
 	protected:
 		void reduce() {
-			while (!a.empty() && (a.back() == R::_0()))
+			while (!a.empty() && (a.back().is_zero()))
 				a.pop_back();
 		}
 		std::vector<R> a;

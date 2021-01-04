@@ -128,6 +128,15 @@ namespace math_rz {
 			p /= dominant_coeff;
 			return p;
 		}
+		polynomial derivative() const
+		{
+			polynomial p;
+			int n = this->degree();
+			p.a.resize(n);
+			for (int i = 1; i <= n; i++)
+				p.a[i - 1] = this->a[i]*i;
+			return p;
+		}
 	};
 
 	template<typename F>

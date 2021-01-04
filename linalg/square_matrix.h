@@ -149,7 +149,7 @@ namespace math_rz
 				{
 					if (i != j)
 						J.at(i).at(j) = polynomial<F>(this->at(i).at(j));
-					else J.at(i).at(j) = polynomial<F>({ this->at(i).at(j),-F::_1() });
+					else J.at(i).at(j) = polynomial<F>({ this->at(i).at(j),-1 });
 				}
 			return (polynomial<F>)J.det();
 		}

@@ -239,4 +239,14 @@ namespace math_rz {
 		}
 		return H;
 	}
+
+	template <typename F, int n, int m>
+	std::istream& operator>>(std::istream& H, matrix<F, n, m>& p)
+	{
+
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < m; j++)
+				H >> p.at(i).at(j);
+		return H;
+	}
 }

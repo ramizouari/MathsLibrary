@@ -51,8 +51,8 @@ namespace math_rz
 			return 1;
 		else if (n == 1)
 			return u;
-		else if (n < 0)
-			return A(1) / pow(u, -n);
+		//else if (n < 0)
+		//	return A(1) / pow(u, -n);
 		A r = pow(u, n / 2);
 		r *= r;
 		return r * pow(u, n % 2);

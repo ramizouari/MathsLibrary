@@ -23,11 +23,14 @@ namespace math_rz
 		bool is_one() const;
 		real_field abs() const;
 		complex conj() const;
+		complex inner_product(const complex&z)const;
+		real_field norm() const;
 		inline operator std::complex<real_field>() { return *this; }
 		complex& operator/=(const real_field& s);
 		complex operator-() const;
 		complex& operator*=(int a);
 		complex& operator*=(const std::complex<real_field> &s);
+		complex& operator/=(const std::complex<real_field>& s);
 		//inline operator real_field() { return real(); }
 		complex& operator/=(int a);
 	};
@@ -36,7 +39,7 @@ namespace math_rz
 	complex operator""_c(unsigned long long a);
 	complex operator*(const complex& s, int a);
 	complex operator*(int a,const complex& s);
-
+//	complex operator/(const std::complex<real_field>& a, const std::complex<real_field>& b);
 	//complex operator/(const complex &s ,const real_field& a);
 
 }

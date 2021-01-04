@@ -30,6 +30,16 @@ real_field real_field::abs() const
 	return std::abs(_v);
 }
 
+real_field math_rz::real_field::norm() const
+{
+	return abs();
+}
+
+real_field math_rz::real_field::inner_product(const real_field& a)
+{
+	return (*this) * a;
+}
+
 bool real_field::is_zero() const
 {
 	return _v==0;

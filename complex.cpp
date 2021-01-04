@@ -42,6 +42,16 @@ complex complex::conj() const
     return std::conj(*this);
 }
 
+complex math_rz::complex::inner_product(const complex& z) const
+{
+    return (*this) * z.conj();
+}
+
+real_field math_rz::complex::norm() const
+{
+    return abs();
+}
+
 complex& math_rz::complex::operator/=(const real_field& s)
 {
     real() /= s;
@@ -62,8 +72,8 @@ complex math_rz::complex::operator-() const
 
 complex& math_rz::complex::operator*=(int a)
 {
-    imag() *= a;
-    real() *= a;
+    this->_Val[0] *= a;
+    this->_Val[1] *= a;
     return  *this;
 }
 
@@ -82,6 +92,11 @@ complex math_rz::operator*(int a, const complex& s)
 {
     auto w = s;
     return w *= a;
+}
+
+complex math_rz::operator*(const complex& s,int a)
+{
+    return a * s;
 }
 
 
@@ -103,4 +118,9 @@ complex operator""_i(long double a)
 complex& complex::operator*=(const std::complex<real_field>& s)
 {
     return *this = (*this) * s;
+}
+
+complex& complex::operator/=(const std::complex<real_field>& s)
+{
+    return *this = (*this) / s;
 }

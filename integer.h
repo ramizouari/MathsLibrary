@@ -36,5 +36,5 @@ namespace math_rz {
         bool is_one() const;
         long long _v;
     };
-    std::ostream& operator<<(std::ostream& H, const integer& a);
+    //std::ostream& operator<<(std::ostream& H, const integer& a);
 }

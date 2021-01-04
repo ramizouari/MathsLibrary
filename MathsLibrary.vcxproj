@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="absalg\cyclic.h" />
     <ClInclude Include="analysis\derivator\default_derivator.h" />
     <ClInclude Include="analysis\derivator\derivator.h" />
     <ClInclude Include="analysis\derivator\two_way_derivator.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="linalg\matrix.h" />
     <ClInclude Include="poly\polynomial.h" />
     <ClInclude Include="absalg\rational_extension.h" />
+    <ClInclude Include="poly\roots.h" />
     <ClInclude Include="real_field.h" />
     <ClInclude Include="absalg\ring.h" />
     <ClInclude Include="maths_concepts.h" />

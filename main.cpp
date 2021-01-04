@@ -26,6 +26,8 @@
 #include "analysis/integrator/spherical_integrator.h"
 #include "analysis/integrator/rectangular_integrator.h"
 #include "analysis/special/special.h"
+#include "poly/roots.h"
+#include "absalg/cyclic.h"
 
 using namespace std;
 using namespace math_rz;
@@ -33,7 +35,8 @@ using namespace math_rz;
 using K = math_rz::real_field;
 using E = math_rz::Lp_finite_dimensional_space<K,2,2>;
 using F = math_rz::real_field;
-using M = math_rz::square_matrix<K, 4>;
+using M = math_rz::square_matrix<math_rz::complex, 3>;
+using R_X = math_rz::polynomial<K>;
 class mat_exp :public math_rz::function<E,F>
 {
 public:
@@ -51,7 +54,15 @@ public:
 
 int main()
 {
-	M H({ {0.4,0.1,0.3,0.2},{0.3,0.4,0.2,0.1},{0.2,0.3,0.1,0.4},{0.1,0.2,0.4,0.3} });
-	cout << math_rz::pow(H, 30).caracteristic_polynomial();
+	M H;
+	cyclic<29, true> S(2);
+	using Z13Z = cyclic_field<13>;
+	using Z13Z_X = polynomial<Z13Z>;
+	auto p = math_rz::pow(H, 1).caracteristic_polynomial();
+	cout << p<<endl;
+	auto fact = math_rz::factorise(math_rz::pow(polynomial<math_rz::complex>({1,1}),10), { 0,1 }, 1e-12);
+	for (auto& f : fact)
+		cout << f << '\t';
+	cout << endl << math_rz::pow(Z13Z_X({1,1,1}),13);
 	return false;
 }

@@ -22,6 +22,8 @@ namespace math_rz
         }
 
         real_field abs() const;
+        real_field norm() const;
+        real_field inner_product(const real_field& a);
         bool is_zero() const;
         bool is_one() const;
 
