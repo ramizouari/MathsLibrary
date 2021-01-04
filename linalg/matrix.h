@@ -26,6 +26,10 @@ namespace math_rz {
 				if (v.size() != m)
 					throw std::domain_error("Dimensions are not compatible");
 		}
+		constexpr static int dimension()
+		{
+			return n*m;
+		}
 
 		matrix<F, m, n> transpose() const
 		{
@@ -92,6 +96,8 @@ namespace math_rz {
 					u.at(i).at(j) /= k;
 			return *this;
 		}
+
+
 		matrix row_echelon_form(bool down = false) const
 		{
 			matrix P = (*this);

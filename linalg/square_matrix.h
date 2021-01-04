@@ -16,6 +16,11 @@ namespace math_rz
 		square_matrix(matrix<F, n, n>&& M) :matrix<F, n, n>(std::move(M))
 		{	}
 		square_matrix(const matrix<F, n, n>& M) :matrix<F, n, n>(M) {}
+		square_matrix(const F &k) :square_matrix()
+		{
+			for (int i = 0; i < n; i++)
+				this->u[i][i] = k;
+		}
 		square_matrix(int k) :square_matrix()
 		{
 			for (int i = 0; i < n; i++)
@@ -191,5 +196,17 @@ namespace math_rz
 		const square_matrix<F, n>& M, const square_matrix<F, n>& N)
 	{
 		return M * N.inv();
+	}
+
+
+	template <typename F, int n>
+	square_matrix <F, n> operator*(
+		const F& k, const square_matrix<F, n>& N)
+	{
+		square_matrix<F, n> P;
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
+				P.at(i).at(j) = k* N.at(i).at(j);
+		return P;
 	}
 }

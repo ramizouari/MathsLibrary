@@ -86,6 +86,27 @@ namespace math_rz
 		return v;
 	}
 
+
+	template <typename F, int p, int n>
+	Lp_finite_dimensional_space<F, p, n> operator*(const F& r,
+		const Lp_finite_dimensional_space<F, p, n>& u)
+	{
+		Lp_finite_dimensional_space<F, p, n> v(u);
+		for (int i = 0; i < n; i++)
+			v.at(i) *= r;
+		return v;
+	}
+
+	template <typename F, int p, int n>
+	Lp_finite_dimensional_space<F, p, n> operator*(const long double& r,
+		const Lp_finite_dimensional_space<F, p, n>& u)
+	{
+		Lp_finite_dimensional_space<F, p, n> v(u);
+		for (int i = 0; i < n; i++)
+			v.at(i) *= r;
+		return v;
+	}
+
 	template<typename F, int n >
 	using L1_finite_dimensional_space = Lp_finite_dimensional_space<F, 1, n>;
 

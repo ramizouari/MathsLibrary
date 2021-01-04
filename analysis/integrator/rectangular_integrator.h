@@ -17,19 +17,16 @@ namespace math_rz
 		}
 		F integrate(const function<real_field, F>& f) const override
 		{
-			F R;
-			real_field u = std::min(a, b), v = std::max(a, b);
-			real_field eps = (v - u) / cuts;
-			for (real_field k = u; k <= v; k += eps)
-				R += eps * f(k);
-			if (a < b)
-				return R;
-			else return -R;
+			real_field eps = (b - a) / cuts;
+			real_field u = a, result;
+			for (int i = 0; i < cuts; i++, u += eps)
+				result += eps *f(u);
+			return result;
 		}
 	};
 
 
-	template<int n,int m >
+	/*template<int n,int m >
 	class default_integrator :public  integrator<coordinate_space<real_field, n>,coordinate_space<real_field,m> >
 	{
 		using E1 = coordinate_space<real_field, n>;
@@ -52,5 +49,5 @@ namespace math_rz
 				return R;
 			else return -R;
 		}
-	};
+	};*/
 }

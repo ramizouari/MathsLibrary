@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "absalg/field.h"
 #include <algorithm>
 #include <iostream>

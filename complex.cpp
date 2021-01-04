@@ -42,6 +42,49 @@ complex complex::conj() const
     return std::conj(*this);
 }
 
+complex& math_rz::complex::operator/=(const real_field& s)
+{
+    real() /= s;
+    imag() /= s;
+    return *this;
+}
+
+/*complex math_rz::operator/(const complex &s,const real_field& a)
+{
+    complex R(s);
+    return R /= a;
+}*/
+
+complex math_rz::complex::operator-() const
+{
+    return complex(-real(), -imag());
+}
+
+complex& math_rz::complex::operator*=(int a)
+{
+    imag() *= a;
+    real() *= a;
+    return  *this;
+}
+
+
+complex math_rz::operator""_c(long double a)
+{
+    return complex(a,0);
+}
+
+complex math_rz::operator""_c(unsigned long long a)
+{
+    return complex(a,0);
+}
+
+complex math_rz::operator*(int a, const complex& s)
+{
+    auto w = s;
+    return w *= a;
+}
+
+
 complex operator""_c(long double a)
 {
     return complex(a);
@@ -55,4 +98,9 @@ complex operator""_c(unsigned long long a)
 complex operator""_i(long double a)
 {
     return complex(0,a);
+}
+
+complex& complex::operator*=(const std::complex<real_field>& s)
+{
+    return *this = (*this) * s;
 }

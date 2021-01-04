@@ -1,9 +1,6 @@
 #pragma once
 #include "derivator.h"
 
-
-
-
 namespace math_rz
 {
 

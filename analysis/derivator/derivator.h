@@ -55,6 +55,7 @@ namespace math_rz {
 		{
 			return jacobian(f).det();
 		}
+		
 	protected:
 		E1 x0;
 	};

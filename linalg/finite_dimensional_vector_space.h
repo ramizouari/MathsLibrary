@@ -25,6 +25,10 @@ namespace math_rz
 		}
 
 		finite_dimensional_vector_space() :u(n) {}
+		constexpr static int dimension()
+		{
+			return n;
+		}
 		static finite_dimensional_vector_space _0()
 		{
 			return finite_dimensional_vector_space();

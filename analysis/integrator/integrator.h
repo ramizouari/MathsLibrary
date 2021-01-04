@@ -14,28 +14,23 @@ namespace math_rz {
 
 
 	template<typename E,typename F>
-	class trapezoid_integrator :public  integrator<E, F>
+	class trapezoidal_integrator :public  integrator<E, F>
 	{
 		integer cuts;
 		real_field a, b;
 	public:
-		trapezoid_integrator(real_field _a, real_field _b, integer _cuts = 100) :a(_a), b(_b), cuts(_cuts)
+		trapezoidal_integrator(real_field _a, real_field _b, integer _cuts = 100) :a(_a), b(_b), cuts(_cuts)
 		{
 
 		}
 		F integrate(const function<E, F>& f) const override
 		{
 			F R;
-			real_field u = std::min(a, b), v = std::max(a, b);
-			real_field eps = (v - u) / cuts;
-			for (real_field k = u; k < v; k += eps)
-			{
-				real_field s = eps / 2;
-				R += s * (f(k) + f(k + eps));
-			}
-			if (a < b)
-				return R;
-			else return -R;
+			real_field eps = (b - a) / cuts;
+			real_field u = a,result;
+			for (int i = 0; i < cuts; i++, u += eps)
+				result += (eps*real_field(.5)) * (f(u)+f(u+eps));
+			return result;
 		}
 	};
 }
