@@ -26,13 +26,13 @@ namespace math_rz
 		complex inner_product(const complex&z)const;
 		real_field norm() const;
 		inline operator std::complex<real_field>() { return *this; }
+		explicit inline operator real_field() { return real(); }
 		complex& operator/=(const real_field& s);
 		complex operator-() const;
 		complex& operator*=(int a);
 		complex& operator*=(const std::complex<real_field> &s);
 		complex& operator/=(const std::complex<real_field>& s);
 		//inline operator real_field() { return real(); }
-		complex& operator/=(int a);
 	};
 
 	complex operator""_c(long double a);

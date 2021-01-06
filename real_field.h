@@ -15,6 +15,7 @@ namespace math_rz
         real_field(float m);
         real_field(int m = 0);
         real_field(unsigned long long m);
+        real_field(long long m);
         inline static const real_field _0() { return real_field(); };
         inline static const real_field _1() { return real_field(1); };
         real_field mod(const integral_ring& a) const {
@@ -23,6 +24,7 @@ namespace math_rz
 
         real_field abs() const;
         real_field norm() const;
+        real_field conj() const;
         real_field inner_product(const real_field& a);
         bool is_zero() const;
         bool is_one() const;

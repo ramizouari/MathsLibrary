@@ -60,7 +60,7 @@ namespace math_rz
 		}
 		cyclic inv()const
 		{
-			return math_rz::bezout(w,n).first;
+			return math_rz::bezout<integer>(w,n).first;
 		}
 
 		cyclic operator/=(const cyclic& a)
@@ -99,5 +99,24 @@ namespace math_rz
 	using cyclic_ring= cyclic<n, false>;
 	template<long long n>
 	using cyclic_field = cyclic<n, true>;
+	namespace finite_fields
+	{
+		using F2 = cyclic_field<2>;
+		using F5 = cyclic_field<5>;
+		using F7 = cyclic_field<7>;
+		using F11 = cyclic_field<11>;
+		using F13 = cyclic_field<13>;
+		using F17 = cyclic_field<17>;
+	}
+	namespace finite_rings
+	{
+		using namespace finite_fields;
+		using Z4 = cyclic_ring<4>;
+		using Z8 = cyclic_ring<8>;
+		using Z6 = cyclic_ring<6>;
+		using Z9 = cyclic_ring<9>;
+		using Z15 = cyclic_ring<15>;
+	}
+	
 }
 

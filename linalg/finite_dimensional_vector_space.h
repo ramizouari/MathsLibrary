@@ -8,10 +8,13 @@
 
 namespace math_rz
 {
+	template<typename F,int n,int m>
+	class matrix;
 	template<typename F, int n>
 	class finite_dimensional_vector_space :public vector_space<F>
 	{
 	public:
+
 		finite_dimensional_vector_space(const std::vector<F>& a) :u(n)
 		{
 			if (n != a.size())
@@ -66,12 +69,12 @@ namespace math_rz
 				u.at(i) *= k;
 			return *this;
 		}
-		finite_dimensional_vector_space& operator/=(int k)
+	/*	finite_dimensional_vector_space& operator/=(int k)
 		{
 			for (int i = 0; i < n; i++)
 				u.at(i) /= k;
 			return *this;
-		}
+		}*/
 
 		finite_dimensional_vector_space operator-() const
 		{
@@ -86,6 +89,26 @@ namespace math_rz
 			for (auto& s : w.u)
 				s = s.conj();
 			return w;
+		}
+		matrix<F, 1, n> transpose() const
+		{
+			return matrix<F, 1, n>({ this->u });
+		}
+
+		matrix<F, n, 1> as_matrix() const
+		{
+			return transpose().transpose();
+		}
+		template<int m>
+		matrix<F, n, m> outer_product(const finite_dimensional_vector_space<F, m>&s) const
+		{
+			return as_matrix()*s.transpose();
+		}
+
+		template<int m>
+		finite_dimensional_vector_space<F, n*m> kroenecker_product(const finite_dimensional_vector_space<F, m>& s) const
+		{
+			return (as_matrix() * s.transpose()).as_vector();
 		}
 
 		const F& operator[](int i) const

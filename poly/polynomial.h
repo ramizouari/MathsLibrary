@@ -41,7 +41,7 @@ namespace math_rz {
 		static std::pair<polynomial, polynomial> euclidean_division(const polynomial& p, const polynomial& q)
 		{
 			if (p.degree() < q.degree())
-				return std::make_pair(F::_0(), p);
+				return std::make_pair(0, p);
 			polynomial r(p);
 			int m(r.degree()), n(q.degree());
 			polynomial s;
@@ -50,7 +50,7 @@ namespace math_rz {
 			{
 				F k(r.a.at(m) / q.a.at(n));
 				s.a.at(m - n) = k;
-				if (k == F::_0())
+				if (k.is_zero())
 				{
 					r.a.pop_back();
 					continue;
@@ -60,7 +60,6 @@ namespace math_rz {
 				r.a.pop_back();
 			}
 			r.reduce();
-			polynomial<F> eps = p - (q * s + r);
 
 			return std::make_pair(s, r);
 		}
@@ -105,15 +104,18 @@ namespace math_rz {
 		}
 		polynomial& operator+=(const F& p)
 		{
-			return this->free_algebra<F>::operator+=(p);
+			this->free_algebra<F>::operator+=(p);
+			return *this;
 		}
 		polynomial& operator-=(const F& p)
 		{
-			return this->free_algebra<F>::operator-=(p);
+			this->free_algebra<F>::operator-=(p);
+			return *this;
 		}
 		polynomial& operator*=(const F& p)
 		{
-			return this->free_algebra<F>::operator*=(p);
+			this->free_algebra<F>::operator*=(p);
+			return *this;
 		}
 		polynomial& operator/=(const F& p)
 		{
@@ -134,7 +136,7 @@ namespace math_rz {
 			int n = this->degree();
 			p.a.resize(n);
 			for (int i = 1; i <= n; i++)
-				p.a[i - 1] = this->a[i]*i;
+				p.a[i - 1] = this->a[i]*F(i);
 			return p;
 		}
 	};

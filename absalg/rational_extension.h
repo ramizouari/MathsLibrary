@@ -9,8 +9,8 @@ namespace math_rz
 	class rational_extension : public field
 	{
 	public:
-		rational_extension(R _p) :rational_extension(_p, R::_1()) {}
-		rational_extension(R _p, R _q) :p(_p), q(_q) { reduce(); }
+		rational_extension(const R& _p) :rational_extension(_p, 1) {}
+		rational_extension(const R &_p,const  R& _q) :p(_p), q(_q) { reduce(); }
 		rational_extension(int _p = 0, int _q = 1) :p(_p), q(_q) {}
 
 		bool operator!=(const rational_extension& s) const
@@ -138,9 +138,9 @@ namespace math_rz
 	private:
 		void reduce()
 		{
-			if (p == R::_0())
+			if (p.is_zero())
 			{
-				q = R::_1();
+				q = 1;
 				return;
 			}
 			R d(R::gcd(p, q));
@@ -183,4 +183,6 @@ namespace math_rz
 	{
 		return H << "[" << a.nominator() << "|" << a.denominator() << "]";
 	}
+
+	using rational = rational_extension<integer>;
 }

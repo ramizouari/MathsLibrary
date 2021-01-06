@@ -25,6 +25,10 @@ real_field::real_field(unsigned long long m):_v(m)
 {
 }
 
+math_rz::real_field::real_field(long long m):_v(m)
+{
+}
+
 real_field real_field::abs() const
 {
 	return std::abs(_v);
@@ -33,6 +37,11 @@ real_field real_field::abs() const
 real_field math_rz::real_field::norm() const
 {
 	return abs();
+}
+
+real_field math_rz::real_field::conj() const
+{
+	return _v;
 }
 
 real_field math_rz::real_field::inner_product(const real_field& a)

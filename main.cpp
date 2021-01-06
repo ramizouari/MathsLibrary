@@ -28,21 +28,23 @@
 #include "analysis/special/special.h"
 #include "poly/roots.h"
 #include "absalg/cyclic.h"
-
+#include "absalg/ring_extension.h"
+#include "linalg/eigen.h"
+#include "analysis/integrator/multiple_integrator.h"
 using namespace std;
 using namespace math_rz;
 
 using K = math_rz::real_field;
-using E = math_rz::Lp_finite_dimensional_space<K,2,2>;
+using E = math_rz::Lp_finite_dimensional_space<K,2,10>;
 using F = math_rz::real_field;
-using M = math_rz::square_matrix<math_rz::complex, 3>;
+using M = math_rz::square_matrix<real_field, 10>;
 using R_X = math_rz::polynomial<K>;
 class mat_exp :public math_rz::function<E,F>
 {
 public:
 	F operator()(const E &s) const override
 	{
-		return std::pow(s[0],2)*std::pow(s[1],3);
+		return std::exp(-std::pow(s.norm(),2)/2);
 	}
 
 	bool is_zero() const override
@@ -51,18 +53,12 @@ public:
 	}
 };
 
-
 int main()
 {
-	M H;
-	cyclic<29, true> S(2);
-	using Z13Z = cyclic_field<13>;
-	using Z13Z_X = polynomial<Z13Z>;
-	auto p = math_rz::pow(H, 1).caracteristic_polynomial();
-	cout << p<<endl;
-	auto fact = math_rz::factorise(math_rz::pow(polynomial<math_rz::complex>({1,1}),10), { 0,1 }, 1e-12);
-	for (auto& f : fact)
-		cout << f << '\t';
-	cout << endl << math_rz::pow(Z13Z_X({1,1,1}),13);
+	L2_finite_dimensional_space<K, 3>A({ 1,2,3 });
+	L2_finite_dimensional_space<K, 3>B({ 4,5,15 });
+	square_matrix<K, 2> M({ {0,0},{0,0} });
+	std::cout << M.rank();
+	mat_exp S;
 	return false;
 }

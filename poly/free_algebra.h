@@ -13,6 +13,7 @@ namespace math_rz {
 		free_algebra() {}
 		free_algebra(R m) :a(1, m) {}
 		free_algebra(std::vector<R>&& c) :a(std::move(c)) {}
+		free_algebra(const std::vector<R>& c) :a(c) {}
 		free_algebra(const free_algebra<R>& p) :a(p.a) {}
 		free_algebra(int c) :a(1, R(c)) {}
 

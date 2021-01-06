@@ -28,7 +28,14 @@ namespace math_rz
 
 		}
 
-
+		square_matrix transpose() const
+		{
+			square_matrix T;
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < n; j++)
+					T[j][i] = this->at(i).at(j);
+			return T;
+		}
 
 		square_matrix& operator+=(const square_matrix& o)
 		{
@@ -155,7 +162,7 @@ namespace math_rz
 		}
 	};
 
-	template <typename F, int n, int m>
+	template <typename F, int n>
 	square_matrix<F, n> operator+(
 		const square_matrix<F, n>& a, const square_matrix<F, n>& b)
 	{
@@ -163,20 +170,12 @@ namespace math_rz
 		return c += b;
 	}
 
-	template <typename F, int n, int m>
+	template <typename F, int n>
 	square_matrix<F, n> operator-(
 		const square_matrix<F, n>& a, const square_matrix<F, n>& b)
 	{
 		auto c(a);
 		return c -= b;
-	}
-
-	template <typename F, int n, int m>
-	square_matrix<F, n> operator*(
-		const F& k, const square_matrix<F, n>& a)
-	{
-		auto c(a);
-		return c *= k;
 	}
 
 	template <typename F, int n>

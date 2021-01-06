@@ -20,19 +20,6 @@ namespace math_rz
 		//virtual const ring& I1() const = 0;
 		//virtual const ring& I0() const = 0;
 		virtual bool is_one() const = 0;
-		ring& operator*=(Identity1)
-		{
-			return *this;
-		}
-		ring& operator/=(Identity1)
-		{
-			return *this;
-		}
-		ring& operator*=(Identity0)
-		{
-			//*this = I0();
-			return *this;
-		}
 		//virtual ring& operator+=(int n) = 0;
 		//virtual ring& operator-=(int n) = 0;
 		//virtual ring& operator*=(int n) = 0;
@@ -40,22 +27,19 @@ namespace math_rz
 		ring() {};
 	};
 
-	namespace algebra
+
+	template<typename A>
+	A pow(const A& u, long long n)
 	{
-		template<typename R>
-		R pow(const R& u, int n)
-		{
-			if (n == 0)
-				return R::_1();
-			R v = pow<R>(u, n / 2);
-			R w(v * v);
-			if ((n % 2) == 0)
-				return w;
-			else
-				return R(w * u);
-		}
-
-
+		if (n == 0)
+			return 1;
+		else if (n == 1)
+			return u;
+		//else if (n < 0)
+		//	return A(1) / pow(u, -n);
+		A r = pow(u, n / 2);
+		r *= r;
+		return r * pow(u, n % 2);
 	}
 
 

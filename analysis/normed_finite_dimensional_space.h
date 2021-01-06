@@ -64,8 +64,10 @@ namespace math_rz
 		}
 	};
 
+	template<int k>
+	concept multi_dimensional = k > 1;
 
-	template <typename F, int n, int m>
+	template <typename F, int n, int m> requires multi_dimensional<n>
 	Linf_finite_dimensional_space<F, n> operator*(const matrix<F, n, m>& A, const Linf_finite_dimensional_space<F, m>& u)
 	{
 		Linf_finite_dimensional_space<F, n> v;
@@ -75,7 +77,7 @@ namespace math_rz
 		return v;
 	}
 
-	template <typename F, int p, int n, int m>
+	template <typename F, int p, int n, int m>requires multi_dimensional<n>
 	Lp_finite_dimensional_space<F, p, n> operator*(const matrix<F, n, m>& A,
 		const Lp_finite_dimensional_space<F, p, m>& u)
 	{

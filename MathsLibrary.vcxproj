@@ -151,6 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="absalg\cyclic.h" />
+    <ClInclude Include="absalg\ring_extension.h" />
     <ClInclude Include="analysis\derivator\default_derivator.h" />
     <ClInclude Include="analysis\derivator\derivator.h" />
     <ClInclude Include="analysis\derivator\two_way_derivator.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="analysis\integrator\integral_function.h" />
     <ClInclude Include="analysis\integrator\integrator.h" />
     <ClInclude Include="analysis\integrator\line_integrator.h" />
+    <ClInclude Include="analysis\integrator\multiple_integrator.h" />
     <ClInclude Include="analysis\integrator\rectangular_integrator.h" />
     <ClInclude Include="analysis\integrator\simpson_integrator.h" />
     <ClInclude Include="analysis\integrator\spherical_integrator.h" />
@@ -176,12 +178,14 @@
     <ClInclude Include="analysis\special\special.h" />
     <ClInclude Include="complex.h" />
     <ClInclude Include="absalg\field.h" />
+    <ClInclude Include="linalg\eigen.h" />
     <ClInclude Include="linalg\finite_dimensional_module.h" />
     <ClInclude Include="linalg\finite_dimensional_vector_space.h" />
     <ClInclude Include="absalg\group.h" />
     <ClInclude Include="guassian_integer.h" />
     <ClInclude Include="integer.h" />
     <ClInclude Include="absalg\integral_ring.h" />
+    <ClInclude Include="linalg\matrix_factory.h" />
     <ClInclude Include="poly\free_algebra.h" />
     <ClInclude Include="linalg\abstract_module.h" />
     <ClInclude Include="linalg\matrix.h" />

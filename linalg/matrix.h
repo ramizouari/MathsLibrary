@@ -40,6 +40,29 @@ namespace math_rz {
 			return T;
 		}
 
+		matrix<F, m, n> conj_transpose() const
+		{
+			matrix<F, m, n> T;
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < m; j++)
+					T[j][i] = this->at(i).at(j).conj();
+			return T;
+		}
+
+		matrix<F, m, n> conj() const
+		{
+			matrix<F, m, n> T;
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < m; j++)
+					T[i][j] = this->at(i).at(j).conj();
+			return T;
+		}
+
+		real_field norm() const
+		{
+			return largest_sing(*this);
+		}
+
 		bool operator!=(const matrix& M) const
 		{
 			for (int i = 0; i < n; i++)
@@ -132,13 +155,10 @@ namespace math_rz {
 		int nullity() const
 		{
 			int r = 0;
-			for (int i = n - 1; i >= 0; i--)
-				if (any_of(u.at(i).rbegin(), u.at(i).rend(), [](const auto& c)
-					{
-						return c != 0;
-					}))
-					return r;
-				else r++;
+			auto M = row_echelon_form();
+			int off = 0;
+			for (int i = 0; i < std::min(n, m); i++)
+				for (;(i+off)<m &&M[i][i + off].is_zero(); off++, r++);
 			return r;
 		}
 		bool is_zero() const
@@ -150,6 +170,15 @@ namespace math_rz {
 					}))
 					return false;
 					return true;
+		}
+
+		coordinate_space<F, n* m> as_vector() const
+		{
+			coordinate_space<F, n* m> p;
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < m; j++)
+					p[i * m + j] = this->u[i][j];
+			return p;
 		}
 	protected:
 		using finite_dimensional_vector_space<std::vector<F>, n > ::u;
@@ -193,6 +222,26 @@ namespace math_rz {
 			for (int j = 0; j < m; j++)
 				for (int k = 0; k < p; k++)
 					P.at(i).at(j) += M.at(i).at(k) * N.at(k).at(j);
+		return P;
+	}
+
+	template <typename F, int n>
+	F operator*(
+		const matrix<F, 1,n>& M, const matrix<F, n, 1>& N)
+	{
+		F P;
+		for (int i = 0; i < n; i++)
+			P += M.at(0).at(i) * N.at(i).at(0);
+		return P;
+	}
+
+	template <typename F, int n>
+	F operator*(
+		const matrix<F, 1, n>& M, const coordinate_space<F,n>& N)
+	{
+		F P;
+		for (int i = 0; i < n; i++)
+			P += M.at(0).at(i) * N.at(i);
 		return P;
 	}
 

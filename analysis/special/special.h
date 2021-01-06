@@ -3,12 +3,91 @@
 namespace math_rz
 {
 	template<typename A>
-	A exp(const A& w,int n=8)
+	A exp(const A& w,const integer& n)
 	{
 		A r,u(1);
 		for (int i = 0; i <= n; i++, u *= w / A(i))
 			r += u;
 		return r;
+	}
+
+	template<typename A>
+	A exp(const A& w, long long n)
+	{
+		return exp(w, integer(n));
+	}
+
+	template<typename A>
+	A exp(const A& w, int n)
+	{
+		return exp(w, integer(n));
+	}
+
+	template<typename A>
+	A exp_m1(const A& w, const integer& n)
+	{
+		A r, u(1);
+		int i = 0;
+		for (int i = 0; i <= n; i++, u *= w / A(i))if (i == 0) continue;
+			else r += u;
+		return r;
+	}
+
+	template<typename A>
+	A exp_m1(const A& w,long long n)
+	{
+		return exp_m1(w, integer(n));
+	}
+
+	template<typename A>
+	A exp_m1(const A& w, int n)
+	{
+		return exp_m1(w, integer(n));
+	}
+
+	template<typename A>
+	A exp(const A& w,const real_field &err)
+	{
+		A r, u(1);
+		int i = 0;
+		for (i = 0; u.norm()-r.norm()*err>0; i++, u *= w / A(i))
+			r += u;
+		return r;
+	}
+
+	template<typename A>
+	A exp(const A& w, long double err = 1e-5)
+	{
+		return exp(w, real_field(err));
+	}
+
+	template<typename A>
+	A exp(const A& w,  double err )
+	{
+		return exp(w, real_field(err));
+	}
+
+
+	template<typename A>
+	A exp_m1(const A& w, const real_field& err)
+	{
+		A r, u(1);
+		int i = 0;
+		for (i = 0; u.norm() - r.norm() * err > 0; i++, u *= w / A(i))if (i == 0) continue;
+			else r += u;
+		return r;
+	}
+
+	template<typename A>
+	A exp_m1(const A& w, long double err = 1e-5)
+	{
+		return exp_m1(w, real_field(err));
+	}
+
+	template<typename A>
+	A exp_m1(const A& w, double err = 1e-5)
+	{
+		return exp_m1(w, real_field(err));
 	}
 
 	template<typename A>
@@ -39,22 +118,9 @@ namespace math_rz
 	}
 
 	template<typename A,typename B>
-	auto pow(const A& u, const B& v,int n=8)
+	auto pow(const A& u, const B& v,int n)
 	{
 		return math_rz::exp(math_rz::log(u, n) * v, n);
 	}
 
-	template<typename A>
-	A pow(const A& u, int n)
-	{
-		if (n == 0)
-			return 1;
-		else if (n == 1)
-			return u;
-		//else if (n < 0)
-		//	return A(1) / pow(u, -n);
-		A r = pow(u, n / 2);
-		r *= r;
-		return r * pow(u, n % 2);
-	}
 }
