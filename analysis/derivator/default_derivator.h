@@ -15,15 +15,15 @@ namespace math_rz
 	public:
 		default_derivator(E1 p0, F _eps) :derivator<F, m, n, E1, E2>(p0), eps(_eps) {}
 
-		matrix<F, n, m> jacobian(const function<E1, E2>& f) const override
+		matrix<F, n, m> jacobian(const function<E1, E2>& f,const E1&x0) const override
 		{
-			E1 s = this->x0;
+			E1 s = x0;
 			matrix<F, n, m> M;
 			for (int i = 0; i < m; i++)
 			{
 				s[i] += eps;
 				F k = F(1) / eps;
-				E2 h = k * (f(s) - f(this->x0));
+				E2 h = k * (f(s) - f(x0));
 				s[i] -= eps;
 				for (int j = 0; j < n; j++)
 					M[j][i] = h[j];
@@ -49,15 +49,15 @@ namespace math_rz
 	public:
 		default_derivator(E1 p0, F _eps) :derivator<F, n, n, E1, E2>(p0), eps(_eps) {}
 
-		square_matrix<F, n> jacobian(const function<E1, E2>& f) const override
+		square_matrix<F, n> jacobian(const function<E1, E2>& f, const E1& x0) const override
 		{
-			E1 s = this->x0;
+			E1 s = x0;
 			square_matrix<F, n> M;
 			for (int i = 0; i < n; i++)
 			{
 				s[i] += eps;
 				F k = F(1) / eps;
-				E2 h = k * (f(s) - f(this->x0));
+				E2 h = k * (f(s) - f(x0));
 				s[i] -= eps;
 				for (int j = 0; j < n; j++)
 					M[j][i] = h[j];
@@ -81,13 +81,13 @@ namespace math_rz
 	public:
 		default_derivator(F p0, F _eps) :derivator<F, 1,n, F, E2>(p0), eps(_eps) {}
 
-		matrix<F, n, 1> jacobian(const function<F, E2>& f) const override
+		matrix<F, n, 1> jacobian(const function<F, E2>& f, const F& x0) const override
 		{
-			F s = this->x0;
+			F s = x0;
 			matrix < F, n,1 > M;
 			s += eps;
 			F k = F(1) / eps;
-			E2 h = k * (f(s) - f(this->x0));
+			E2 h = k * (f(s) - f(x0));
 			for (int j = 0; j < n; j++)
 				M[j][0] = h[j];
 			return M;
@@ -108,15 +108,15 @@ namespace math_rz
 	public:
 		default_derivator(E1 p0, F _eps) :derivator<F, m, 1, E1, F>(p0), eps(_eps) {}
 
-		matrix<F, 1, m> jacobian(const function<E1, F>& f) const override
+		matrix<F, 1, m> jacobian(const function<E1, F>& f, const E1& x0) const override
 		{
-			E1 s = this->x0;
+			E1 s = x0;
 			matrix<F, 1, m> M;
 			for (int i = 0; i < m; i++)
 			{
 				s[i] += eps;
 				F k = F(1) / eps;
-				F h = k * (f(s) - f(this->x0));
+				F h = k * (f(s) - f(x0));
 				s[i] -= eps;
 				M[0][i] = h;
 
@@ -139,13 +139,13 @@ namespace math_rz
 	public:
 		default_derivator(F p0, F _eps) :derivator<F, 1, 1, F, F>(p0), eps(_eps) {}
 
-		square_matrix<F, 1> jacobian(const function<F, F>& f) const override
+		square_matrix<F, 1> jacobian(const function<F, F>& f, const F& x0) const override
 		{
-			F s = this->x0;
+			F s = x0;
 			matrix < F, 1, 1 > M;
 			s += eps;
 			F k = F(1) / eps;
-			F h = k * (f(s) - f(this->x0));
+			F h = k * (f(s) - f(x0));
 			M[0][0] = h;
 			return M;
 		}

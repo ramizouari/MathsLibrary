@@ -102,6 +102,7 @@ namespace math_rz
 	namespace finite_fields
 	{
 		using F2 = cyclic_field<2>;
+		using F3 = cyclic_field<3>;
 		using F5 = cyclic_field<5>;
 		using F7 = cyclic_field<7>;
 		using F11 = cyclic_field<11>;

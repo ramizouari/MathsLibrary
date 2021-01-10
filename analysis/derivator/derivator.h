@@ -38,7 +38,7 @@ namespace math_rz {
 	{
 	public:
 		derivator(E1 p0) :x0(p0) {}
-		virtual matrix<F, n, m> jacobian(const function<E1, E2>& f) const = 0;
+		virtual matrix<F, n, m> jacobian(const function<E1, E2>& f,const E1& x0) const = 0;
 	protected:
 		E1 x0;
 	};
@@ -50,10 +50,10 @@ namespace math_rz {
 	public:
 		derivator(E1 p0) :x0(p0) {}
 
-		virtual square_matrix<F, n> jacobian(const function<E1, E2>& f) const = 0;
-		virtual F jacobian_det(const function<E1, E2>& f) const
+		virtual square_matrix<F, n> jacobian(const function<E1, E2>& f,const E1& x0 ) const = 0;
+		virtual F jacobian_det(const function<E1, E2>& f, const E1 &x0) const
 		{
-			return jacobian(f).det();
+			return jacobian(f,x0).det();
 		}
 		
 	protected:
@@ -67,14 +67,10 @@ namespace math_rz {
 	public:
 		derivator(F p0) :x0(p0) {}
 
-		virtual matrix<F,n,1> jacobian(const function<F, E2>& f) const = 0;
-		virtual E2 derivative(const function<F, E2>& f) const
+		virtual matrix<F,n,1> jacobian(const function<F, E2>& f,const F& x0) const = 0;
+		virtual E2 derivative(const function<F, E2>& f,const F& x0) const
 		{
-			E2 D;
-			auto J = jacobian(f);
-			for (int i = 0; i < n; i++)
-				D[i] = J[i][0];
-			return D;
+			return jacobian(f,x0).as_vector();
 		}
 	protected:
 		F x0;
@@ -87,11 +83,11 @@ namespace math_rz {
 	public:
 		derivator(E1 p0) :x0(p0) {}
 
-		virtual matrix<F, 1, m> jacobian(const function<E1, F>& f) const = 0;
-		virtual E1 gradient(const function<E1, F>& f) const
+		virtual matrix<F, 1, m> jacobian(const function<E1, F>& f,const E1& x0) const = 0;
+		virtual E1 gradient(const function<E1, F>& f,const E1& x0) const
 		{
 			E1 D;
-			auto J = jacobian(f).transpose();
+			auto J = jacobian(f,x0).transpose();
 			for (int i = 0; i < m; i++)
 				D[i] = J[i][0];
 			return D;
@@ -106,18 +102,18 @@ namespace math_rz {
 	public:
 		derivator(F p0) :x0(p0) {}
 
-		virtual square_matrix<F, 1> jacobian(const function<F, F>& f) const = 0;
-		virtual F jacobian_det(const function<F, F>& f) const
+		virtual square_matrix<F, 1> jacobian(const function<F, F>& f,const F&x0) const = 0;
+		virtual F jacobian_det(const function<F, F>& f,const F&x0) const
 		{
-			return jacobian(f)[0][0];
+			return jacobian(f,x0)[0][0];
 		}
-		virtual F gradient(const function<F, F>& f) const
+		virtual F gradient(const function<F, F>& f,const F&x0) const
 		{
-			return jacobian(f)[0][0];
+			return jacobian(f,x0)[0][0];
 		}
-		virtual F derivative(const function<F, F>& f) const
+		virtual F derivative(const function<F, F>& f,const F&x0) const
 		{
-			return jacobian(f)[0][0];
+			return jacobian(f,x0)[0][0];
 		}
 	protected:
 		F x0;

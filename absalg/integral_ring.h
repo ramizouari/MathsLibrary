@@ -18,7 +18,7 @@ namespace math_rz {
             return { P.second,P.first };
         }
         I r0=a, r1=b,t0=0,t1=1,s0=1,s1=0,w1,w2,w3,q;
-        while (r1 != 0)
+        while (!r1.is_zero())
         {
             w1 = r0;
             w2 = t0;
@@ -33,4 +33,6 @@ namespace math_rz {
         }
         return { s0,t0 };
     }
+
+   
 }

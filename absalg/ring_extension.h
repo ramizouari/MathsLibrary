@@ -13,6 +13,7 @@ namespace math_rz
 	{
 	public:
 		ring_extension(const std::vector<R>& a) :p(a) { reduce(); }
+		ring_extension(const polynomial<R>& a) :p(a) { reduce(); }
 		ring_extension(int s = 0) :p(s) { reduce(); }
 		const static inline polynomial<R> extension_polynomial 
 			= polynomial<R>(std::vector<R>{ k... });
@@ -36,13 +37,13 @@ namespace math_rz
 		}
 		ring_extension& operator/=(const ring_extension& w)
 		{
-			p *= w.p.inv();
-			return *this;
+			auto s = w.inv();
+			return *this *= s;
 		}
 
 		ring_extension inv() const
 		{
-			return math_rz::bezout<polynomial<ring_extension>>(p, extension_polynomial).first;
+			return math_rz::bezout<polynomial<R>>(p, extension_polynomial).first;
 		}
 		bool is_zero() const override
 		{
@@ -116,5 +117,17 @@ namespace math_rz
 
 	template<long long n>
 	using cubic_field = ring_extension<rational_extension<integer>,false, -n, 0, 0, 1>;
+	
+	namespace finite_fields
+	{
+		using F4 = ring_extension<F2,true,1, 1, 1>;
+		using F9 = ring_extension<F3,true, 1, 0, 1>;
+		using F25 = ring_extension<F5,true, 1, 1, 1>;
+	}
 
+	namespace finite_rings
+	{
+		template<typename F>
+		using idompotent_ring = ring_extension<F, false, 0, -1, 1>;
+	}
 }
