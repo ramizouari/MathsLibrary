@@ -1,26 +1,27 @@
 #pragma once
 #include "finite_dimensional_vector_space.h"
+#include "boost/multi_array.hpp"
 
 
 namespace math_rz {
 	template<typename F, int n, int m>
-	class matrix : public finite_dimensional_vector_space<std::vector<F>, n >
+	class matrix: virtual public group
 	{
 	public:
-		matrix()
+		matrix():u(n)
 		{
 			for (auto& v : u)
 				v.resize(m);
 		}
 		matrix(const std::vector<std::vector<F>>& M) :
-			finite_dimensional_vector_space<F, n>(M)
+			u(M)
 		{
 			for (const auto& v : u)
 				if (v.size() != m)
 					throw std::domain_error("Dimensions are not compatible");
 		}
 		matrix(std::vector<std::vector<F>>&& M) :
-			finite_dimensional_vector_space<std::vector<F>, n>(std::move(M))
+			u(std::move(M))
 		{
 			for (const auto& v : u)
 				if (v.size() != m)
@@ -104,6 +105,18 @@ namespace math_rz {
 			return p;
 		}
 
+		F trace() const
+		{
+			F tr;
+			for (int i = 0; i < std::min(n, m); i++)
+				tr += this->u[i][i];
+			return tr;
+		}
+		F tr() const
+		{
+			return trace();
+		}
+
 		matrix& operator*=(const F& k)
 		{
 			for (int i = 0; i < n; i++)
@@ -120,19 +133,37 @@ namespace math_rz {
 			return *this;
 		}
 
+		auto& operator[](int i)
+		{
+			return u[i];
+		}
+		const auto& operator[](int i) const
+		{
+			return u[i];
+		}
+
+		auto& at(int i)
+		{
+			return u.at(i);
+		}
+		const auto& at(int i) const
+		{
+			return u[i];
+		}
+
 
 		matrix row_echelon_form(bool down = false) const
 		{
 			matrix P = (*this);
 			for (int i = 0, p = 0; (i < n) && (p < m); i++, p++)
 			{
-				if (P.at(i).at(p).is_zero())
+				if (P[i][p].is_zero())
 				{
 					int j;
 					for (j = i + 1; j < n; j++)
-						if (P.at(j).at(p) != F::_0())
+						if (!P[j][p].is_zero())
 						{
-							std::swap(P.at(i), P.at(j));
+							std::swap(P[i], P[j]);
 							break;
 						}
 					if (j == n)
@@ -141,9 +172,9 @@ namespace math_rz {
 				}
 				for (int j = i + 1; j < n; j++)
 				{
-					F&& r = P.at(j).at(p) / P.at(i).at(p);
+					F&& r = P[j][p] / P[i][p];
 					for (int k = p; k < m; k++)
-						P.at(j).at(k) = P.at(j).at(k) - r * P.at(i).at(k);
+						P[j][k] = P[j][k] - r * P[i][k];
 				}
 			}
 			return P;
@@ -161,15 +192,13 @@ namespace math_rz {
 				for (;(i+off)<m &&M[i][i + off].is_zero(); off++, r++);
 			return r;
 		}
-		bool is_zero() const
+		bool is_zero() const override
 		{
-			for (const auto& v : u)
-				if (any_of(v.begin(), v.end(), [](auto& x)
-					{
-						return !x.is_zero();
-					}))
-					return false;
-					return true;
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < m; j++)
+					if (!u[i][j].is_zero())
+						return false;
+			return true;
 		}
 
 		coordinate_space<F, n* m> as_vector() const
@@ -180,8 +209,19 @@ namespace math_rz {
 					p[i * m + j] = this->u[i][j];
 			return p;
 		}
+
+		std::vector<std::vector<F>>& get_vect_vect()
+		{
+			return u;
+		}
+
+		const std::vector<std::vector<F>>& get_vect_vect() const
+		{
+			return u;
+		}
 	protected:
-		using finite_dimensional_vector_space<std::vector<F>, n > ::u;
+		//boost::multi_array<F,2> u;
+		std::vector<std::vector<F>> u;
 	};
 
 	namespace matrix_constraint {
@@ -217,10 +257,14 @@ namespace math_rz {
 	matrix<F, n, m> operator*(
 		const matrix<F, n, p>& M, const matrix<F, p, m>& N)
 	{
+		/*
+		* This nested for loop will calculate the matrix product
+		* The order of the last two for is intentionally inverted to reduce cache misses
+		*/
 		matrix<F, n, m> P;
 		for (int i = 0; i < n; i++)
-			for (int j = 0; j < m; j++)
-				for (int k = 0; k < p; k++)
+			for (int k = 0; k < p; k++)
+				for (int j = 0; j < m; j++)
 					P.at(i).at(j) += M.at(i).at(k) * N.at(k).at(j);
 		return P;
 	}

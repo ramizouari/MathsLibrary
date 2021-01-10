@@ -28,10 +28,7 @@ namespace math_rz
 		}
 
 		finite_dimensional_vector_space() :u(n) {}
-		constexpr static int dimension()
-		{
-			return n;
-		}
+		inline constexpr static int dimension = n;
 		static finite_dimensional_vector_space _0()
 		{
 			return finite_dimensional_vector_space();
@@ -129,7 +126,17 @@ namespace math_rz
 		}
 		bool is_zero() const
 		{
-			return all_of(u.begin(), u.end(), [](const auto& x) {return x == F(0); });
+			return all_of(u.begin(), u.end(), [](const auto& x) {return x.is_zero(); });
+		}
+
+		std::vector<F>& get_vect()
+		{
+			return u;
+		}
+
+		const std::vector<F>& get_vect() const
+		{
+			return u;
 		}
 	protected:
 		std::vector<F> u;

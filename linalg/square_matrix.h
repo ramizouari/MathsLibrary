@@ -27,6 +27,13 @@ namespace math_rz
 				this->u[i][i] = k;
 
 		}
+		template<typename H>
+		square_matrix(const square_matrix<H, n>& M)
+		{
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < n; j++)
+					this->u[i][j] = M[i][j];
+		}
 
 		square_matrix transpose() const
 		{
@@ -89,20 +96,20 @@ namespace math_rz
 				for (int j = 0; j < n; j++)
 					if (i != j)
 					{
-						if (!this->u.at(i).at(j).is_zero())
+						if (!this->u[i][j].is_zero())
 							return false;
 					}
-					else if (!this->u.at(i).at(i).is_one())
+					else if (!this->u[i][i].is_one())
 						return false;
 			return true;
 		}
 		F det() const
 		{
 			square_matrix M(std::move(this->row_echelon_form()));
-			F d = F::_1();
+			F d = 1;
 			for (int i = 0; i < n; i++)
-				if (M.at(i).at(i) == F::_0())
-					return F::_0();
+				if (M.at(i).at(i).is_zero())
+					return 0;
 				else d *= M.at(i).at(i);
 			return d;
 		}
@@ -112,7 +119,7 @@ namespace math_rz
 			auto Q = matrix<F, n, 2 * n>();
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < n; j++)
-					Q[i][j] = this->at(i).at(j);
+					Q[i][j] = this->u[i][j];
 			for (int i = 0; i < n; i++)
 				for (int j = n; j < 2 * n; j++)
 					Q[i][j] = i == (j - n);
@@ -184,8 +191,8 @@ namespace math_rz
 	{
 		square_matrix<F, n> P;
 		for (int i = 0; i < n; i++)
-			for (int j = 0; j < n; j++)
-				for (int k = 0; k < n; k++)
+			for (int k = 0; k < n; k++)
+				for (int j = 0; j < n; j++)
 					P.at(i).at(j) += M.at(i).at(k) * N.at(k).at(j);
 		return P;
 	}
