@@ -18,33 +18,7 @@ namespace math_rz {
 		multiple_integrator(const std::vector<real_field>& L, const std::vector<real_field>& U, const std::vector<integer> &C)
 			:lower_bounds(L),upper_bounds(U),cuts_set(C)
 		{}
-		multiple_integrator(const real_field& L, const std::vector<real_field>& U, const std::vector<integer>& C)
-			:lower_bounds(n,L), upper_bounds(U), cuts_set(C)
-		{}
-
-		multiple_integrator(const std::vector<real_field>& L, const real_field& U, const std::vector<integer>& C)
-			:lower_bounds(L), upper_bounds(n,U), cuts_set(C)
-		{}
-		multiple_integrator(const real_field& L, const real_field& U, const std::vector<integer>& C)
-			:lower_bounds(n,L), upper_bounds(n,U), cuts_set(C)
-		{}
-
-
-		multiple_integrator(const std::vector<real_field>& L, const std::vector<real_field>& U, 
-			const integer& C)
-			:lower_bounds(L), upper_bounds(U), cuts_set(n,C)
-		{}
-		multiple_integrator(const real_field& L, const std::vector<real_field>& U, const integer& C)
-			:lower_bounds(n,L), upper_bounds(U), cuts_set(n,C)
-		{}
-
-		multiple_integrator(const std::vector<real_field>& L, const real_field& U, const integer& C)
-			:lower_bounds(L), upper_bounds(n,U), cuts_set(n,C)
-		{}
-		multiple_integrator(const real_field& L, const real_field& U, const integer& C)
-			:lower_bounds(n,L), upper_bounds(n,U), cuts_set(n,C)
-		{}
-
+	
 
 		/*
 		* This function calculates the multiple integral by the multi dimensional "rectangle method"

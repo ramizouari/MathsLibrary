@@ -4,17 +4,17 @@
 #include "integer.h"
 
 namespace math_rz {
-	template <typename A, typename B>
+	template <typename A, typename B,typename I=B>
 	class integrator
 	{
 	public:
-		virtual B integrate(const function<A, B>& f) const = 0;
+		virtual I integrate(const function<A, B>& f) const = 0;
 	};
 
 
 
 	template<typename E,typename F>
-	class trapezoidal_integrator :public  integrator<E, F>
+	class trapezoidal_integrator :public  integrator<E, F,F>
 	{
 		integer cuts;
 		real_field a, b;
@@ -27,10 +27,10 @@ namespace math_rz {
 		{
 			F R;
 			real_field eps = (b - a) / cuts;
-			real_field u = a,result;
+			real_field u = a;
 			for (int i = 0; i < cuts; i++, u += eps)
-				result += (eps*real_field(.5)) * (f(u)+f(u+eps));
-			return result;
+				R += real_field(eps._v*.5) * (f(u)+f(u+eps));
+			return R;
 		}
 	};
 }
