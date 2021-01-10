@@ -1,4 +1,5 @@
 #include "integer.h"
+#include "real_field.h"
 
 
 using namespace math_rz;

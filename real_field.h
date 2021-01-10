@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <compare>
+#include "integer.h"
 
 namespace math_rz
 {
@@ -10,15 +11,18 @@ namespace math_rz
         public field
     {
     public:
+        inline static constexpr int dimension = 1;
         real_field(long double m);
         real_field(double m);
         real_field(float m);
         real_field(int m = 0);
         real_field(unsigned long long m);
         real_field(long long m);
+        real_field(const integer& a);
         inline static const real_field _0() { return real_field(); };
         inline static const real_field _1() { return real_field(1); };
-        real_field mod(const integral_ring& a) const {
+        static bool exact;
+        real_field mod(const real_field& a) const {
             return 0;
         }
 
@@ -29,7 +33,7 @@ namespace math_rz
         bool is_zero() const;
         bool is_one() const;
 
-        real_field div(const integral_ring& s) { return 0; }
+        real_field div(const real_field& s) { return _v/ s._v; }
         const real_field& I0() const
         {
             return _0();

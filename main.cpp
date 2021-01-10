@@ -31,12 +31,23 @@
 #include "absalg/ring_extension.h"
 #include "linalg/eigen.h"
 #include "analysis/integrator/multiple_integrator.h"
+#include "poly/interpolation.h"
+#include "prob/uniform_int_generator.h"
+#include "prob/uniform_cyclic_generator.h"
+#include "prob/uniform_real_generator.h"
+#include "prob/uniform_complex_generator.h"
+#include "boost/multi_array.hpp"
+#include "poly/multiplicator/multiplicator.h"
+#include "poly/structure/inner_product.h"
+#include "analysis/integrator/disk_integrator.h"
+#include "analysis/integrator/ball_integrator.h"
+#include "analysis/integrator/line_integrator.h"
+
 using namespace std;
 using namespace math_rz;
-
 using K = math_rz::real_field;
-using E = math_rz::Lp_finite_dimensional_space<K,2,10>;
-using F = math_rz::real_field;
+using E = math_rz::L2_finite_dimensional_space<real_field,2>;
+using F = E;
 using M = math_rz::square_matrix<real_field, 10>;
 using R_X = math_rz::polynomial<K>;
 class mat_exp :public math_rz::function<E,F>
@@ -44,7 +55,7 @@ class mat_exp :public math_rz::function<E,F>
 public:
 	F operator()(const E &s) const override
 	{
-		return std::exp(-std::pow(s.norm(),2)/2);
+		return s;
 	}
 
 	bool is_zero() const override
@@ -55,10 +66,14 @@ public:
 
 int main()
 {
-	L2_finite_dimensional_space<K, 3>A({ 1,2,3 });
-	L2_finite_dimensional_space<K, 3>B({ 4,5,15 });
-	square_matrix<K, 2> M({ {0,0},{0,0} });
-	std::cout << M.rank();
-	mat_exp S;
+	trapezoidal_integrator<real_field, real_field>*I(
+		new trapezoidal_integrator<real_field, real_field>(0,2*std::numbers::pi,100));
+	auto f = general_function<real_field, E>([](const real_field& a)->E
+		{return E({ std::cos(a),std::sin(a) }); });
+	default_derivator<real_field, real_field::dimension, E::dimension, real_field, E>*
+		D(new default_derivator<real_field, real_field::dimension, E::dimension, real_field, E>(0,1e-5));
+	line_integrator<E, F> L(f,I,D);
+	mat_exp w;
+	cout << L.integrate(w);
 	return false;
 }

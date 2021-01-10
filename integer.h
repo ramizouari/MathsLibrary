@@ -4,8 +4,8 @@
 #include <iostream>
 #include <numeric>
 #include <compare>
-#include "real_field.h"
 namespace math_rz {
+    class real_field;
     class integer :
         public integral_ring
     {

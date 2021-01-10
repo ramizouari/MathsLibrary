@@ -4,11 +4,20 @@
 #include "absalg/integral_ring.h"
 #include "absalg/rational_extension.h"
 namespace math_rz {
+	namespace poly::structure
+	{
+
+		template<typename F>
+		class norm_topology;
+		template<typename F>
+		class inner_product_topology;
+	}
 	template<typename F>
 	class polynomial :virtual public free_algebra<F>, virtual public integral_ring
 	{
 	public:
 		using free_algebra<F>::a;
+		using free_algebra<F>::structure_ptr;
 		polynomial() {};
 		polynomial(const free_algebra<F>& p) :free_algebra<F>(p) {}
 		polynomial(free_algebra<F>&& p) :free_algebra<F>(std::move(p)) {}
@@ -20,7 +29,7 @@ namespace math_rz {
 		{
 			if (p.degree() != this->degree())
 				return true;
-			for (int i = 0; i < p.degree(); i++)
+			for (int i = 0; i <= p.degree(); i++)
 				if (p.a.at(i) != this->a.at(i))
 					return true;
 			return false;
@@ -139,6 +148,27 @@ namespace math_rz {
 				p.a[i - 1] = this->a[i]*F(i);
 			return p;
 		}
+
+		F inner_product(const polynomial& q) const
+		{
+			return dynamic_cast<poly::structure::inner_product_topology<F>*>
+				(structure_ptr.get())->inner_product(*this, q);
+		}
+
+		polynomial conj() const
+		{
+			polynomial p = *this;
+			for (auto& v : p.a)
+				v = v.conj();
+			return p;
+		}
+
+		real_field norm() const
+		{
+			return dynamic_cast<poly::structure::norm_topology<F>*>
+				(structure_ptr.get())->norm(*this);
+		}
+		
 	};
 
 	template<typename F>
@@ -168,6 +198,13 @@ namespace math_rz {
 	{
 		polynomial<F> p(a);
 		return p += b;
+	}
+
+	template<typename F>
+	polynomial<F> operator/(const polynomial<F>& a, const F& b)
+	{
+		polynomial<F> p(a);
+		return p /= b;
 	}
 
 
@@ -209,4 +246,31 @@ namespace math_rz {
 
 	template <typename F>
 	using rational_function = rational_extension<polynomial<F>>;
+
+	template<typename F>
+	std::pair<polynomial<F>, polynomial<F>> bezout(const polynomial<F>& a, const polynomial<F>& b)
+	{
+		std::pair<polynomial<F>, polynomial<F>> P;
+		if (a < b)
+		{
+			P = bezout(b, a);
+			return { P.second,P.first };
+		}
+		polynomial<F> r0 = a, r1 = b, t0 = 0, t1 = 1, s0 = 1, s1 = 0, w1, w2, w3, q;
+		while (!r1.is_zero())
+		{
+			w1 = r0;
+			w2 = t0;
+			w3 = s0;
+			r0 = r1;
+			s0 = s1;
+			t0 = t1;
+			q = w1.div(r1);
+			r1 = w1 - q * r1;
+			t1 = w2 - q * t1;
+			s1 = w3 - q * s1;
+		}
+		int n = r0.degree();
+		return { s0/r0.coeff(n),t0/r0.coeff(n) };
+	}
 }

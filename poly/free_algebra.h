@@ -4,27 +4,42 @@
 #include <algorithm>
 #include <iostream>
 #include <execution>
+#include <compare>
+#include "real_field.h"
 
 namespace math_rz {
+	namespace poly::multiplicator 
+	{
+		template<typename F>
+		class multiplicator;
+
+		template<typename F>
+		class karatsuba_multiplicator;
+	}
+
+	namespace poly::structure
+	{
+		template<typename F>
+		class metric_topology;
+	}
+
 	template<typename R>
 	class free_algebra : virtual public ring
 	{
 	public:
 		free_algebra() {}
-		free_algebra(R m) :a(1, m) {}
-		free_algebra(std::vector<R>&& c) :a(std::move(c)) {}
-		free_algebra(const std::vector<R>& c) :a(c) {}
+		free_algebra(R m) :a(1, m) { reduce(); }
+		free_algebra(std::vector<R>&& c) :a(std::move(c)) { reduce(); }
+		free_algebra(const std::vector<R>& c) :a(c) { reduce(); }
 		free_algebra(const free_algebra<R>& p) :a(p.a) {}
 		free_algebra(int c) :a(1, R(c)) {}
 
-		static free_algebra _0()
+
+		bool operator<(const free_algebra& q) const
 		{
-			return free_algebra();
+			return degree() < q.degree();
 		}
-		static free_algebra _1()
-		{
-			return free_algebra(1);
-		}
+
 		int degree() const
 		{
 			return a.size() - 1;
@@ -94,27 +109,18 @@ namespace math_rz {
 		}
 		free_algebra& operator*=(const free_algebra& p)
 		{
-			if ((degree() < 0) || (p.degree() < 0))
-			{
-				*this = _0();
-				return *this;
-			}
-			int m = degree() + p.degree();
-			free_algebra q;
-			q.a.resize(m + 1);
-			for (int i = 0; i <= degree(); i++)
-				for (int j = 0; j <= p.degree(); j++)
-					q.a[i + j] += a[i] * p.a[j];
-			*this = (q);
-			reduce();
-			return *this;
+			return *this = multiply_ptr->multiply(*this, p);
 		}
 		const R& coeff(int n) const
 		{
-			if (n > degree())
-				return 0;
 			return a.at(n);
 		}
+
+		R& coeff(int n)
+		{
+			return a.at(n);
+		}
+
 		virtual ring& operator+=(int n)
 		{
 			return *this += R(n);
@@ -129,18 +135,67 @@ namespace math_rz {
 		}
 		bool is_zero() const
 		{
+			//assert(!(a.size() == 1 && a.back().is_zero()));
 			return a.empty();
 		}
 		bool is_one() const
 		{
 			return !a.empty() && a.at(0).is_one();
 		}
-	protected:
+
+		std::vector<R>& get_vect()
+		{
+			return a;
+		}
+
+		const std::vector<R>& get_vect() const
+		{
+			return a;
+		}
 		void reduce() {
 			while (!a.empty() && (a.back().is_zero()))
 				a.pop_back();
 		}
+		
+		static const math_rz::poly::multiplicator::multiplicator<R>& get_multiplicator()
+		{
+			return *multiply_ptr;
+		}
+
+		static void set_multiplicator(math_rz::poly::multiplicator::multiplicator<R>* m_ptr)
+		{
+			multiply_ptr.reset(m_ptr);
+		}
+
+
+		static void set_structure(poly::structure::metric_topology<R>* N)
+		{
+			structure_ptr.reset(N);
+		}
+
+		static const poly::structure::metric_topology<R>& get_structure()
+		{
+			return *structure_ptr;
+		}
+
+		real_field metric(const free_algebra& p)
+		{
+			return structure_ptr->metric(*this, p);
+		}
+
+		real_field distance(const free_algebra& p)
+		{
+			return metric(p);
+		}
+
+		protected:
 		std::vector<R> a;
+
+		inline static std::unique_ptr<math_rz::poly::multiplicator::multiplicator<R>> 
+			multiply_ptr =std::make_unique< math_rz::poly::multiplicator::karatsuba_multiplicator<R>>
+			(math_rz::poly::multiplicator::karatsuba_multiplicator<R>());
+
+		inline static std::unique_ptr<poly::structure::metric_topology<R>> structure_ptr;
 	};
 
 	template<typename R>

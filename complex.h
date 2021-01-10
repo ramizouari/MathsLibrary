@@ -30,7 +30,10 @@ namespace math_rz
 		complex& operator/=(const real_field& s);
 		complex operator-() const;
 		complex& operator*=(int a);
-		complex& operator*=(const std::complex<real_field> &s);
+		//complex& operator*=(long double a);
+		//complex& operator*=(double a);
+		//complex& operator*=(real_field);
+		complex& operator*=(const std::complex<real_field>& s);
 		complex& operator/=(const std::complex<real_field>& s);
 		//inline operator real_field() { return real(); }
 	};
@@ -39,6 +42,9 @@ namespace math_rz
 	complex operator""_c(unsigned long long a);
 	complex operator*(const complex& s, int a);
 	complex operator*(int a,const complex& s);
+	//complex operator*(double a, const complex& s);
+	//complex operator*(long double a, const complex& s);
+	//complex operator*(const real_field &a, const complex& b);
 //	complex operator/(const std::complex<real_field>& a, const std::complex<real_field>& b);
 	//complex operator/(const complex &s ,const real_field& a);
 

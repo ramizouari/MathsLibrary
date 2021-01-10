@@ -77,6 +77,20 @@ complex& math_rz::complex::operator*=(int a)
     return  *this;
 }
 
+/*complex& math_rz::complex::operator*=(long double a)
+{
+    _Val[0] *= a;
+    _Val[1] *= a;
+    return *this;
+}
+
+complex& math_rz::complex::operator*=(double a)
+{
+    _Val[0] *= a;
+    _Val[1] *= a;
+    return *this;
+}*/
+
 
 complex math_rz::operator""_c(long double a)
 {
@@ -93,6 +107,18 @@ complex math_rz::operator*(int a, const complex& s)
     auto w = s;
     return w *= a;
 }
+
+/*complex math_rz::operator*(double a, const complex& s)
+{
+    auto w = s;
+    return s *= a;
+}
+
+complex math_rz::operator*(long double a, const complex& s)
+{
+    auto w = s;
+    return w *= a;
+}*/
 
 complex math_rz::operator*(const complex& s,int a)
 {
