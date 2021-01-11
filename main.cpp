@@ -42,20 +42,23 @@
 #include "analysis/integrator/disk_integrator.h"
 #include "analysis/integrator/ball_integrator.h"
 #include "analysis/integrator/line_integrator.h"
+#include "analysis/integrator/surface_integrator.h"
+#include "analysis/integrator/substitution_integrator.h"
 
 using namespace std;
 using namespace math_rz;
 using K = math_rz::real_field;
-using E = math_rz::L2_finite_dimensional_space<real_field,2>;
+using E = math_rz::L2_finite_dimensional_space<real_field,3>;
 using F = E;
-using M = math_rz::square_matrix<real_field, 10>;
+using M = math_rz::square_matrix<real_field, 3>;
 using R_X = math_rz::polynomial<K>;
 class mat_exp :public math_rz::function<E,F>
 {
 public:
 	F operator()(const E &s) const override
 	{
-		return s;
+		static M rot({ {1,-1,1},{2,6,3},{5,2,4} });
+		return (rot * E({ s[0] * s[0],s[1] * s[1],s[2] * s[2]}));
 	}
 
 	bool is_zero() const override
@@ -66,14 +69,19 @@ public:
 
 int main()
 {
-	trapezoidal_integrator<real_field, real_field>*I(
-		new trapezoidal_integrator<real_field, real_field>(0,2*std::numbers::pi,100));
-	auto f = general_function<real_field, E>([](const real_field& a)->E
-		{return E({ std::cos(a),std::sin(a) }); });
-	default_derivator<real_field, real_field::dimension, E::dimension, real_field, E>*
-		D(new default_derivator<real_field, real_field::dimension, E::dimension, real_field, E>(0,1e-5));
-	line_integrator<E, F> L(f,I,D);
-	mat_exp w;
-	cout << L.integrate(w);
+	mat_exp f;
+	auto xi = general_function<E, E>
+		([](const E& u)->E
+			{
+				return E({ u[0] * std::cos(u[1])*std::sin(u[2]),
+					u[0] * std::sin(u[1])*std::sin(u[2]),
+					u[0]*std::cos(u[2]) });
+			});
+	std::shared_ptr< trapezoidal_triple_integrator<F>> I_ptr
+	(new trapezoidal_triple_integrator<F>(0, 2, 0, 2 * std::numbers::pi, 0, std::numbers::pi, 50, 50, 50));
+	substitution_integrator<E,F> J(xi, I_ptr,
+		new two_way_derivator<E, E>(1e-8));
+	ball_integrator<F> B(I_ptr);
+	std::cout << J.integrate(f) << endl << B.integrate(f);
 	return false;
 }

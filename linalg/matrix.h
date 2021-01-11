@@ -27,10 +27,10 @@ namespace math_rz {
 				if (v.size() != m)
 					throw std::domain_error("Dimensions are not compatible");
 		}
-		constexpr static int dimension()
-		{
-			return n*m;
-		}
+		constexpr static int dimension = n * m;
+		constexpr static int domain_dimension = m;
+		constexpr static int codomain_dimension = n;
+		using base_field = F;
 
 		matrix<F, m, n> transpose() const
 		{

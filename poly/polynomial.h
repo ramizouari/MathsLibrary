@@ -25,6 +25,7 @@ namespace math_rz {
 		polynomial(std::vector<F>&& p) :free_algebra<F>(std::move(p)) {}
 		polynomial(const F& p) :free_algebra<F>(p) {}
 		polynomial(int c) :free_algebra<F>(c) {}
+		using base_field = F;
 		bool operator!=(const polynomial& p) const
 		{
 			if (p.degree() != this->degree())

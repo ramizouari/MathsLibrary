@@ -33,6 +33,7 @@ namespace math_rz {
 		free_algebra(const std::vector<R>& c) :a(c) { reduce(); }
 		free_algebra(const free_algebra<R>& p) :a(p.a) {}
 		free_algebra(int c) :a(1, R(c)) {}
+		using base_ring = R;
 
 
 		bool operator<(const free_algebra& q) const

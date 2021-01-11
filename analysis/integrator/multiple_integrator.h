@@ -6,7 +6,7 @@
 namespace math_rz {
 	/*
 	* This class is for integration of high dimensional (n>=2) Lp spaces
-	* In pratice,because of complexity, we advice that n<=10
+	* In pratice, due to exponential complexity, we advice that n<=10
 	*/
 	template<typename F,int n, int p = 2>
 	class multiple_integrator :public integrator <Lp_finite_dimensional_space< real_field, p, n>, F>
@@ -21,7 +21,7 @@ namespace math_rz {
 	
 
 		/*
-		* This function calculates the multiple integral by the multi dimensional "rectangle method"
+		* This function calculates the multiple integral by the multi dimensional "rectangular method"
 		* Let W the product of elements of cuts_set
 		* The complexity is O(W)
 		*/

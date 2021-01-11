@@ -3,15 +3,26 @@
 #include "real_field.h"
 #include "integer.h"
 
+/*
+* This is the base class of integrators
+* - Informally speaking, an integrator is an object which gives "an integral" of a function from a set A to a set B
+* - An integrator is an operator from the vector space of functions to another normed vector space 
+*/
+
 namespace math_rz {
 	template <typename A, typename B,typename I=B>
 	class integrator
 	{
 	public:
+		using domain = A;
+		using codomain = B;
+		using result_type = I;
 		virtual I integrate(const function<A, B>& f) const = 0;
 	};
 
-
+	/*
+	* This class gives an implementation of trapezoidal rule of a univariate (possibly vector) function
+	*/
 
 	template<typename E,typename F>
 	class trapezoidal_integrator :public  integrator<E, F,F>

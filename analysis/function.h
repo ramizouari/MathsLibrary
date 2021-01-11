@@ -6,6 +6,8 @@ namespace math_rz {
 	class abstract_function
 	{
 	public:
+		using domain = A;
+		using codomain = B;
 		virtual B operator()(const A& a) const = 0;
 
 	};

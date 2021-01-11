@@ -29,6 +29,7 @@ namespace math_rz
 
 		finite_dimensional_vector_space() :u(n) {}
 		inline constexpr static int dimension = n;
+		using base_field = F;
 		static finite_dimensional_vector_space _0()
 		{
 			return finite_dimensional_vector_space();
@@ -221,5 +222,21 @@ namespace math_rz
 	{
 		template<typename F, int n, typename M>
 		concept is_vector = std::is_base_of_v<finite_dimensional_vector_space<F, n>, M>;
+
+		template<typename M>
+		concept vector_space = requires 
+		{
+			typename M::base_field;
+			M::dimension;
+		};
+
+		template<typename E, typename F>
+		concept vector_space_over_same_base_field = 
+			vector_space<E> && vector_space<F>&&
+			std::is_same<typename E::base_field,typename F::base_field>::value;
+
+		template<typename E,typename F>
+		concept isomorpthic_vector_spaces = vector_space_over_same_base_field<E, F> && (E::dimension == F::dimension);
+
 	}
 }

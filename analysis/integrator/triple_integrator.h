@@ -20,11 +20,13 @@ namespace math_rz {
 		{
 			real_field eps3=(f-e)/cuts3,eps2 = (d - c) / cuts2, eps1 = (b - a) / cuts1;
 			real_field result = 0;
+			//u,v,w are dummy variables used for integration
 			real_field u, v, w;
+			//This nested for loop of depth 3 calculates the integral
 			for (int i = 0; i < cuts1; i++, v = c, u += eps1,v=0,w=0)
 				for (int j = 0; j < cuts2; j++, v += eps2,w=0)
 					for(int k=0;k<cuts3;k++,w+=eps3)
-					result += (eps1 * eps2*eps3) * h(Lp({ u,v,w }));
+						result += (eps1 * eps2*eps3) * h(Lp({ u,v,w }));
 			return result;
 		}
 	};
@@ -45,12 +47,12 @@ namespace math_rz {
 		F integrate(const function<Lp, F>& h)const override
 		{
 			real_field eps3 = (f - e) / cuts3, eps2 = (d - c) / cuts2, eps1 = (b - a) / cuts1;
-			real_field result = 0;
+			F result;
 			real_field u, v, w;
 			for (int i = 0; i < cuts1; i++, v = c, u += eps1, v = 0, w = 0)
 				for (int j = 0; j < cuts2; j++, v += eps2, w = 0)
 					for (int k = 0; k < cuts3; k++, w += eps3)
-						result += (eps1 * eps2 * eps3*real_field(.125)) * 
+						result += real_field(eps1 * eps2 * eps3*(.125)) *
 						(
 							h(Lp({ u,v,w }))+ h(Lp({ u+eps1,v,w }))+
 							h(Lp({ u,v+eps2,w })) + h(Lp({ u + eps1,v+eps2,w })) +
