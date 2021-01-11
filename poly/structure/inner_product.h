@@ -16,6 +16,7 @@ namespace math_rz::poly::structure
 	template<typename F>
 	class L2_vect_inner_product:public inner_product_topology<F>
 	{
+	public:
 		F inner_product(const polynomial<F>& p, const polynomial<F>& q) const
 		{
 			if (p.degree() <= q.degree())
@@ -31,6 +32,26 @@ namespace math_rz::poly::structure
 					p.get_vect().cbegin(), F(0)).conj();
 			}
 
+		}
+	};
+
+
+	template<typename F>
+	class L2_function_inner_product :public inner_product_topology<F>
+	{
+		std::shared_ptr<integrator<F, F>> I_ptr;
+	public:
+		L2_function_inner_product(std::shared_ptr<integrator<F, F>> _I_ptr) :I_ptr(_I_ptr) {}
+		L2_function_inner_product(integrator<F, F>* _I_ptr) :I_ptr(_I_ptr) {}
+		F inner_product(const polynomial<F>& p, const polynomial<F>& q) const
+		{
+			return I_ptr->integrate
+			(
+				general_function<F, F>([&](const F& u)->F
+					{
+						return p(u).conj()*q(u);
+					})
+			);
 		}
 	};
 }

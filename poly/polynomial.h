@@ -150,12 +150,6 @@ namespace math_rz {
 			return p;
 		}
 
-		F inner_product(const polynomial& q) const
-		{
-			return dynamic_cast<poly::structure::inner_product_topology<F>*>
-				(structure_ptr.get())->inner_product(*this, q);
-		}
-
 		polynomial conj() const
 		{
 			polynomial p = *this;
@@ -168,6 +162,12 @@ namespace math_rz {
 		{
 			return dynamic_cast<poly::structure::norm_topology<F>*>
 				(structure_ptr.get())->norm(*this);
+		}
+
+		F inner_product(const polynomial& q) const
+		{
+			return dynamic_cast<poly::structure::inner_product_topology<F>*>
+				(structure_ptr.get())->inner_product(*this, q);
 		}
 		
 	};

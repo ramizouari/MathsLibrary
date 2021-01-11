@@ -196,6 +196,12 @@
     <ClInclude Include="linalg\matrix_factory.h" />
     <ClInclude Include="linalg\multiplicator\cross_product.h" />
     <ClInclude Include="linalg\multiplicator\multiplicator.h" />
+    <ClInclude Include="linalg\structure\matrix\inner_product.h" />
+    <ClInclude Include="linalg\structure\vector\metric.h" />
+    <ClInclude Include="linalg\structure\vector\norm.h" />
+    <ClInclude Include="linalg\structure\vector\inner_product.h" />
+    <ClInclude Include="linalg\structure\matrix\metric.h" />
+    <ClInclude Include="linalg\structure\matrix\norm.h" />
     <ClInclude Include="poly\free_algebra.h" />
     <ClInclude Include="linalg\abstract_module.h" />
     <ClInclude Include="linalg\matrix.h" />

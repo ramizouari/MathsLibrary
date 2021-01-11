@@ -24,7 +24,7 @@ namespace math_rz {
 	}
 
 	template<typename R>
-	class free_algebra : virtual public ring
+	class free_algebra : virtual public ring//, virtual public function<R,R>
 	{
 	public:
 		free_algebra() {}
@@ -54,7 +54,7 @@ namespace math_rz {
 			return p;
 		}
 
-		template<typename H = R>
+		template<typename H>
 		H operator()(const H& u) const
 		{
 			H r = 0, w = 1;
@@ -64,6 +64,11 @@ namespace math_rz {
 				w *= u;
 			}
 			return r;
+		}
+
+		R operator()(const R& u) const
+		{
+			return this->operator()<R>(u);
 		}
 
 		const free_algebra& operator+() const
