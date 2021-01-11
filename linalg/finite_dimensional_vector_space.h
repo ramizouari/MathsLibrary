@@ -5,6 +5,7 @@
 #include <iostream>
 #include <algorithm>
 #include "complex.h"
+#include "structure/vector/inner_product.h"
 
 namespace math_rz
 {
@@ -13,6 +14,8 @@ namespace math_rz
 	template<typename F, int n>
 	class finite_dimensional_vector_space :public vector_space<F>
 	{
+	protected:
+		using structure_type = math_rz::linalg::structure::vector::metric_topology<F,n>;
 	public:
 
 		finite_dimensional_vector_space(const std::vector<F>& a) :u(n)
@@ -139,8 +142,42 @@ namespace math_rz
 		{
 			return u;
 		}
+
+		static void set_structure(structure_type* S)
+		{
+			structure_ptr.reset(S);
+		}
+		static const structure_type& get_structure()
+		{
+			return (*structure_ptr);
+		}
+		real_field metric(const finite_dimensional_vector_space& p)
+		{
+			return structure_ptr->metric(*this, p);
+		}
+
+		real_field distance(const finite_dimensional_vector_space& p)
+		{
+			return metric(p);
+		}
+
+		real_field norm() const
+		{
+			return dynamic_cast<math_rz::linalg::structure::vector::norm_topology<F, n>*>
+				(structure_ptr.get())->norm(*this);
+		}
+
+		F inner_product(const finite_dimensional_vector_space& q) const
+		{
+			return dynamic_cast<math_rz::linalg::structure::vector::inner_product_topology<F, n>*>
+				(structure_ptr.get())->inner_product(*this, q);
+		}
 	protected:
 		std::vector<F> u;
+
+		inline static std::unique_ptr<structure_type> structure_ptr =
+			std::unique_ptr<structure_type>
+			(new math_rz::linalg::structure::vector::L2_vect_inner_product<F, n>);
 	};
 	template <typename F, int n>
 	using coordinate_space = finite_dimensional_vector_space<F, n>;

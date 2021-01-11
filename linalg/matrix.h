@@ -1,12 +1,15 @@
 #pragma once
 #include "finite_dimensional_vector_space.h"
 #include "boost/multi_array.hpp"
+#include "linalg/structure/matrix/inner_product.h"
 
 
 namespace math_rz {
 	template<typename F, int n, int m>
 	class matrix: virtual public group
 	{
+	protected:
+		using structure_type = math_rz::linalg::structure::matrix::metric_topology<F, n, m>;
 	public:
 		matrix():u(n)
 		{
@@ -57,11 +60,6 @@ namespace math_rz {
 				for (int j = 0; j < m; j++)
 					T[i][j] = this->at(i).at(j).conj();
 			return T;
-		}
-
-		real_field norm() const
-		{
-			return largest_sing(*this);
 		}
 
 		bool operator!=(const matrix& M) const
@@ -219,9 +217,43 @@ namespace math_rz {
 		{
 			return u;
 		}
+		static void set_structure(structure_type* S)
+		{
+			structure_ptr.reset(S);
+		}
+		static const structure_type & get_structure()
+		{
+			return (*structure_ptr);
+		}
+
+		real_field metric(const matrix& p)
+		{
+			return structure_ptr->metric(*this, p);
+		}
+
+		real_field distance(const matrix& p)
+		{
+			return metric(p);
+		}
+
+		real_field norm() const
+		{
+			return dynamic_cast<math_rz::linalg::structure::matrix::norm_topology<F,n,m>*>
+				(structure_ptr.get())->norm(*this);
+		}
+
+		F inner_product(const matrix& q) const
+		{
+			return dynamic_cast<math_rz::linalg::structure::matrix::inner_product_topology<F,n,m>*>
+				(structure_ptr.get())->inner_product(*this, q);
+		}
 	protected:
 		//boost::multi_array<F,2> u;
+		//using structure_type = math_rz::linalg::structure::matrix::L22_operator_norm;
 		std::vector<std::vector<F>> u;
+		inline static std::unique_ptr<structure_type> structure_ptr =
+			std::unique_ptr<structure_type>
+			(new math_rz::linalg::structure::matrix::L22_operator_norm<F,n,m>);
 	};
 
 	namespace matrix_constraint {
