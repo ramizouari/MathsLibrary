@@ -37,8 +37,8 @@ namespace math_rz {
 		}
 	};
 
-	template<typename F, int n>
-	using finte_dimensional_inner_product_space = Lp_finite_dimensional_space<F, 2, n>;
+	template<typename K, int n>
+	using finte_dimensional_inner_product_space = Lp_finite_dimensional_space<K, 2, n>;
 
 	template<int n>
 	using finite_dimensional_hilbert_space = Lp_finite_dimensional_space < complex, 2, n>;
@@ -47,16 +47,7 @@ namespace math_rz {
 
 
 
-	template<int n, int m>
-	finite_dimensional_hilbert_space<n> operator*(const matrix<complex, n, m>& A,
-		const finite_dimensional_hilbert_space<m>& u)
-	{
-		finite_dimensional_hilbert_space<n> v;
-		for (int i = 0; i < n; i++)
-			for (int j = 0; j < m; j++)
-				v.at(i) += A.at(i).at(j) * u.at(j);
-		return v;
-	}
+	
 
 	template<int n>
 	class Lp_finite_dimensional_space <real_field, 2, n > :virtual public finite_dimensional_vector_space<real_field, n>,

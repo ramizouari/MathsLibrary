@@ -5,11 +5,11 @@
 #include "prob/uniform_real_generator.h"
 namespace math_rz
 {
-	template<typename F,int n>
-	F largest_eig(const square_matrix<F, n>& M,const real_field &eps=1e-5)
+	template<typename K,int n>
+	K largest_eig(const square_matrix<K, n>& M,const real_field &eps=1e-5)
 	{
 		uniform_real_generator dist(-1, 1,1000);
-		Lp_finite_dimensional_space<F,2, n> u,v,w;
+		Lp_finite_dimensional_space<K,2, n> u,v,w;
 		for (int i = 0; i < n; i++)
 			u[i] = dist.generate();
 		v = M * u;
@@ -30,9 +30,9 @@ namespace math_rz
 			return 0;
 		return (M*v)[k]/v[k];
 	}
-	template<typename F,int n,int m>
-	real_field largest_sing(const matrix<F, n,m>& M, const real_field& eps = 1e-5)
+	template<typename K,int n,int m>
+	real_field largest_sing(const matrix<K, n,m>& M, const real_field& eps = 1e-5)
 	{
-		return std::sqrt(static_cast<real_field>(largest_eig(square_matrix<F,n>(M * M.conj_transpose()))));
+		return std::sqrt(static_cast<real_field>(largest_eig(square_matrix<K,n>(M.conj_transpose()*M))));
 	}
 }

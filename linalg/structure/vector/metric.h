@@ -3,20 +3,20 @@
 
 namespace math_rz
 {
-	template<typename F,int n>
+	template<typename K,int n>
 	class finite_dimensional_vector_space;
-	template<typename F, int n>
+	template<typename K, int n>
 	class square_matrix;
-	template<typename F, int n,int m>
+	template<typename K, int n,int m>
 	class matrix;
 }
 namespace math_rz::linalg::structure::vector
 {
-	template<typename F,int n>
+	template<typename K,int n>
 	class metric_topology
 	{
 	protected:
-		using vector_type =math_rz::finite_dimensional_vector_space<F, n>;
+		using vector_type =math_rz::finite_dimensional_vector_space<K, n>;
 	public:
 		virtual real_field metric(const vector_type& p, const vector_type& q) const = 0;
 		real_field distance(const vector_type& p, const vector_type& q) const
@@ -25,10 +25,10 @@ namespace math_rz::linalg::structure::vector
 		}
 	};
 
-	template<typename F,int n>
-	class discrete_metric :public metric_topology<F,n>
+	template<typename K,int n>
+	class discrete_metric :public metric_topology<K,n>
 	{
-		using vector_type = metric_topology<F, n>::vector_type;
+		using vector_type = metric_topology<K, n>::vector_type;
 	public:
 		real_field metric(const vector_type& p, const vector_type& q) const
 		{
@@ -36,10 +36,10 @@ namespace math_rz::linalg::structure::vector
 		}
 	};
 
-	template<typename F,int n>
-	class hamming_metric :public metric_topology<F,n>
+	template<typename K,int n>
+	class hamming_metric :public metric_topology<K,n>
 	{
-		using vector_type = metric_topology<F, n>::vector_type;
+		using vector_type = metric_topology<K, n>::vector_type;
 	public:
 		real_field metric(const vector_type& p, const vector_type& q) const
 		{

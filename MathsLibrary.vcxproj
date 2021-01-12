@@ -184,6 +184,9 @@
     <ClInclude Include="analysis\normed_space.h" />
     <ClInclude Include="analysis\sequence.h" />
     <ClInclude Include="analysis\special\special.h" />
+    <ClInclude Include="analysis\structure\function\inner_product.h" />
+    <ClInclude Include="analysis\structure\function\metric.h" />
+    <ClInclude Include="analysis\structure\function\norm.h" />
     <ClInclude Include="complex.h" />
     <ClInclude Include="absalg\field.h" />
     <ClInclude Include="linalg\eigen.h" />

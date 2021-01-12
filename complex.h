@@ -7,6 +7,8 @@ namespace math_rz
 	class complex :public std::complex<real_field>, public field
 	{
 	public:
+		using base_field = complex;
+		inline constexpr static int dimension = 1;
 		complex(const std::complex<real_field>& a) :std::complex<real_field>(a) {}
 		complex(const std::complex<double>& a) :std::complex<real_field>(a) {}
 		complex(const std::complex<float>& a) :std::complex<real_field>(a) {}
@@ -25,7 +27,7 @@ namespace math_rz
 		complex conj() const;
 		complex inner_product(const complex&z)const;
 		real_field norm() const;
-		inline operator std::complex<real_field>() { return *this; }
+		inline operator std::complex<long double>() { return *this; }
 		explicit inline operator real_field() { return real(); }
 		complex& operator/=(const real_field& s);
 		complex operator-() const;
@@ -40,8 +42,9 @@ namespace math_rz
 
 	complex operator""_c(long double a);
 	complex operator""_c(unsigned long long a);
-	complex operator*(const complex& s, int a);
-	complex operator*(int a,const complex& s);
+//	complex operator*(const complex& s, int a);
+	//complex operator*(const complex& s, const complex& a);
+//	complex operator*(int a,const complex& s);
 	//complex operator*(double a, const complex& s);
 	//complex operator*(long double a, const complex& s);
 	//complex operator*(const real_field &a, const complex& b);

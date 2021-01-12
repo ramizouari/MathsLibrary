@@ -30,6 +30,11 @@ real_field integer::abs() const
 	return (long double)std::abs(_v);
 }
 
+real_field math_rz::integer::inner_product(const real_field& other) const
+{
+	return _v * other._v;
+}
+
 bool integer::is_zero() const
 {
 	return _v==0;

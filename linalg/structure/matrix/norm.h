@@ -6,11 +6,11 @@
 #include "linalg/structure/vector/norm.h"
 namespace math_rz::linalg::structure::matrix
 {
-	template<typename F,int n,int m>
-	class norm_topology :public metric_topology<F,n,m>
+	template<typename K,int n,int m>
+	class norm_topology :public metric_topology<K,n,m>
 	{
 	protected:
-		using matrix_type = metric_topology<F, n, m>::matrix_type;
+		using matrix_type = metric_topology<K, n, m>::matrix_type;
 	public:
 		virtual real_field norm(const matrix_type& a) const = 0;
 		real_field metric(const matrix_type& p, const matrix_type& q) const
@@ -19,15 +19,15 @@ namespace math_rz::linalg::structure::matrix
 		}
 	};
 
-/*	template<typename F, int n, int m>
-	class Linf_function_norm :public norm_topology<F, n,  m>
+/*	template<typename K, int n, int m>
+	class Linf_function_norm :public norm_topology<K, n,  m>
 	{
 		real_field a, b;
 		integer cuts;
 		
 	public:
 		Linf_norm(real_field _a, real_field _b, integer _c) :a(_a), b(_b), cuts(_c) {}
-		real_field norm(const polynomial<F>& f) const
+		real_field norm(const polynomial<K>& f) const
 		{
 			real_field eps = (b - a) / cuts;
 			real_field u = a, R = 0;
@@ -37,18 +37,18 @@ namespace math_rz::linalg::structure::matrix
 		}
 	};*/
 /*
-	template<typename F, int n, int m>
-	class L1_function_norm :public norm_topology<F, n, m>
+	template<typename K, int n, int m>
+	class L1_function_norm :public norm_topology<K, n, m>
 	{
-		std::shared_ptr<integrator<F, F>> I_ptr;
+		std::shared_ptr<integrator<K, K>> I_ptr;
 	public:
-		L1_function_norm(std::shared_ptr<integrator<F, F>> _I_ptr) :I_ptr(_I_ptr) {}
-		L1_function_norm(integrator<F, F>* _I_ptr) :I_ptr(_I_ptr) {}
-		real_field norm(const polynomial<F>& f) const
+		L1_function_norm(std::shared_ptr<integrator<K, K>> _I_ptr) :I_ptr(_I_ptr) {}
+		L1_function_norm(integrator<K, K>* _I_ptr) :I_ptr(_I_ptr) {}
+		real_field norm(const polynomial<K>& f) const
 		{
 			return I_ptr->integrate
 			(
-				general_function<F, F>([&](const F& u)->F
+				general_function<K, K>([&](const K& u)->K
 					{
 						return f(u).abs();
 					})
@@ -56,20 +56,20 @@ namespace math_rz::linalg::structure::matrix
 		}
 	};*/
 	/*
-	template<typename F, int n, int m>
-	class Lp_function_norm :public norm_topology<F, n, m>
+	template<typename K, int n, int m>
+	class Lp_function_norm :public norm_topology<K, n, m>
 	{
 		integer p;
-		std::shared_ptr<integrator<F, F>> I_ptr;
+		std::shared_ptr<integrator<K, K>> I_ptr;
 	public:
-		Lp_function_norm(integer _p, std::shared_ptr<integrator<F, F>> _I_ptr) :I_ptr(_I_ptr), p(_p) {}
-		Lp_function_norm(integer _p, integrator<F, F>* _I_ptr) :I_ptr(_I_ptr), p(_p) {}
+		Lp_function_norm(integer _p, std::shared_ptr<integrator<K, K>> _I_ptr) :I_ptr(_I_ptr), p(_p) {}
+		Lp_function_norm(integer _p, integrator<K, K>* _I_ptr) :I_ptr(_I_ptr), p(_p) {}
 
-		real_field norm(const polynomial<F>& f) const
+		real_field norm(const polynomial<K>& f) const
 		{
 			return std::pow(I_ptr->integrate
 			(
-				general_function<F, F>([&](const F& u)->F
+				general_function<K, K>([&](const K& u)->K
 					{
 						return std::pow(f(u).abs(), p);
 					})
@@ -77,10 +77,10 @@ namespace math_rz::linalg::structure::matrix
 		}
 	};*/
 
-	template<typename F, int n, int m>
-	class Lpq_vector_norm :public norm_topology<F,n,m>
+	template<typename K, int n, int m>
+	class Lpq_vector_norm :public norm_topology<K,n,m>
 	{
-		using matrix_type = norm_topology<F, n, m>::matrix_type;
+		using matrix_type = norm_topology<K, n, m>::matrix_type;
 		real_field p,q;
 	public:
 		Lpq_vector_norm(real_field _p, real_field _q) :p(_p),q(_q) {}
@@ -95,7 +95,7 @@ namespace math_rz::linalg::structure::matrix
 				for (int j = 0; j < m; j++)
 					if (q < inf)
 						r += std::pow(M[i][j].abs(), q);
-					else r = std::max(r, M[i][j]);
+					else r = std::max(r, M[i][j].abs());
 				if (q < inf)
 				{
 					if (p < inf)
@@ -115,10 +115,10 @@ namespace math_rz::linalg::structure::matrix
 		}
 	};
 
-	template<typename F, int n, int m>
-	class L22_operator_norm :public norm_topology<F, n, m>
+	template<typename K, int n, int m>
+	class L22_operator_norm :public norm_topology<K, n, m>
 	{
-		using matrix_type = norm_topology<F, n, m>::matrix_type;
+		using matrix_type = norm_topology<K, n, m>::matrix_type;
 	public:
 		L22_operator_norm()  {}
 
@@ -128,32 +128,32 @@ namespace math_rz::linalg::structure::matrix
 		}
 	};
 
-	template<typename F, int n, int m>
-	class L1q_operator_norm :public norm_topology<F, n, m>
+	template<typename K, int n, int m>
+	class L1q_operator_norm :public norm_topology<K, n, m>
 	{
-		using matrix_type = norm_topology<F, n, m>::matrix_type;
+		using matrix_type = norm_topology<K, n, m>::matrix_type;
 		real_field q;
 	public:
 		L1q_operator_norm(real_field _q):q(_q) {}
 
 		real_field norm(const matrix_type& M) const
 		{
-			math_rz::linalg::structure::vector::Lp_vector_norm<F,n> N(q);
+			math_rz::linalg::structure::vector::Lp_vector_norm<K,n> N(q);
 			auto M_t = M.transpose();
-			F result;
+			real_field result;
 			for (int i = 0; i < m; i++)
 			{
-				coordinate_space<F, n>&& u(std::move(M_t[i]));
+				coordinate_space<K, n>&& u(std::move(M_t[i]));
 				result = std::max(result, N.norm(u));
 			}
 			return result;
 		}
 	};
 
-	template<typename F,int n,int m>
-	class Lpinf_operator_norm :public norm_topology<F, n, m>
+	template<typename K,int n,int m>
+	class Lpinf_operator_norm :public norm_topology<K, n, m>
 	{
-		using matrix_type = norm_topology<F, n, m>::matrix_type;
+		using matrix_type = norm_topology<K, n, m>::matrix_type;
 		real_field p;
 	public:
 		Lpinf_operator_norm(real_field _p) :p(_p) {}
@@ -161,14 +161,14 @@ namespace math_rz::linalg::structure::matrix
 		real_field norm(const matrix_type& M) const
 		{
 			constexpr auto inf = std::numeric_limits<long double>::infinity();
-			static L1q_operator_norm<F, n, m> N1_inf(inf);
-			static math_rz::linalg::structure::vector::Lp_vector_norm<F, n> N(inf);
+			static L1q_operator_norm<K, n, m> N1_inf(inf);
+			static math_rz::linalg::structure::vector::Lp_vector_norm<K, n> N(inf);
 			if (p == inf)
 				return N1_inf.norm(M);
-			F result;
+			K result;
 			for (int i = 0; i < m; i++)
 			{
-				coordinate_space<F, n> u(M[i]);
+				coordinate_space<K, n> u(M[i]);
 				result = std::max(result, N.norm(u));
 			}
 			return result;

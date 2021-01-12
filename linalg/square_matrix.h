@@ -5,18 +5,18 @@
 
 namespace math_rz
 {
-		template<typename F, int n>
-	class square_matrix :virtual public matrix<F, n, n>, virtual  public ring
+		template<typename K, int n>
+	class square_matrix :virtual public matrix<K, n, n>, virtual  public ring
 	{
 	public:
 		square_matrix() {}
-		square_matrix(const std::vector<std::vector<F>>& M) :
-			matrix<F, n, n>(M) {}
-		square_matrix(std::vector<std::vector<F>>&& M) :matrix<F, n, n>(std::move(M)) {}
-		square_matrix(matrix<F, n, n>&& M) :matrix<F, n, n>(std::move(M))
+		square_matrix(const std::vector<std::vector<K>>& M) :
+			matrix<K, n, n>(M) {}
+		square_matrix(std::vector<std::vector<K>>&& M) :matrix<K, n, n>(std::move(M)) {}
+		square_matrix(matrix<K, n, n>&& M) :matrix<K, n, n>(std::move(M))
 		{	}
-		square_matrix(const matrix<F, n, n>& M) :matrix<F, n, n>(M) {}
-		square_matrix(const F &k) :square_matrix()
+		square_matrix(const matrix<K, n, n>& M) :matrix<K, n, n>(M) {}
+		square_matrix(const K &k) :square_matrix()
 		{
 			for (int i = 0; i < n; i++)
 				this->u[i][i] = k;
@@ -46,22 +46,22 @@ namespace math_rz
 
 		square_matrix& operator+=(const square_matrix& o)
 		{
-			matrix<F, n, n>::operator+=(o);
+			matrix<K, n, n>::operator+=(o);
 			return *this;
 		}
 		square_matrix& operator-=(const square_matrix& o)
 		{
-			matrix<F, n, n>::operator-=(o);
+			matrix<K, n, n>::operator-=(o);
 			return *this;
 		}
 		square_matrix operator-() const
 		{
-			matrix<F, n, n>::operator-();
+			matrix<K, n, n>::operator-();
 			return *this;
 		}
 		square_matrix& operator*=(const square_matrix& M)
 		{
-			square_matrix<F, n> P;
+			square_matrix<K, n> P;
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < n; j++)
 					for (int k = 0; k < n; k++)
@@ -70,15 +70,15 @@ namespace math_rz
 			return *this;
 		}
 
-		square_matrix& operator*=(const F& k)
+		square_matrix& operator*=(const K& k)
 		{
-			this->matrix<F, n, n>::operator*=(k);
+			this->matrix<K, n, n>::operator*=(k);
 			return *this;
 		}
 
-		square_matrix& operator/=(const F& k)
+		square_matrix& operator/=(const K& k)
 		{
-			this->matrix<F, n, n>::operator/=(k);
+			this->matrix<K, n, n>::operator/=(k);
 			return *this;
 		}
 
@@ -103,10 +103,10 @@ namespace math_rz
 						return false;
 			return true;
 		}
-		F det() const
+		K det() const
 		{
 			square_matrix M(std::move(this->row_echelon_form()));
-			F d = 1;
+			K d = 1;
 			for (int i = 0; i < n; i++)
 				if (M.at(i).at(i).is_zero())
 					return 0;
@@ -116,7 +116,7 @@ namespace math_rz
 
 		square_matrix inv() const
 		{
-			auto Q = matrix<F, n, 2 * n>();
+			auto Q = matrix<K, n, 2 * n>();
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < n; j++)
 					Q[i][j] = this->u[i][j];
@@ -155,41 +155,41 @@ namespace math_rz
 			return *this *= M.inv();
 		}
 
-		polynomial<F> caracteristic_polynomial() const
+		polynomial<K> caracteristic_polynomial() const
 		{
-			square_matrix<rational_extension<polynomial<F>>, n> J;
+			square_matrix<rational_extension<polynomial<K>>, n> J;
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < n; j++)
 				{
 					if (i != j)
-						J.at(i).at(j) = polynomial<F>(this->at(i).at(j));
-					else J.at(i).at(j) = polynomial<F>({ this->at(i).at(j),-1 });
+						J.at(i).at(j) = polynomial<K>(this->at(i).at(j));
+					else J.at(i).at(j) = polynomial<K>({ this->at(i).at(j),-1 });
 				}
-			return (polynomial<F>)J.det();
+			return (polynomial<K>)J.det();
 		}
 	};
 
-	template <typename F, int n>
-	square_matrix<F, n> operator+(
-		const square_matrix<F, n>& a, const square_matrix<F, n>& b)
+	template <typename K, int n>
+	square_matrix<K, n> operator+(
+		const square_matrix<K, n>& a, const square_matrix<K, n>& b)
 	{
 		auto c(a);
 		return c += b;
 	}
 
-	template <typename F, int n>
-	square_matrix<F, n> operator-(
-		const square_matrix<F, n>& a, const square_matrix<F, n>& b)
+	template <typename K, int n>
+	square_matrix<K, n> operator-(
+		const square_matrix<K, n>& a, const square_matrix<K, n>& b)
 	{
 		auto c(a);
 		return c -= b;
 	}
 
-	template <typename F, int n>
-	square_matrix <F, n> operator*(
-		const square_matrix<F, n>& M, const square_matrix<F, n>& N)
+	template <typename K, int n>
+	square_matrix <K, n> operator*(
+		const square_matrix<K, n>& M, const square_matrix<K, n>& N)
 	{
-		square_matrix<F, n> P;
+		square_matrix<K, n> P;
 		for (int i = 0; i < n; i++)
 			for (int k = 0; k < n; k++)
 				for (int j = 0; j < n; j++)
@@ -197,19 +197,19 @@ namespace math_rz
 		return P;
 	}
 
-	template <typename F, int n>
-	square_matrix <F, n> operator/(
-		const square_matrix<F, n>& M, const square_matrix<F, n>& N)
+	template <typename K, int n>
+	square_matrix <K, n> operator/(
+		const square_matrix<K, n>& M, const square_matrix<K, n>& N)
 	{
 		return M * N.inv();
 	}
 
 
-	template <typename F, int n>
-	square_matrix <F, n> operator*(
-		const F& k, const square_matrix<F, n>& N)
+	template <typename K, int n>
+	square_matrix <K, n> operator*(
+		const K& k, const square_matrix<K, n>& N)
 	{
-		square_matrix<F, n> P;
+		square_matrix<K, n> P;
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++)
 				P.at(i).at(j) = k* N.at(i).at(j);

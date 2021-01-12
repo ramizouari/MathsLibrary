@@ -5,25 +5,25 @@
 
 
 namespace math_rz {
-	template<typename F, int n, int m>
+	template<typename K, int n, int m>
 	class matrix: virtual public group
 	{
 	protected:
-		using structure_type = math_rz::linalg::structure::matrix::metric_topology<F, n, m>;
+		using structure_type = math_rz::linalg::structure::matrix::metric_topology<K, n, m>;
 	public:
 		matrix():u(n)
 		{
 			for (auto& v : u)
 				v.resize(m);
 		}
-		matrix(const std::vector<std::vector<F>>& M) :
+		matrix(const std::vector<std::vector<K>>& M) :
 			u(M)
 		{
 			for (const auto& v : u)
 				if (v.size() != m)
 					throw std::domain_error("Dimensions are not compatible");
 		}
-		matrix(std::vector<std::vector<F>>&& M) :
+		matrix(std::vector<std::vector<K>>&& M) :
 			u(std::move(M))
 		{
 			for (const auto& v : u)
@@ -33,29 +33,29 @@ namespace math_rz {
 		constexpr static int dimension = n * m;
 		constexpr static int domain_dimension = m;
 		constexpr static int codomain_dimension = n;
-		using base_field = F;
+		using base_field = K;
 
-		matrix<F, m, n> transpose() const
+		matrix<K, m, n> transpose() const
 		{
-			matrix<F, m, n> T;
+			matrix<K, m, n> T;
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < m; j++)
 					T[j][i] = this->at(i).at(j);
 			return T;
 		}
 
-		matrix<F, m, n> conj_transpose() const
+		matrix<K, m, n> conj_transpose() const
 		{
-			matrix<F, m, n> T;
+			matrix<K, m, n> T;
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < m; j++)
 					T[j][i] = this->at(i).at(j).conj();
 			return T;
 		}
 
-		matrix<F, m, n> conj() const
+		matrix<K, m, n> conj() const
 		{
-			matrix<F, m, n> T;
+			matrix<K, m, n> T;
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < m; j++)
 					T[i][j] = this->at(i).at(j).conj();
@@ -103,19 +103,19 @@ namespace math_rz {
 			return p;
 		}
 
-		F trace() const
+		K trace() const
 		{
-			F tr;
+			K tr;
 			for (int i = 0; i < std::min(n, m); i++)
 				tr += this->u[i][i];
 			return tr;
 		}
-		F tr() const
+		K tr() const
 		{
 			return trace();
 		}
 
-		matrix& operator*=(const F& k)
+		matrix& operator*=(const K& k)
 		{
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < m; j++)
@@ -123,7 +123,7 @@ namespace math_rz {
 			return *this;
 		}
 
-		matrix& operator/=(const F& k)
+		matrix& operator/=(const K& k)
 		{
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < m; j++)
@@ -170,7 +170,7 @@ namespace math_rz {
 				}
 				for (int j = i + 1; j < n; j++)
 				{
-					F&& r = P[j][p] / P[i][p];
+					K&& r = P[j][p] / P[i][p];
 					for (int k = p; k < m; k++)
 						P[j][k] = P[j][k] - r * P[i][k];
 				}
@@ -199,21 +199,21 @@ namespace math_rz {
 			return true;
 		}
 
-		coordinate_space<F, n* m> as_vector() const
+		coordinate_space<K, n* m> as_vector() const
 		{
-			coordinate_space<F, n* m> p;
+			coordinate_space<K, n* m> p;
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < m; j++)
 					p[i * m + j] = this->u[i][j];
 			return p;
 		}
 
-		std::vector<std::vector<F>>& get_vect_vect()
+		std::vector<std::vector<K>>& get_vect_vect()
 		{
 			return u;
 		}
 
-		const std::vector<std::vector<F>>& get_vect_vect() const
+		const std::vector<std::vector<K>>& get_vect_vect() const
 		{
 			return u;
 		}
@@ -238,62 +238,62 @@ namespace math_rz {
 
 		real_field norm() const
 		{
-			return dynamic_cast<math_rz::linalg::structure::matrix::norm_topology<F,n,m>*>
+			return dynamic_cast<math_rz::linalg::structure::matrix::norm_topology<K,n,m>*>
 				(structure_ptr.get())->norm(*this);
 		}
 
-		F inner_product(const matrix& q) const
+		K inner_product(const matrix& q) const
 		{
-			return dynamic_cast<math_rz::linalg::structure::matrix::inner_product_topology<F,n,m>*>
+			return dynamic_cast<math_rz::linalg::structure::matrix::inner_product_topology<K,n,m>*>
 				(structure_ptr.get())->inner_product(*this, q);
 		}
 	protected:
-		//boost::multi_array<F,2> u;
+		//boost::multi_array<K,2> u;
 		//using structure_type = math_rz::linalg::structure::matrix::L22_operator_norm;
-		std::vector<std::vector<F>> u;
+		std::vector<std::vector<K>> u;
 		inline static std::unique_ptr<structure_type> structure_ptr =
 			std::unique_ptr<structure_type>
-			(new math_rz::linalg::structure::matrix::L22_operator_norm<F,n,m>);
+			(new math_rz::linalg::structure::matrix::L22_operator_norm<K,n,m>);
 	};
 
 	namespace matrix_constraint {
-		template<typename F, int n, int m, typename M>
-		concept is_matrix = std::is_base_of_v<matrix<F, n, m>, M>;
+		template<typename K, int n, int m, typename M>
+		concept is_matrix = std::is_base_of_v<matrix<K, n, m>, M>;
 	}
 
-	template <typename F, int n, int m>
-	matrix<F, n, m> operator+(
-		const matrix<F, n, m>& a, const matrix<F, n, m>& b)
+	template <typename K, int n, int m>
+	matrix<K, n, m> operator+(
+		const matrix<K, n, m>& a, const matrix<K, n, m>& b)
 	{
 		auto c(a);
 		return c += b;
 	}
 
-	template <typename F, int n, int m>
-	matrix<F, n, m> operator-(
-		const matrix<F, n, m>& a, const matrix<F, n, m>& b)
+	template <typename K, int n, int m>
+	matrix<K, n, m> operator-(
+		const matrix<K, n, m>& a, const matrix<K, n, m>& b)
 	{
 		auto c(a);
 		return c -= b;
 	}
 
-	template <typename F, int n, int m>
-	matrix<F, n, m> operator*(
-		const F& k, const matrix<F, n, m>& a)
+	template <typename K, int n, int m>
+	matrix<K, n, m> operator*(
+		const K& k, const matrix<K, n, m>& a)
 	{
 		auto c(a);
 		return c *= k;
 	}
 
-	template <typename F, int n, int p, int m>
-	matrix<F, n, m> operator*(
-		const matrix<F, n, p>& M, const matrix<F, p, m>& N)
+	template <typename K, int n, int p, int m>
+	matrix<K, n, m> operator*(
+		const matrix<K, n, p>& M, const matrix<K, p, m>& N)
 	{
 		/*
 		* This nested for loop will calculate the matrix product
 		* The order of the last two for is intentionally inverted to reduce cache misses
 		*/
-		matrix<F, n, m> P;
+		matrix<K, n, m> P;
 		for (int i = 0; i < n; i++)
 			for (int k = 0; k < p; k++)
 				for (int j = 0; j < m; j++)
@@ -301,59 +301,59 @@ namespace math_rz {
 		return P;
 	}
 
-	template <typename F, int n>
-	F operator*(
-		const matrix<F, 1,n>& M, const matrix<F, n, 1>& N)
+	template <typename K, int n>
+	K operator*(
+		const matrix<K, 1,n>& M, const matrix<K, n, 1>& N)
 	{
-		F P;
+		K P;
 		for (int i = 0; i < n; i++)
 			P += M.at(0).at(i) * N.at(i).at(0);
 		return P;
 	}
 
-	template <typename F, int n>
-	F operator*(
-		const matrix<F, 1, n>& M, const coordinate_space<F,n>& N)
+	template <typename K, int n>
+	K operator*(
+		const matrix<K, 1, n>& M, const coordinate_space<K,n>& N)
 	{
-		F P;
+		K P;
 		for (int i = 0; i < n; i++)
 			P += M.at(0).at(i) * N.at(i);
 		return P;
 	}
 
-	template <typename F, int n, int m>
-	matrix<F, n, m> operator/(const F& k, const matrix<F, n, m>& M)
+	template <typename K, int n, int m>
+	matrix<K, n, m> operator/(const K& k, const matrix<K, n, m>& M)
 	{
 		auto c(M);
 		return c /= k;
 	}
 
-	template <typename F, int n, int m>
-	matrix<F, n, m> operator*(const matrix<F, n, m>& M, const F& k)
+	template <typename K, int n, int m>
+	matrix<K, n, m> operator*(const matrix<K, n, m>& M, const K& k)
 	{
 		auto c(M);
 		return c *= k;
 	}
 
-	template <typename F, int n, int m>
-	coordinate_space<F, n> operator*(const matrix<F, n, m>& M, const coordinate_space<F, m>& u)
+	template <typename K, int n, int m>
+	coordinate_space<K, n> operator*(const matrix<K, n, m>& M, const coordinate_space<K, m>& u)
 	{
-		coordinate_space<F, n> v;
+		coordinate_space<K, n> v;
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < m; j++)
 				v.at(i) += M.at(i).at(j) * u.at(j);
 		return v;
 	}
 
-	template <typename F, int n, int m>
-	matrix<F, n, m> operator/(const matrix<F, n, m>& M, const F& k)
+	template <typename K, int n, int m>
+	matrix<K, n, m> operator/(const matrix<K, n, m>& M, const K& k)
 	{
 		auto c(M);
 		return c /= k;
 	}
 
-	template <typename F, int n, int m>
-	std::ostream& operator<<(std::ostream& H, const matrix<F, n, m>& p)
+	template <typename K, int n, int m>
+	std::ostream& operator<<(std::ostream& H, const matrix<K, n, m>& p)
 	{
 
 		for (int i = 0; i < n; i++)
@@ -365,8 +365,8 @@ namespace math_rz {
 		return H;
 	}
 
-	template <typename F, int n, int m>
-	std::istream& operator>>(std::istream& H, matrix<F, n, m>& p)
+	template <typename K, int n, int m>
+	std::istream& operator>>(std::istream& H, matrix<K, n, m>& p)
 	{
 
 		for (int i = 0; i < n; i++)
