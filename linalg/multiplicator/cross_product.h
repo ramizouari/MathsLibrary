@@ -1,7 +1,7 @@
 #pragma once
 #include "linalg/finite_dimensional_vector_space.h"
 #include "analysis/finite_dimensional_inner_product_space.h"
-namespace math_rz
+namespace math_rz::analysis
 {
 	template<typename K>
 	class cross_product

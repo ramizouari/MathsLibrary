@@ -47,6 +47,11 @@ complex math_rz::complex::inner_product(const complex& z) const
     return (*this) * z.conj();
 }
 
+complex math_rz::complex::inv() const
+{
+    return 1_c/(*this);
+}
+
 real_field math_rz::complex::norm() const
 {
     return abs();

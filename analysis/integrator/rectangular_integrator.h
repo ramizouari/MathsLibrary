@@ -3,7 +3,7 @@
 #include "real_field.h"
 #include "linalg/finite_dimensional_vector_space.h"
 
-namespace math_rz
+namespace math_rz::analysis
 {
 	template<typename E,typename F>
 	class rectangular_integrator :public  integrator<E, F>

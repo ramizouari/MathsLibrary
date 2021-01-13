@@ -3,8 +3,8 @@
 #include "free_algebra.h"
 #include "absalg/integral_ring.h"
 #include "absalg/rational_extension.h"
-namespace math_rz {
-	namespace poly::structure
+namespace math_rz::poly {
+	namespace structure
 	{
 
 		template<typename K>
@@ -273,5 +273,25 @@ namespace math_rz {
 		}
 		int n = r0.degree();
 		return { s0/r0.coeff(n),t0/r0.coeff(n) };
+	}
+
+	template<typename K>
+	polynomial<K> gcd(const polynomial<K>& a, const polynomial<K>& b)
+	{
+		std::pair<polynomial<K>, polynomial<K>> P;
+		if (a < b)
+		{
+			P = bezout(b, a);
+			return { P.second,P.first };
+		}
+		polynomial<K> r0 = a, r1 = b, w1, q;
+		while (!r1.is_zero())
+		{
+			w1 = r0;
+			r0 = r1;
+			q = w1.div(r1);
+			r1 = w1 - q * r1;
+		}
+		return r0.normalize();
 	}
 }

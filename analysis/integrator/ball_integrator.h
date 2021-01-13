@@ -5,7 +5,7 @@
 #include "analysis/normed_finite_dimensional_space.h"
 #include "analysis/general_function.h"
 #include "special_integrator.h"
-namespace math_rz {
+namespace math_rz::analysis {
 
 	template<typename F, int p = 2>
 	class ball_integrator :

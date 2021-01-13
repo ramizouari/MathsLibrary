@@ -26,6 +26,7 @@ namespace math_rz
 		real_field abs() const;
 		complex conj() const;
 		complex inner_product(const complex&z)const;
+		complex inv()const;
 		real_field norm() const;
 		inline operator std::complex<long double>() { return *this; }
 		explicit inline operator real_field() { return real(); }

@@ -53,6 +53,11 @@ real_field math_rz::real_field::inner_product(const real_field& a)
 	return (*this) * a;
 }
 
+real_field math_rz::real_field::inv() const
+{
+	return 1 / _v;
+}
+
 bool real_field::is_zero() const
 {
 	if(exact) return _v==0;

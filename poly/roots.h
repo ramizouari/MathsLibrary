@@ -2,7 +2,7 @@
 #include "complex.h"
 #include "polynomial.h"
 
-namespace math_rz
+namespace math_rz::poly
 {
 	template<typename K>
 	K root(const polynomial<K>& p,const K& x0,const real_field &err=1e-5)

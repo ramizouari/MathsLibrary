@@ -9,7 +9,7 @@
 * - An integrator is an operator from the vector space of functions to another normed vector space 
 */
 
-namespace math_rz {
+namespace math_rz::analysis {
 	template <typename A, typename B,typename I=B>
 	class integrator
 	{

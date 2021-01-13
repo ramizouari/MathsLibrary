@@ -6,7 +6,7 @@
 #include "analysis/normed_finite_dimensional_space.h"
 #include "analysis/general_function.h"
 #include "special_integrator.h"
-namespace math_rz {
+namespace math_rz::analysis {
 	/*
 	* This class is responsible for integrating a function over a sphere of a given radius R (equals 1 by default)
 	*/

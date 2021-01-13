@@ -7,8 +7,8 @@
 #include <compare>
 #include "real_field.h"
 
-namespace math_rz {
-	namespace poly::multiplicator 
+namespace math_rz::poly {
+	namespace multiplicator 
 	{
 		template<typename F>
 		class multiplicator;
@@ -17,7 +17,7 @@ namespace math_rz {
 		class karatsuba_multiplicator;
 	}
 
-	namespace poly::structure
+	namespace structure
 	{
 		template<typename F>
 		class metric_topology;
@@ -31,8 +31,8 @@ namespace math_rz {
 		free_algebra(R m) :a(1, m) { reduce(); }
 		free_algebra(std::vector<R>&& c) :a(std::move(c)) { reduce(); }
 		free_algebra(const std::vector<R>& c) :a(c) { reduce(); }
-		free_algebra(const free_algebra<R>& p) :a(p.a) {}
-		free_algebra(int c) :a(1, R(c)) {}
+		free_algebra(const free_algebra<R>& p) :a(p.a) { reduce(); }
+		free_algebra(int c) :a(1, R(c)) { reduce(); }
 		using base_ring = R;
 
 

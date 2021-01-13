@@ -4,7 +4,7 @@
 #include "analysis/derivator/derivator.h"
 #include "stieltjes_integrator.h"
 
-namespace math_rz
+namespace math_rz::analysis
 {
 	template<typename E,typename F>
 	class line_integrator : public special_integrator<E, F, real_field, real_field,real_field>

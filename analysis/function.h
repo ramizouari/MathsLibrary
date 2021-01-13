@@ -3,7 +3,7 @@
 #include "absalg/ring.h"
 #include "structure/function/inner_product.h"
 
-namespace math_rz {
+namespace math_rz::analysis {
 	template<typename A, typename B>
 	class abstract_function
 	{
@@ -49,7 +49,7 @@ namespace math_rz {
 	};
 
 
-	template<typename A, math_rz::vector_space_constraint::vector_space B>
+	template<typename A, math_rz::linalg::vector_space_constraint::vector_space B>
 	class function<A,B> : public summable_function<A, B>
 	{
 	protected:

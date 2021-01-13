@@ -13,10 +13,10 @@ namespace math_rz
 	{
 	public:
 		ring_extension(const std::vector<R>& a) :p(a) { reduce(); }
-		ring_extension(const polynomial<R>& a) :p(a) { reduce(); }
+		ring_extension(const poly::polynomial<R>& a) :p(a) { reduce(); }
 		ring_extension(int s = 0) :p(s) { reduce(); }
-		const static inline polynomial<R> extension_polynomial 
-			= polynomial<R>(std::vector<R>{ k... });
+		const static inline poly::polynomial<R> extension_polynomial 
+			= poly::polynomial<R>(std::vector<R>{ k... });
 		ring_extension(const R& a) :p(a) { reduce(); }
 		ring_extension& operator+=(const ring_extension &w)
 		{
@@ -43,7 +43,7 @@ namespace math_rz
 
 		ring_extension inv() const
 		{
-			return math_rz::bezout<polynomial<R>>(p, extension_polynomial).first;
+			return math_rz::poly::bezout<poly::polynomial<R>>(p, extension_polynomial).first;
 		}
 		bool is_zero() const override
 		{
@@ -53,7 +53,7 @@ namespace math_rz
 		{
 			return p.is_one();
 		}
-		const polynomial<R>& get_polynomial() const { return p; }
+		const poly::polynomial<R>& get_polynomial() const { return p; }
 		inline static constexpr long long extension_degree = sizeof ...(k) - 1;
 		ring_extension quad_conj() const requires is_quadratic_extension<extension_degree>
 		{
@@ -67,7 +67,7 @@ namespace math_rz
 			if (p.degree() >= extension_polynomial.degree())
 				p = p.mod(extension_polynomial);
 		}
-		polynomial<R> p;
+		poly::polynomial<R> p;
 	};
 
 	template<typename R, bool is_field,long long ...k>

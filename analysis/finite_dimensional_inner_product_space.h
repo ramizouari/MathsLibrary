@@ -5,20 +5,20 @@
 #include "linalg/matrix.h"
 
 
-namespace math_rz {
+namespace math_rz::analysis {
 	template<int n>
-	class Lp_finite_dimensional_space <complex, 2, n > :virtual public finite_dimensional_vector_space<complex, n>,
+	class Lp_finite_dimensional_space <complex, 2, n > :virtual public linalg::finite_dimensional_vector_space<complex, n>,
 		virtual public normed_space<complex>
 	{
 	public:
-		using finite_dimensional_vector_space <complex, n>::finite_dimensional_vector_space;
-		Lp_finite_dimensional_space(const finite_dimensional_vector_space<complex, n>& a) :
-			finite_dimensional_vector_space<complex, n>(a)
+		using linalg::finite_dimensional_vector_space <complex, n>::finite_dimensional_vector_space;
+		Lp_finite_dimensional_space(const linalg::finite_dimensional_vector_space<complex, n>& a) :
+			linalg::finite_dimensional_vector_space<complex, n>(a)
 		{
 		}
 
-		Lp_finite_dimensional_space(finite_dimensional_vector_space<complex, n>&& a) :
-			finite_dimensional_vector_space<complex, n>(std::move(a))
+		Lp_finite_dimensional_space(linalg::finite_dimensional_vector_space<complex, n>&& a) :
+			linalg::finite_dimensional_vector_space<complex, n>(std::move(a))
 		{
 		}
 		real_field norm() const override
@@ -50,18 +50,18 @@ namespace math_rz {
 	
 
 	template<int n>
-	class Lp_finite_dimensional_space <real_field, 2, n > :virtual public finite_dimensional_vector_space<real_field, n>,
+	class Lp_finite_dimensional_space <real_field, 2, n > :virtual public linalg::finite_dimensional_vector_space<real_field, n>,
 		virtual public normed_space<real_field>
 	{
 	public:
-		using finite_dimensional_vector_space <real_field, n>::finite_dimensional_vector_space;
-		Lp_finite_dimensional_space(const finite_dimensional_vector_space<real_field, n>& a) :
-			finite_dimensional_vector_space<real_field, n>(a)
+		using linalg::finite_dimensional_vector_space <real_field, n>::finite_dimensional_vector_space;
+		Lp_finite_dimensional_space(const linalg::finite_dimensional_vector_space<real_field, n>& a) :
+			linalg::finite_dimensional_vector_space<real_field, n>(a)
 		{
 		}
 
-		Lp_finite_dimensional_space(finite_dimensional_vector_space<real_field, n>&& a) :
-			finite_dimensional_vector_space<real_field, n>(std::move(a))
+		Lp_finite_dimensional_space(linalg::finite_dimensional_vector_space<real_field, n>&& a) :
+			linalg::finite_dimensional_vector_space<real_field, n>(std::move(a))
 		{
 		}
 		real_field norm() const override

@@ -4,7 +4,7 @@
 #include "linalg/finite_dimensional_vector_space.h"
 #include "analysis/function.h"
 
-namespace math_rz
+namespace math_rz::analysis
 {
 	template<typename E,typename F>
 	class stieltjes_integrator :public  integrator<real_field, F,real_field>

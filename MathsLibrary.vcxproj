@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="absalg\cyclic.h" />
     <ClInclude Include="absalg\ring_extension.h" />
+    <ClInclude Include="absalg\structure\abs.h" />
     <ClInclude Include="analysis\derivator\default_derivator.h" />
     <ClInclude Include="analysis\derivator\derivator.h" />
     <ClInclude Include="analysis\derivator\two_way_derivator.h" />
@@ -187,6 +188,8 @@
     <ClInclude Include="analysis\structure\function\inner_product.h" />
     <ClInclude Include="analysis\structure\function\metric.h" />
     <ClInclude Include="analysis\structure\function\norm.h" />
+    <ClInclude Include="analysis\integral_transform.h" />
+    <ClInclude Include="analysis\transforms.h" />
     <ClInclude Include="complex.h" />
     <ClInclude Include="absalg\field.h" />
     <ClInclude Include="linalg\eigen.h" />

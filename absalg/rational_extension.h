@@ -2,17 +2,22 @@
 #include "field.h"
 #include <iostream>
 #include <real_field.h>
+#include <type_traits>
 
 namespace math_rz
 {
+	template<typename R>
+	concept is_integer = std::is_same_v<integer, R>;
 	template <typename R>
 	class rational_extension : public field
 	{
 	public:
-		rational_extension(const R& _p) :rational_extension(_p, 1) {}
-		rational_extension(const R &_p,const  R& _q) :p(_p), q(_q) { reduce(); }
-		rational_extension(int _p = 0, int _q = 1) :p(_p), q(_q) {}
-
+		
+		rational_extension(const R &_p,const  R& _q=1)  
+			:p(_p), q(_q) { reduce(); }
+		
+		rational_extension(int _p=0, int _q=1) :p(_p), q(_q) {}
+		
 		bool operator!=(const rational_extension& s) const
 		{
 			return (s.p != p) || (s.q != q);
@@ -21,14 +26,12 @@ namespace math_rz
 		{
 			return !(*this != s);
 		}
-		inline static rational_extension _0()
+		
+		rational_extension inv() const
 		{
-			return rational_extension();
+			return rational_extension(q, p);
 		}
-		inline static rational_extension _1()
-		{
-			return rational_extension(R::_1());
-		}
+
 		const R& nominator() const
 		{
 			return p;

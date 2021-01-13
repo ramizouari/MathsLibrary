@@ -5,7 +5,7 @@
 * This is a 
 */
 
-namespace math_rz {
+namespace math_rz::analysis {
 	template<typename F,int p=2>
 	class double_integrator :public integrator <Lp_finite_dimensional_space< real_field,p,2>,F>
 	{

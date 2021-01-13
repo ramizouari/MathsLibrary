@@ -3,7 +3,7 @@
 #include "analysis/normed_finite_dimensional_space.h"
 
 
-namespace math_rz {
+namespace math_rz::analysis {
 	template<typename F, int p = 2>
 	class triple_integrator :public integrator <Lp_finite_dimensional_space< real_field, p, 3>, F>
 	{

@@ -1,15 +1,14 @@
 #pragma once
-#include <random>
 #include "square_matrix.h"
 #include "analysis/finite_dimensional_inner_product_space.h"
 #include "prob/uniform_real_generator.h"
-namespace math_rz
+namespace math_rz::linalg
 {
-	template<typename K,int n>
+	template<typename K,int n> requires vector_space_constraint::normed_vector_space<K>
 	K largest_eig(const square_matrix<K, n>& M,const real_field &eps=1e-5)
 	{
 		uniform_real_generator dist(-1, 1,1000);
-		Lp_finite_dimensional_space<K,2, n> u,v,w;
+		analysis::Lp_finite_dimensional_space<K,2, n> u,v,w;
 		for (int i = 0; i < n; i++)
 			u[i] = dist.generate();
 		v = M * u;
@@ -30,7 +29,7 @@ namespace math_rz
 			return 0;
 		return (M*v)[k]/v[k];
 	}
-	template<typename K,int n,int m>
+	template<typename K,int n,int m> requires vector_space_constraint::normed_vector_space<K>
 	real_field largest_sing(const matrix<K, n,m>& M, const real_field& eps = 1e-5)
 	{
 		return std::sqrt(static_cast<real_field>(largest_eig(square_matrix<K,n>(M.conj_transpose()*M))));

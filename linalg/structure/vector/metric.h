@@ -1,7 +1,7 @@
 #pragma once
 #include "real_field.h"
 
-namespace math_rz
+namespace math_rz::linalg
 {
 	template<typename K,int n>
 	class finite_dimensional_vector_space;
@@ -16,7 +16,7 @@ namespace math_rz::linalg::structure::vector
 	class metric_topology
 	{
 	protected:
-		using vector_type =math_rz::finite_dimensional_vector_space<K, n>;
+		using vector_type =math_rz::linalg::finite_dimensional_vector_space<K, n>;
 	public:
 		virtual real_field metric(const vector_type& p, const vector_type& q) const = 0;
 		real_field distance(const vector_type& p, const vector_type& q) const

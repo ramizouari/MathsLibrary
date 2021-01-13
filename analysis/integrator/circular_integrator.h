@@ -4,7 +4,7 @@
 #include <numbers>
 #include "complex.h"
 
-namespace math_rz {
+namespace math_rz::analysis {
 
 	template<typename F >
 	class complex_circular_integrator :public  special_integrator<complex, F,real_field,F>

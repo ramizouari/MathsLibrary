@@ -6,9 +6,46 @@
 #include <algorithm>
 #include "complex.h"
 #include "structure/vector/inner_product.h"
+#include <concepts>
 
-namespace math_rz
+namespace math_rz::linalg
 {
+	namespace vector_space_constraint
+	{
+		template<typename K, int n, typename M>
+		concept is_vector = std::is_base_of_v<finite_dimensional_vector_space<K, n>, M>;
+
+		template<typename M>
+		concept vector_space = requires
+		{
+			typename M::base_field;
+			M::dimension;
+		};
+
+		template<typename E>
+		concept normed_vector_space = vector_space<E> && requires(const E & u)
+		{
+			u.norm();
+		};
+
+		template<typename H>
+		concept inner_product_space = normed_vector_space<H> && requires(const H & u, const H & v)
+		{
+			u.inner_product(v);
+		};
+
+
+		template<typename E, typename F>
+		concept vector_space_over_same_base_field =
+			vector_space<E> && vector_space<F> &&
+			std::is_same<typename E::base_field, typename F::base_field>::value;
+
+		template<typename E, typename F>
+		concept isomorpthic_vector_spaces = vector_space_over_same_base_field<E, F> && (E::dimension == F::dimension);
+
+		template<vector_space E, vector_space F> requires vector_space_over_same_base_field<E, F>
+			using product_space = finite_dimensional_vector_space<typename E::base_field, E::dimension + F::dimension>;
+	}
 	template<typename K,int n,int m>
 	class matrix;
 	template<typename K, int n>
@@ -33,10 +70,24 @@ namespace math_rz
 		finite_dimensional_vector_space() :u(n) {}
 		inline constexpr static int dimension = n;
 		using base_field = K;
-		static finite_dimensional_vector_space _0()
+
+		/*
+		* Construct a vector from two vectors
+		*/
+		template<vector_space_constraint::vector_space E1, vector_space_constraint::vector_space E2>
+		finite_dimensional_vector_space(const E1& u1, const E2& u2) requires vector_space_constraint::vector_space_over_same_base_field<E1,E2>
+			&& std::is_same_v<typename E1::base_field,K> && (E1::dimension+ E2::dimension ==n)
 		{
-			return finite_dimensional_vector_space();
+			if constexpr (E1::dimension > 1) for (const auto& w : u1.get_vect())
+				u.push_back(w);
+			else u.push_back(u1);
+			if constexpr (E2::dimension > 1) for (const auto& w : u2.get_vect())
+				u.push_back(w);
+			else u.push_back(u2);
+
 		}
+
+
 		finite_dimensional_vector_space& operator+=(const finite_dimensional_vector_space& o)
 		{
 			for (int i = 0; i < n; i++)
@@ -84,7 +135,7 @@ namespace math_rz
 			return p;
 		}
 
-		finite_dimensional_vector_space conj() const requires field_constraints::is_complex<K>
+		finite_dimensional_vector_space conj() const requires field_constraints::field_with_conj<K>
 		{
 			finite_dimensional_vector_space w = (*this);
 			for (auto& s : w.u)
@@ -177,7 +228,9 @@ namespace math_rz
 
 		inline static std::unique_ptr<structure_type> structure_ptr =
 			std::unique_ptr<structure_type>
-			(new math_rz::linalg::structure::vector::L2_vect_inner_product<K, n>);
+			(new std::conditional_t<field_constraints::field_with_abs<K>,
+				math_rz::linalg::structure::vector::L2_vect_inner_product<K, n>,
+				math_rz::linalg::structure::vector::hamming_metric<K, n>>);
 	};
 	template <typename K, int n>
 	using coordinate_space = finite_dimensional_vector_space<K, n>;
@@ -253,27 +306,5 @@ namespace math_rz
 			if (i == n - 1) H << p.at(i) << " )";
 			else H << p.at(i) << ", ";
 		return H;
-	}
-
-	namespace vector_space_constraint
-	{
-		template<typename K, int n, typename M>
-		concept is_vector = std::is_base_of_v<finite_dimensional_vector_space<K, n>, M>;
-
-		template<typename M>
-		concept vector_space = requires 
-		{
-			typename M::base_field;
-			M::dimension;
-		};
-
-		template<typename E, typename K>
-		concept vector_space_over_same_base_field = 
-			vector_space<E> && vector_space<K>&&
-			std::is_same<typename E::base_field,typename K::base_field>::value;
-
-		template<typename E,typename K>
-		concept isomorpthic_vector_spaces = vector_space_over_same_base_field<E, K> && (E::dimension == K::dimension);
-
 	}
 }

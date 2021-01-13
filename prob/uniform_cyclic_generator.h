@@ -28,18 +28,18 @@ namespace math_rz
 		}
 
 		template<int n>
-		coordinate_space<cyclic<p, is_field>, n> generate_vector()
+		linalg::coordinate_space<cyclic<p, is_field>, n> generate_vector()
 		{
-			coordinate_space<cyclic<p, is_field>, n> X;
+			linalg::coordinate_space<cyclic<p, is_field>, n> X;
 			for (int i = 0; i < n; i++)
 				X[i] = generate();
 			return X;
 		}
 
 		template<int n, int m>
-		matrix<cyclic<p, is_field>, n, m> generate_matrix()
+		linalg::matrix<cyclic<p, is_field>, n, m> generate_matrix()
 		{
-			matrix<cyclic<p, is_field>, n, m> X;
+			linalg::matrix<cyclic<p, is_field>, n, m> X;
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < m; j++)
 					X[i][j] = generate();
@@ -47,7 +47,7 @@ namespace math_rz
 		}
 
 		template<int n>
-		square_matrix<cyclic<p, is_field>, n> generate_matrix()
+		linalg::square_matrix<cyclic<p, is_field>, n> generate_matrix()
 		{
 			return generate_matrix<n, n>();
 		}

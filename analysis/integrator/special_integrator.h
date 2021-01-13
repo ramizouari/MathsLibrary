@@ -1,6 +1,6 @@
 #pragma once
 #include "integrator.h"
-namespace math_rz
+namespace math_rz::analysis
 {
 	/*
 	* This class is the base class of "special" integrals

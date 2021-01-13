@@ -39,10 +39,10 @@ namespace math_rz::poly::structure
 	template<typename K>
 	class L2_function_inner_product :public inner_product_topology<K>
 	{
-		std::shared_ptr<integrator<K, K>> I_ptr;
+		std::shared_ptr<analysis::integrator<K, K>> I_ptr;
 	public:
-		L2_function_inner_product(std::shared_ptr<integrator<K, K>> _I_ptr) :I_ptr(_I_ptr) {}
-		L2_function_inner_product(integrator<K, K>* _I_ptr) :I_ptr(_I_ptr) {}
+		L2_function_inner_product(std::shared_ptr<analysis::integrator<K, K>> _I_ptr) :I_ptr(_I_ptr) {}
+		L2_function_inner_product(analysis::integrator<K, K>* _I_ptr) :I_ptr(_I_ptr) {}
 		K inner_product(const polynomial<K>& p, const polynomial<K>& q) const
 		{
 			return I_ptr->integrate

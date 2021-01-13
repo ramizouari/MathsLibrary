@@ -36,15 +36,15 @@ namespace math_rz::poly::structure
 	template<typename K>
 	class L1_function_norm :public norm_topology<K>
 	{
-		std::shared_ptr<integrator<K, real_field>> I_ptr;
+		std::shared_ptr<analysis::integrator<K, real_field>> I_ptr;
 	public:
-		L1_function_norm(std::shared_ptr<integrator<K,real_field>> _I_ptr) :I_ptr(_I_ptr) {}
-		L1_function_norm(integrator<K, real_field>* _I_ptr) :I_ptr(_I_ptr) {}
+		L1_function_norm(std::shared_ptr<analysis::integrator<K,real_field>> _I_ptr) :I_ptr(_I_ptr) {}
+		L1_function_norm(analysis::integrator<K, real_field>* _I_ptr) :I_ptr(_I_ptr) {}
 		real_field norm(const polynomial<K>& f) const
 		{
 			return I_ptr->integrate
 			(
-				general_function<K, real_field>([&](const K& u)->K
+				analysis::general_function<K, real_field>([&](const K& u)->K
 					{
 						return f(u).abs();
 					})
@@ -56,10 +56,10 @@ namespace math_rz::poly::structure
 	class Lp_function_norm :public norm_topology<K>
 	{
 		real_field p;
-		std::shared_ptr<integrator<K, real_field>> I_ptr;
+		std::shared_ptr<analysis::integrator<K, real_field>> I_ptr;
 	public:
-		Lp_function_norm(real_field _p,std::shared_ptr<integrator<K, real_field>> _I_ptr) :I_ptr(_I_ptr), p(_p) {}
-		Lp_function_norm(real_field _p,integrator<K, real_field>* _I_ptr) :I_ptr(_I_ptr), p(_p) {}
+		Lp_function_norm(real_field _p,std::shared_ptr<analysis::integrator<K, real_field>> _I_ptr) :I_ptr(_I_ptr), p(_p) {}
+		Lp_function_norm(real_field _p,analysis::integrator<K, real_field>* _I_ptr) :I_ptr(_I_ptr), p(_p) {}
 
 		real_field norm(const polynomial<K>& f) const
 		{
@@ -67,7 +67,7 @@ namespace math_rz::poly::structure
 			if (p<inf)
 				return std::pow(I_ptr->integrate
 				(
-					general_function<K, real_field>([&](const K& u)->real_field
+					analysis::general_function<K, real_field>([&](const K& u)->real_field
 						{
 							return std::pow(f(u).abs(),p);
 						})

@@ -1,6 +1,6 @@
 #pragma once
 #include "real_field.h"
-namespace math_rz
+namespace math_rz::linalg
 {
 	template<typename K,int n,int m>
 	class matrix;
@@ -12,7 +12,7 @@ namespace math_rz::linalg::structure::matrix
 	{
 	protected:
 	public:
-		using matrix_type = math_rz::matrix<K, n, m>;
+		using matrix_type = math_rz::linalg::matrix<K, n, m>;
 		virtual real_field metric(const matrix_type& p, const matrix_type& q) const = 0;
 		real_field distance(const matrix_type& p, const matrix_type& q) const
 		{
@@ -24,7 +24,7 @@ namespace math_rz::linalg::structure::matrix
 	class discrete_metric :public metric_topology<K,n,m>
 	{
 	public:
-		using matrix_type = math_rz::matrix<K, n, m>;
+		using matrix_type = math_rz::linalg::matrix<K, n, m>;
 		real_field metric(const matrix_type& p, const matrix_type& q) const
 		{
 			return p == q ? 1 : 0;

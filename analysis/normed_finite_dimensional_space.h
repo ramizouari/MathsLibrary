@@ -5,24 +5,24 @@
 #include <iterator>
 #include "linalg/matrix.h"
 
-namespace math_rz
+namespace math_rz::analysis
 {
 	template<field_constraints::has_abs K, int p, int n >
 	class Lp_finite_dimensional_space : virtual public normed_space<K>,
-		virtual public finite_dimensional_vector_space<K, n>
+		virtual public linalg::finite_dimensional_vector_space<K, n>
 	{
 	public:
-		using finite_dimensional_vector_space < K, n>::finite_dimensional_vector_space;
+		using linalg::finite_dimensional_vector_space < K, n>::finite_dimensional_vector_space;
 
 
 
-		Lp_finite_dimensional_space(const finite_dimensional_vector_space<K, n>& a) :
-			finite_dimensional_vector_space<K, n>(a)
+		Lp_finite_dimensional_space(const linalg::finite_dimensional_vector_space<K, n>& a) :
+			linalg::finite_dimensional_vector_space<K, n>(a)
 		{
 		}
 
-		Lp_finite_dimensional_space(finite_dimensional_vector_space<K, n>&& a) :
-			finite_dimensional_vector_space<K, n>(std::move(a))
+		Lp_finite_dimensional_space(linalg::finite_dimensional_vector_space<K, n>&& a) :
+			linalg::finite_dimensional_vector_space<K, n>(std::move(a))
 		{
 		}
 		real_field norm() const override
@@ -40,20 +40,20 @@ namespace math_rz
 
 	template<field_constraints::has_abs K, int n>
 	class Linf_finite_dimensional_space : virtual public normed_space<K>,
-		virtual public finite_dimensional_vector_space<K, n>
+		virtual public linalg::finite_dimensional_vector_space<K, n>
 	{
 	public:
-		using finite_dimensional_vector_space < K, n>::finite_dimensional_vector_space;
+		using linalg::finite_dimensional_vector_space < K, n>::finite_dimensional_vector_space;
 
 
 
-		Linf_finite_dimensional_space(const finite_dimensional_vector_space<K, n>& a) :
-			finite_dimensional_vector_space<K, n>(a)
+		Linf_finite_dimensional_space(const linalg::finite_dimensional_vector_space<K, n>& a) :
+			linalg::finite_dimensional_vector_space<K, n>(a)
 		{
 		}
 
-		Linf_finite_dimensional_space(finite_dimensional_vector_space<K, n>&& a) :
-			finite_dimensional_vector_space<K, n>(std::move(a))
+		Linf_finite_dimensional_space(linalg::finite_dimensional_vector_space<K, n>&& a) :
+			linalg::finite_dimensional_vector_space<K, n>(std::move(a))
 		{
 		}
 		real_field norm() const override
@@ -68,7 +68,7 @@ namespace math_rz
 	concept multi_dimensional = k > 1;
 
 	template <typename K, int n, int m> requires multi_dimensional<n>
-	Linf_finite_dimensional_space<K, n> operator*(const matrix<K, n, m>& A, const Linf_finite_dimensional_space<K, m>& u)
+	Linf_finite_dimensional_space<K, n> operator*(const linalg::matrix<K, n, m>& A, const Linf_finite_dimensional_space<K, m>& u)
 	{
 		Linf_finite_dimensional_space<K, n> v;
 		for (int i = 0; i < n; i++)
@@ -78,7 +78,7 @@ namespace math_rz
 	}
 
 	template <typename K, int p, int n, int m>requires multi_dimensional<n>
-	Lp_finite_dimensional_space<K, p, n> operator*(const matrix<K, n, m>& A,
+	Lp_finite_dimensional_space<K, p, n> operator*(const linalg::matrix<K, n, m>& A,
 		const Lp_finite_dimensional_space<K, p, m>& u)
 	{
 		Lp_finite_dimensional_space<K, p, n> v;
@@ -126,6 +126,9 @@ namespace math_rz
 
 		template<typename K, int p, int n >
 		using Lp_space = Lp_finite_dimensional_space<K, p, n>;
+
+		template<typename K,int n>
+		using Linf_space = Linf_finite_dimensional_space<K, n>;
 
 	}
 }

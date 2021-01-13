@@ -2,7 +2,7 @@
 #include "linalg/vector_space.h"
 #include "real_field.h"
 
-namespace math_rz {
+namespace math_rz::analysis {
 	template<typename K>
 	class normed_space : public vector_space<K>
 	{

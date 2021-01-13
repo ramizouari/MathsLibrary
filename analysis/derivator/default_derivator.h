@@ -1,7 +1,7 @@
 #pragma once
 #include "derivator.h"
 
-namespace math_rz
+namespace math_rz::analysis
 {
 
 	/*
@@ -9,7 +9,7 @@ namespace math_rz
 	*/
 	template<typename E1,
 		typename E2>
-		requires vector_space_constraint::vector_space_over_same_base_field<E1,E2>
+		requires linalg::vector_space_constraint::vector_space_over_same_base_field<E1,E2>
 		class default_derivator : public derivator<E1, E2>
 	{
 	private:

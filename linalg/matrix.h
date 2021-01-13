@@ -4,7 +4,7 @@
 #include "linalg/structure/matrix/inner_product.h"
 
 
-namespace math_rz {
+namespace math_rz::linalg {
 	template<typename K, int n, int m>
 	class matrix: virtual public group
 	{
@@ -30,6 +30,15 @@ namespace math_rz {
 				if (v.size() != m)
 					throw std::domain_error("Dimensions are not compatible");
 		}
+
+		template<typename H>
+		matrix(const matrix<H,n,m>& M) :
+			u(n,std::vector<K>(m))
+		{
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < m; j++)
+					u[i][j] = H(M[i][j]);
+		}
 		constexpr static int dimension = n * m;
 		constexpr static int domain_dimension = m;
 		constexpr static int codomain_dimension = n;
@@ -43,6 +52,10 @@ namespace math_rz {
 					T[j][i] = this->at(i).at(j);
 			return T;
 		}
+		matrix<K, m, n> T() const
+		{
+			return transpose();
+		}
 
 		matrix<K, m, n> conj_transpose() const
 		{
@@ -51,6 +64,15 @@ namespace math_rz {
 				for (int j = 0; j < m; j++)
 					T[j][i] = this->at(i).at(j).conj();
 			return T;
+		}
+		matrix<K, m, n> H() const
+		{
+			return conj_transpose();
+		}
+
+		matrix<K, m, n> hermitian_transpose() const
+		{
+			return conj_transpose();
 		}
 
 		matrix<K, m, n> conj() const
@@ -170,7 +192,7 @@ namespace math_rz {
 				}
 				for (int j = i + 1; j < n; j++)
 				{
-					K&& r = P[j][p] / P[i][p];
+					K r = P[j][p] / P[i][p];
 					for (int k = p; k < m; k++)
 						P[j][k] = P[j][k] - r * P[i][k];
 				}
@@ -251,9 +273,17 @@ namespace math_rz {
 		//boost::multi_array<K,2> u;
 		//using structure_type = math_rz::linalg::structure::matrix::L22_operator_norm;
 		std::vector<std::vector<K>> u;
+
+		/*
+		* This variable gives the analytical structure of the matrix
+		* If the underlying field has a norm, use the L22 operator norm
+		* else use the hamming metric
+		*/
 		inline static std::unique_ptr<structure_type> structure_ptr =
 			std::unique_ptr<structure_type>
-			(new math_rz::linalg::structure::matrix::L22_operator_norm<K,n,m>);
+			(new std::conditional_t< vector_space_constraint::normed_vector_space<K>,
+				math_rz::linalg::structure::matrix::L22_operator_norm<K,n,m>,
+				math_rz::linalg::structure::matrix::hamming_metric<K,n,m>>);
 	};
 
 	namespace matrix_constraint {

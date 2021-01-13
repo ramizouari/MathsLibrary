@@ -30,17 +30,17 @@ namespace math_rz
 		}
 
 		template<int n>
-		coordinate_space<complex, n> generate_vector()
+		linalg::coordinate_space<complex, n> generate_vector()
 		{
-			coordinate_space<complex, n> X;
+			linalg::coordinate_space<complex, n> X;
 			for (int i = 0; i < n; i++)
 				X[i] = generate();
 		}
 
 		template<int n, int m>
-		matrix<complex, n, m> generate_matrix()
+		linalg::matrix<complex, n, m> generate_matrix()
 		{
-			matrix<complex, n, m> X;
+			linalg::matrix<complex, n, m> X;
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < m; j++)
 					X[i][j] = generate();
@@ -48,7 +48,7 @@ namespace math_rz
 		}
 
 		template<int n>
-		square_matrix<complex, n> generate_matrix()
+		linalg::square_matrix<complex, n> generate_matrix()
 		{
 			return generate_matrix<n, n>();
 		}

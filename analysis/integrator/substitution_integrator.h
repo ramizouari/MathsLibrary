@@ -6,7 +6,7 @@
 #include "special_integrator.h"
 #include "analysis/derivator/derivator.h"
 
-namespace math_rz
+namespace math_rz::analysis
 {
 	/*
 	* This class is used for a change of variable when integrating multivariable function

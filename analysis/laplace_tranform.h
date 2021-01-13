@@ -6,7 +6,7 @@
 #include "general_function.h"
 #include "integrator/integrator.h"
 
-namespace math_rz
+namespace math_rz::analysis
 {
 	using complex_function_space = function<complex, complex>;
 	class laplace_transform : public function<complex_function_space, general_function<complex, complex>>

@@ -1,6 +1,6 @@
 #pragma once
 #include "polynomial.h"
-namespace math_rz
+namespace math_rz::poly
 {
 	template<typename K>
 	polynomial<K> lagrange_basis_vector(const std::vector<K>& x,int k)

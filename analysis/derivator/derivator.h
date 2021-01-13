@@ -32,10 +32,10 @@
 * The method returns a 1x1 matrix, there is a derivative method which converts the 1x1 matrix to a scalar
 */
 
-namespace math_rz {
+namespace math_rz::analysis {
 
 	template<typename E1, typename E2> 
-	requires vector_space_constraint::vector_space_over_same_base_field<E1,E2>
+	requires linalg::vector_space_constraint::vector_space_over_same_base_field<E1,E2>
 	class derivator
 	{
 	public:
@@ -43,8 +43,8 @@ namespace math_rz {
 		inline static constexpr int codomain_dimension = E2::dimension;
 		using base_field = typename E1::base_field;
 		using matrix_type = std::conditional_t<domain_dimension == codomain_dimension,
-			square_matrix<base_field, codomain_dimension>, 
-			matrix<base_field,codomain_dimension, domain_dimension>>;
+			linalg::square_matrix<base_field, codomain_dimension>, 
+			linalg::matrix<base_field,codomain_dimension, domain_dimension>>;
 
 		virtual matrix_type jacobian(const function<E1, E2>& f,const E1& x0) const = 0;
 		base_field jacobian_det(const function<E1, E2>& f, const E1& x0) const 

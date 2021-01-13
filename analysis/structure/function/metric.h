@@ -1,7 +1,7 @@
 #pragma once
 #include "real_field.h"
 
-namespace math_rz
+namespace math_rz::analysis
 {
 	template<typename A,typename B>
 	class function;
@@ -12,7 +12,7 @@ namespace math_rz::analysis::structure::function
 	class metric_topology
 	{
 	protected:
-		using function_type = math_rz::function<A, B>;
+		using function_type = math_rz::analysis::function<A, B>;
 	public:
 		virtual real_field metric(const function_type& p, const function_type& q) const = 0;
 		real_field distance(const function_type& p, const function_type& q) const

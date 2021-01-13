@@ -5,7 +5,7 @@
 #include "analysis/finite_dimensional_inner_product_space.h"
 #include "linalg/multiplicator/cross_product.h"
 
-namespace math_rz
+namespace math_rz::analysis
 {
 	template<typename E, typename F>
 	class surface_integrator : public special_integrator<E, F, 

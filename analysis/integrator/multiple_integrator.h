@@ -4,7 +4,7 @@
 #include "analysis/normed_finite_dimensional_space.h"
 #include <deque>
 
-namespace math_rz {
+namespace math_rz::analysis {
 	/*
 	* This class is for integration of high dimensional (n>=2) Lp spaces
 	* In pratice, due to exponential complexity, we advice that n<=10
