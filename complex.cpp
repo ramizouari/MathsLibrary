@@ -47,6 +47,11 @@ complex math_rz::complex::inner_product(const complex& z) const
     return (*this) * z.conj();
 }
 
+complex math_rz::complex::inv() const
+{
+    return 1_c/(*this);
+}
+
 real_field math_rz::complex::norm() const
 {
     return abs();
@@ -102,11 +107,12 @@ complex math_rz::operator""_c(unsigned long long a)
     return complex(a,0);
 }
 
-complex math_rz::operator*(int a, const complex& s)
+/*complex math_rz::operator*(int a, const complex& s)
 {
     auto w = s;
     return w *= a;
-}
+}*/
+
 
 /*complex math_rz::operator*(double a, const complex& s)
 {
@@ -120,10 +126,16 @@ complex math_rz::operator*(long double a, const complex& s)
     return w *= a;
 }*/
 
-complex math_rz::operator*(const complex& s,int a)
+/*complex math_rz::operator*(const complex& s,int a)
 {
     return a * s;
-}
+}*/
+
+/*complex math_rz::operator*(const complex& s, const complex& a)
+{
+    complex w = s;
+    return w.std::complex<real_field>::operator*=(a);
+}*/
 
 
 complex operator""_c(long double a)

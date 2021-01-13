@@ -1,133 +1,74 @@
 #pragma once
 #include "derivator.h"
 
-namespace math_rz
+namespace math_rz::analysis
 {
 
 	/*
 	* General Case:
 	*/
-	template<typename F, int m, int n,
-		typename E1,
+	template<typename E1,
 		typename E2>
-		class two_way_derivator : public derivator<F, m, n, E1, E2>
+		requires linalg::vector_space_constraint::vector_space_over_same_base_field<E1, E2>
+		class two_way_derivator : public derivator<E1, E2>
 	{
-	public:
-		two_way_derivator(E1 p0, F _eps) :derivator<F, m, n, E1, E2>(p0), eps(_eps) {}
-
-		matrix<F, n, m> jacobian(const function<E1, E2>& f) const override
-		{
-			E1 s = this->x0,t=s;
-			matrix<F, n, m> M;
-			for (int i = 0; i < m; i++)
-			{
-				s[i] += eps;
-				t[i] -= eps;
-				F k = F(.5) / eps;
-				E2 h = k * (f(s) - f(t));
-				s[i] -= eps;
-				t[i] += eps;
-				for (int j = 0; j < n; j++)
-					M[j][i] = h[j];
-
-
-			}
-			return M;
-		}
-
 	private:
-		F eps;
-	};
-
-	/*
-	* When the two spaces are isomorphic (have the same dimension)
-	*/
-
-	template<typename F, int n,
-		typename E1,
-		typename E2>
-		class two_way_derivator<F, n, n, E1, E2> : public derivator<F, n, n, E1, E2>
-	{
+		using F = typename derivator<E1, E2>::base_field;
+		static inline constexpr int n = derivator<E1, E2>::codomain_dimension;
+		static inline constexpr int m = derivator<E1, E2>::domain_dimension;
 	public:
-		two_way_derivator(E1 p0, F _eps) :derivator<F, n, n, E1, E2>(p0), eps(_eps) {}
+		two_way_derivator(F _eps) :eps(_eps) {}
 
-		square_matrix<F, n> jacobian(const function<E1, E2>& f) const override
+		derivator<E1, E2>::matrix_type jacobian(const function<E1, E2>& f, const E1& x0) const override
 		{
-			E1 s = this->x0,t=s;
-			square_matrix<F, n> M;
-			for (int i = 0; i < n; i++)
-			{
-				s[i] += eps;
-				t[i] -= eps;
-				F k = F(.5) / eps;
-				E2 h = k * (f(s) - f(t));
-				s[i] -= eps;
-				t[i] += eps;
-				for (int j = 0; j < n; j++)
-					M[j][i] = h[j];
-
-
-			}
-			return M;
-		}
-
-	private:
-		F eps;
-	};
-
-	/*
-	* When the domain is the base field
-	*/
-	template<typename F, int n,
-		typename E2>
-		class two_way_derivator<F, 1, n, F, E2> : public derivator<F, 1, n, F, E2>
-	{
-	public:
-		two_way_derivator(F p0, F _eps) :derivator<F, 1, n, F, E2>(p0), eps(_eps) {}
-
-		matrix<F, n, 1> jacobian(const function<F, E2>& f) const override
-		{
-			F s = this->x0,t=s;
-			matrix < F, n, 1 > M;
-			s += eps;
-			t -= eps;
+			E1 s1 = x0,s2=x0;
+			typename derivator<E1, E2>::matrix_type M;
 			F k = F(.5) / eps;
-			E2 h = k * (f(s) - f(t));
-			for (int j = 0; j < n; j++)
-				M[j][0] = h[j];
-			return M;
-		}
-
-	private:
-		F eps;
-	};
-
-
-	/*
-	* When the co-domain is the field F
-	*/
-	template<typename F, int m,
-		typename E1>
-		class two_way_derivator < F, m, 1, E1, F> : public derivator<F, m, 1, E1, F>
-	{
-	public:
-		two_way_derivator(E1 p0, F _eps) :derivator<F, m, 1, E1, F>(p0), eps(_eps) {}
-
-		matrix<F, 1, m> jacobian(const function<E1, F>& f) const override
-		{
-			E1 s = this->x0,t=s;
-			matrix<F, 1, m> M;
-			for (int i = 0; i < m; i++)
+			if constexpr (derivator<E1, E2>::domain_dimension > 1 &&
+				derivator<E1, E2>::codomain_dimension > 1)
 			{
-				s[i] += eps;
-				t[i] -= eps;
-				F k = F(.5) / eps;
-				F h = k * (f(s) - f(t));
-				s[i] -= eps;
-				t[i] += eps;
-				M[0][i] = h;
+				for (int i = 0; i < m; i++)
+				{
+					s1[i] += eps;
+					s2[i] -= eps;
+					E2 h = k * (f(s1) - f(s2));
+					s1[i] -= eps;
+					s2[i] += eps;
+					for (int j = 0; j < n; j++)
+						M[j][i] = h[j];
 
-
+				}
+			}
+			else if constexpr (derivator<E1, E2>::codomain_dimension > 1)
+			{
+				s1 += eps;
+				s2 -= eps;
+				E2 h = k * (f(s1) - f(s2));
+				s1 -= eps;
+				s2 += eps;
+				for (int j = 0; j < n; j++)
+					M[j][0] = h[j];
+			}
+			else if constexpr (derivator<E1, E2>::domain_dimension > 1)
+			{
+				for (int i = 0; i < m; i++)
+				{
+					s1[i] += eps;
+					s2[i] -= eps;
+					E2 h = k * (f(s1) - f(s2));
+					s1[i] -= eps;
+					s2[i] += eps;
+					M[0][i] = h;
+				}
+			}
+			else
+			{
+				s1 += eps;
+				s2 -= eps;
+				E2 h = k * (f(s1) - f(s2));
+				s1 -= eps;
+				s2 += eps;
+				M[0][0] = h;
 			}
 			return M;
 		}
@@ -136,30 +77,5 @@ namespace math_rz
 		F eps;
 	};
 
-	/*
-	* When both the domain and the co-domain are one dimensional
-	*/
-
-	template<typename F>
-	class two_way_derivator<F, 1, 1, F, F> : public derivator<F, 1, 1, F, F>
-	{
-	public:
-		two_way_derivator(F p0, F _eps) :derivator<F, 1, 1, F, F>(p0), eps(_eps) {}
-
-		square_matrix<F, 1> jacobian(const function<F, F>& f) const override
-		{
-			F s = this->x0,t=s;
-			matrix < F, 1, 1 > M;
-			s += eps;
-			t -= eps;
-			F k = F(.5) / eps;
-			F h = k * (f(s) - f(t));
-			M[0][0] = h;
-			return M;
-		}
-
-	private:
-		F eps;
-	};
 
 }

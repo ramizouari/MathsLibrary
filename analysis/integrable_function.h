@@ -3,7 +3,7 @@
 #include "real_field.h"
 #include "integrator/integrator.h"
 
-namespace math_rz {
+namespace math_rz::analysis {
 	template<typename F>
 	class curve :public function<real_field, F>
 	{

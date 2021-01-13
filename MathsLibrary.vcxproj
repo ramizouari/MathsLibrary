@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="absalg\cyclic.h" />
     <ClInclude Include="absalg\ring_extension.h" />
+    <ClInclude Include="absalg\structure\abs.h" />
     <ClInclude Include="analysis\derivator\default_derivator.h" />
     <ClInclude Include="analysis\derivator\derivator.h" />
     <ClInclude Include="analysis\derivator\two_way_derivator.h" />
@@ -174,6 +175,9 @@
     <ClInclude Include="analysis\integrator\simpson_integrator.h" />
     <ClInclude Include="analysis\integrator\special_integrator.h" />
     <ClInclude Include="analysis\integrator\spherical_integrator.h" />
+    <ClInclude Include="analysis\integrator\stieltjes_integrator.h" />
+    <ClInclude Include="analysis\integrator\substitution_integrator.h" />
+    <ClInclude Include="analysis\integrator\surface_integrator.h" />
     <ClInclude Include="analysis\integrator\trapezoidal_integrator.h" />
     <ClInclude Include="analysis\integrator\triple_integrator.h" />
     <ClInclude Include="analysis\laplace_tranform.h" />
@@ -181,6 +185,11 @@
     <ClInclude Include="analysis\normed_space.h" />
     <ClInclude Include="analysis\sequence.h" />
     <ClInclude Include="analysis\special\special.h" />
+    <ClInclude Include="analysis\structure\function\inner_product.h" />
+    <ClInclude Include="analysis\structure\function\metric.h" />
+    <ClInclude Include="analysis\structure\function\norm.h" />
+    <ClInclude Include="analysis\integral_transform.h" />
+    <ClInclude Include="analysis\transforms.h" />
     <ClInclude Include="complex.h" />
     <ClInclude Include="absalg\field.h" />
     <ClInclude Include="linalg\eigen.h" />
@@ -191,7 +200,14 @@
     <ClInclude Include="integer.h" />
     <ClInclude Include="absalg\integral_ring.h" />
     <ClInclude Include="linalg\matrix_factory.h" />
+    <ClInclude Include="linalg\multiplicator\cross_product.h" />
     <ClInclude Include="linalg\multiplicator\multiplicator.h" />
+    <ClInclude Include="linalg\structure\matrix\inner_product.h" />
+    <ClInclude Include="linalg\structure\vector\metric.h" />
+    <ClInclude Include="linalg\structure\vector\norm.h" />
+    <ClInclude Include="linalg\structure\vector\inner_product.h" />
+    <ClInclude Include="linalg\structure\matrix\metric.h" />
+    <ClInclude Include="linalg\structure\matrix\norm.h" />
     <ClInclude Include="poly\free_algebra.h" />
     <ClInclude Include="linalg\abstract_module.h" />
     <ClInclude Include="linalg\matrix.h" />

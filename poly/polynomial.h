@@ -3,28 +3,29 @@
 #include "free_algebra.h"
 #include "absalg/integral_ring.h"
 #include "absalg/rational_extension.h"
-namespace math_rz {
-	namespace poly::structure
+namespace math_rz::poly {
+	namespace structure
 	{
 
-		template<typename F>
+		template<typename K>
 		class norm_topology;
-		template<typename F>
+		template<typename K>
 		class inner_product_topology;
 	}
-	template<typename F>
-	class polynomial :virtual public free_algebra<F>, virtual public integral_ring
+	template<typename K>
+	class polynomial :virtual public free_algebra<K>, virtual public integral_ring
 	{
 	public:
-		using free_algebra<F>::a;
-		using free_algebra<F>::structure_ptr;
+		using free_algebra<K>::a;
+		using free_algebra<K>::structure_ptr;
 		polynomial() {};
-		polynomial(const free_algebra<F>& p) :free_algebra<F>(p) {}
-		polynomial(free_algebra<F>&& p) :free_algebra<F>(std::move(p)) {}
-		polynomial(const std::vector<F>& p) :free_algebra<F>(p) {}
-		polynomial(std::vector<F>&& p) :free_algebra<F>(std::move(p)) {}
-		polynomial(const F& p) :free_algebra<F>(p) {}
-		polynomial(int c) :free_algebra<F>(c) {}
+		polynomial(const free_algebra<K>& p) :free_algebra<K>(p) {}
+		polynomial(free_algebra<K>&& p) :free_algebra<K>(std::move(p)) {}
+		polynomial(const std::vector<K>& p) :free_algebra<K>(p) {}
+		polynomial(std::vector<K>&& p) :free_algebra<K>(std::move(p)) {}
+		polynomial(const K& p) :free_algebra<K>(p) {}
+		polynomial(int c) :free_algebra<K>(c) {}
+		using base_field = K;
 		bool operator!=(const polynomial& p) const
 		{
 			if (p.degree() != this->degree())
@@ -40,11 +41,11 @@ namespace math_rz {
 		}
 		static polynomial _0()
 		{
-			return free_algebra<F>::_0();
+			return free_algebra<K>::_0();
 		}
 		static polynomial _1()
 		{
-			return free_algebra<F>::_1();
+			return free_algebra<K>::_1();
 		}
 
 		static std::pair<polynomial, polynomial> euclidean_division(const polynomial& p, const polynomial& q)
@@ -57,7 +58,7 @@ namespace math_rz {
 			s.a.resize(m - n + 1);
 			for (; m >= n; m--)
 			{
-				F k(r.a.at(m) / q.a.at(n));
+				K k(r.a.at(m) / q.a.at(n));
 				s.a.at(m - n) = k;
 				if (k.is_zero())
 				{
@@ -92,41 +93,41 @@ namespace math_rz {
 
 		polynomial operator-() const
 		{
-			return free_algebra<F>::operator-();
+			return free_algebra<K>::operator-();
 		}
 
 
 		polynomial& operator+=(const polynomial& p)
 		{
-			this->free_algebra<F>::operator+=(p);
+			this->free_algebra<K>::operator+=(p);
 			return *this;
 		}
 		polynomial& operator-=(const polynomial& p)
 		{
-			this->free_algebra<F>::operator-=(p);
+			this->free_algebra<K>::operator-=(p);
 			return *this;
 		}
 		polynomial& operator*=(const polynomial& p)
 		{
-			this->free_algebra<F>::operator*=(p);
+			this->free_algebra<K>::operator*=(p);
 			return *this;
 		}
-		polynomial& operator+=(const F& p)
+		polynomial& operator+=(const K& p)
 		{
-			this->free_algebra<F>::operator+=(p);
+			this->free_algebra<K>::operator+=(p);
 			return *this;
 		}
-		polynomial& operator-=(const F& p)
+		polynomial& operator-=(const K& p)
 		{
-			this->free_algebra<F>::operator-=(p);
+			this->free_algebra<K>::operator-=(p);
 			return *this;
 		}
-		polynomial& operator*=(const F& p)
+		polynomial& operator*=(const K& p)
 		{
-			this->free_algebra<F>::operator*=(p);
+			this->free_algebra<K>::operator*=(p);
 			return *this;
 		}
-		polynomial& operator/=(const F& p)
+		polynomial& operator/=(const K& p)
 		{
 			std::for_each(a.begin(), a.end(), [&p](auto& v) {v /= p; });
 			this->reduce();
@@ -145,14 +146,8 @@ namespace math_rz {
 			int n = this->degree();
 			p.a.resize(n);
 			for (int i = 1; i <= n; i++)
-				p.a[i - 1] = this->a[i]*F(i);
+				p.a[i - 1] = this->a[i]*K(i);
 			return p;
-		}
-
-		F inner_product(const polynomial& q) const
-		{
-			return dynamic_cast<poly::structure::inner_product_topology<F>*>
-				(structure_ptr.get())->inner_product(*this, q);
 		}
 
 		polynomial conj() const
@@ -165,98 +160,104 @@ namespace math_rz {
 
 		real_field norm() const
 		{
-			return dynamic_cast<poly::structure::norm_topology<F>*>
+			return dynamic_cast<poly::structure::norm_topology<K>*>
 				(structure_ptr.get())->norm(*this);
+		}
+
+		K inner_product(const polynomial& q) const
+		{
+			return dynamic_cast<poly::structure::inner_product_topology<K>*>
+				(structure_ptr.get())->inner_product(*this, q);
 		}
 		
 	};
 
-	template<typename F>
-	polynomial<F> operator+(const polynomial<F>& a, const polynomial<F>& b)
+	template<typename K>
+	polynomial<K> operator+(const polynomial<K>& a, const polynomial<K>& b)
 	{
-		polynomial<F> p(a);
+		polynomial<K> p(a);
 		return p += b;
 	}
 
 
-	template<typename F>
-	polynomial<F> operator-(const polynomial<F>& a, const polynomial<F>& b)
+	template<typename K>
+	polynomial<K> operator-(const polynomial<K>& a, const polynomial<K>& b)
 	{
-		polynomial<F> p(a);
+		polynomial<K> p(a);
 		return p -= b;
 	}
 
-	template<typename F>
-	polynomial<F> operator*(const polynomial<F>& a, const polynomial<F>& b)
+	template<typename K>
+	polynomial<K> operator*(const polynomial<K>& a, const polynomial<K>& b)
 	{
-		polynomial<F> p(a);
+		polynomial<K> p(a);
 		return p *= b;
 	}
 
-	template<typename F>
-	polynomial<F> operator+(const polynomial<F>& a, const F& b)
+	template<typename K>
+	polynomial<K> operator+(const polynomial<K>& a, const K& b)
 	{
-		polynomial<F> p(a);
+		polynomial<K> p(a);
 		return p += b;
 	}
 
-	template<typename F>
-	polynomial<F> operator/(const polynomial<F>& a, const F& b)
+	template<typename K>
+	polynomial<K> operator/(const polynomial<K>& a, const K& b)
 	{
-		polynomial<F> p(a);
+		polynomial<K> p(a);
 		return p /= b;
 	}
 
 
-	template<typename F>
-	polynomial<F> operator-(const polynomial<F>& a, const F& b)
+	template<typename K>
+	polynomial<K> operator-(const polynomial<K>& a, const K& b)
 	{
-		polynomial<F> p(a);
+		polynomial<K> p(a);
 		return p -= b;
 	}
 
-	template<typename F>
-	polynomial<F> operator*(const polynomial<F>& a, const F& b)
+	template<typename K>
+	polynomial<K> operator*(const polynomial<K>& a, const K& b)
 	{
-		polynomial<F> p(a);
+		polynomial<K> p(a);
 		return p *= b;
 	}
 
-	template<typename F>
-	polynomial<F> operator+(const F& b, const polynomial<F>& a)
+	template<typename K>
+	polynomial<K> operator+(const K& b, const polynomial<K>& a)
 	{
-		polynomial<F> p(a);
+		polynomial<K> p(a);
 		return p += b;
 	}
 
 
-	template<typename F>
-	polynomial<F> operator-(const F& b, const polynomial<F>& a)
+	template<typename K>
+	polynomial<K> operator-(const K& b, const polynomial<K>& a)
 	{
-		polynomial<F> p(a);
+		polynomial<K> p(a);
 		return p -= b;
 	}
 
-	template<typename F>
-	polynomial<F> operator*(const F& b, const polynomial<F>& a)
+	template<typename K>
+	polynomial<K> operator*(const K& b, const polynomial<K>& a)
 	{
-		polynomial<F> p(a);
+		polynomial<K> p(a);
 		return p *= b;
 	}
 
-	template <typename F>
-	using rational_function = rational_extension<polynomial<F>>;
+	template <typename K>
+	using rational_function = rational_extension<polynomial<K>>;
 
-	template<typename F>
-	std::pair<polynomial<F>, polynomial<F>> bezout(const polynomial<F>& a, const polynomial<F>& b)
+	template<typename K>
+	std::pair<polynomial<K>, polynomial<K>> bezout(const polynomial<K>& a, const polynomial<K>& b)
 	{
-		std::pair<polynomial<F>, polynomial<F>> P;
+		std::pair<polynomial<K>, polynomial<K>> P;
 		if (a < b)
 		{
 			P = bezout(b, a);
 			return { P.second,P.first };
 		}
-		polynomial<F> r0 = a, r1 = b, t0 = 0, t1 = 1, s0 = 1, s1 = 0, w1, w2, w3, q;
+		polynomial<K> r0 = a, r1 = b, t0 = 0, t1 = 1, s0 = 1, s1 = 0, w1, w2, w3, q;
 		while (!r1.is_zero())
 		{
 			w1 = r0;
@@ -272,5 +273,25 @@ namespace math_rz {
 		}
 		int n = r0.degree();
 		return { s0/r0.coeff(n),t0/r0.coeff(n) };
+	}
+
+	template<typename K>
+	polynomial<K> gcd(const polynomial<K>& a, const polynomial<K>& b)
+	{
+		std::pair<polynomial<K>, polynomial<K>> P;
+		if (a < b)
+		{
+			P = bezout(b, a);
+			return { P.second,P.first };
+		}
+		polynomial<K> r0 = a, r1 = b, w1, q;
+		while (!r1.is_zero())
+		{
+			w1 = r0;
+			r0 = r1;
+			q = w1.div(r1);
+			r1 = w1 - q * r1;
+		}
+		return r0.normalize();
 	}
 }

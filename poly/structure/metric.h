@@ -4,31 +4,31 @@
 
 namespace math_rz::poly::structure
 {
-	template<typename F>
+	template<typename R>
 	class metric_topology
 	{
 	public:
-		virtual real_field metric(const free_algebra<F>& p, const free_algebra<F>& q) const = 0;
-		real_field distance(const free_algebra<F>& p, const free_algebra<F>& q) const
+		virtual real_field metric(const free_algebra<R>& p, const free_algebra<R>& q) const = 0;
+		real_field distance(const free_algebra<R>& p, const free_algebra<R>& q) const
 		{
 			return metric(p, q);
 		}
 	};
 
-	template<typename F>
-	class discrete_metric:public metric_topology<F>
+	template<typename R>
+	class discrete_metric:public metric_topology<R>
 	{
 	public:
-		real_field metric(const free_algebra<F>& p, const free_algebra<F>& q) const
+		real_field metric(const free_algebra<R>& p, const free_algebra<R>& q) const
 		{
 			return p == q ? 1 : 0;
 		}
 	};
 
-	template<typename F>
-	class hamming_metric :public metric_topology<F>
+	template<typename R>
+	class hamming_metric :public metric_topology<R>
 	{
-		real_field metric(const free_algebra<F>& p, const free_algebra<F>& q) const
+		real_field metric(const free_algebra<R>& p, const free_algebra<R>& q) const
 		{
 			int d = 0;
 			int n = p.degree(), m = q.degree(),s=std::min(n,m);

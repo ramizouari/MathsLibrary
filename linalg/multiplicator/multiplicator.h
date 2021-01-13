@@ -3,7 +3,7 @@
 
 namespace math_rz
 {
-	template<typename F>
+	template<typename K>
 	class multiplicator
 	{
 		

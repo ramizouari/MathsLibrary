@@ -2,7 +2,7 @@
 #include "analysis/function.h"
 #include "integrator.h"
 
-namespace math_rz
+namespace math_rz::analysis
 {
 	template<typename B>
 	class integral_function : public function<real_field,B>

@@ -3,6 +3,7 @@
 #include "analysis/normed_finite_dimensional_space.h"
 #include "analysis/finite_dimensional_inner_product_space.h"
 #include "analysis/function.h"
+#include <type_traits>
 
 /*
 * - Let F be a field with an absolute value
@@ -31,92 +32,37 @@
 * The method returns a 1x1 matrix, there is a derivative method which converts the 1x1 matrix to a scalar
 */
 
-namespace math_rz {
+namespace math_rz::analysis {
 
-	template<typename F, int m, int n, typename E1, typename E2>
+	template<typename E1, typename E2> 
+	requires linalg::vector_space_constraint::vector_space_over_same_base_field<E1,E2>
 	class derivator
 	{
 	public:
-		derivator(E1 p0) :x0(p0) {}
-		virtual matrix<F, n, m> jacobian(const function<E1, E2>& f,const E1& x0) const = 0;
-	protected:
-		E1 x0;
-	};
+		inline static constexpr int domain_dimension = E1::dimension;
+		inline static constexpr int codomain_dimension = E2::dimension;
+		using base_field = typename E1::base_field;
+		using matrix_type = std::conditional_t<domain_dimension == codomain_dimension,
+			linalg::square_matrix<base_field, codomain_dimension>, 
+			linalg::matrix<base_field,codomain_dimension, domain_dimension>>;
 
-
-	template<typename F, int n, typename E1, typename E2>
-	class derivator<F,n,n,E1,E2>
-	{
-	public:
-		derivator(E1 p0) :x0(p0) {}
-
-		virtual square_matrix<F, n> jacobian(const function<E1, E2>& f,const E1& x0 ) const = 0;
-		virtual F jacobian_det(const function<E1, E2>& f, const E1 &x0) const
+		virtual matrix_type jacobian(const function<E1, E2>& f,const E1& x0) const = 0;
+		base_field jacobian_det(const function<E1, E2>& f, const E1& x0) const 
+			requires (codomain_dimension==domain_dimension)
 		{
-			return jacobian(f,x0).det();
+			return jacobian(f, x0).det();
 		}
-		
-	protected:
-		E1 x0;
-	};
-
-
-	template<typename F, int n, typename E2>
-	class derivator<F, 1, n, F, E2>
-	{
-	public:
-		derivator(F p0) :x0(p0) {}
-
-		virtual matrix<F,n,1> jacobian(const function<F, E2>& f,const F& x0) const = 0;
-		virtual E2 derivative(const function<F, E2>& f,const F& x0) const
+		E2 derivative(const function<base_field, E2>& f, const base_field& x0) const
+			requires (domain_dimension == 1)
 		{
-			return jacobian(f,x0).as_vector();
+			return jacobian(f, x0).as_vector();
+		}
+
+		E1 gradient(const function<E1, base_field>& f, const E1& x0) const
+			requires (codomain_dimension == 1)
+		{
+			return jacobian(f, x0).as_vector();
 		}
 	protected:
-		F x0;
 	};
-
-
-	template<typename F, int m, typename E1>
-	class derivator<F, m,1, E1, F>
-	{
-	public:
-		derivator(E1 p0) :x0(p0) {}
-
-		virtual matrix<F, 1, m> jacobian(const function<E1, F>& f,const E1& x0) const = 0;
-		virtual E1 gradient(const function<E1, F>& f,const E1& x0) const
-		{
-			E1 D;
-			auto J = jacobian(f,x0).transpose();
-			for (int i = 0; i < m; i++)
-				D[i] = J[i][0];
-			return D;
-		}
-	protected:
-		E1 x0;
-	};
-
-	template<typename F>
-	class derivator<F, 1, 1, F, F>
-	{
-	public:
-		derivator(F p0) :x0(p0) {}
-
-		virtual square_matrix<F, 1> jacobian(const function<F, F>& f,const F&x0) const = 0;
-		virtual F jacobian_det(const function<F, F>& f,const F&x0) const
-		{
-			return jacobian(f,x0)[0][0];
-		}
-		virtual F gradient(const function<F, F>& f,const F&x0) const
-		{
-			return jacobian(f,x0)[0][0];
-		}
-		virtual F derivative(const function<F, F>& f,const F&x0) const
-		{
-			return jacobian(f,x0)[0][0];
-		}
-	protected:
-		F x0;
-	};
-
 }

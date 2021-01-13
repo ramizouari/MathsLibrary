@@ -2,31 +2,36 @@
 #include "matrix.h"
 #include "poly/polynomial.h"
 #include "absalg/rational_extension.h"
+#include <type_traits>
 
-namespace math_rz
+namespace math_rz::linalg
 {
-		template<typename F, int n>
-	class square_matrix :virtual public matrix<F, n, n>, virtual  public ring
+		template<typename K, int n>
+	class square_matrix :virtual public matrix<K, n, n>, virtual  public ring
 	{
 	public:
 		square_matrix() {}
-		square_matrix(const std::vector<std::vector<F>>& M) :
-			matrix<F, n, n>(M) {}
-		square_matrix(std::vector<std::vector<F>>&& M) :matrix<F, n, n>(std::move(M)) {}
-		square_matrix(matrix<F, n, n>&& M) :matrix<F, n, n>(std::move(M))
+		square_matrix(const std::vector<std::vector<K>>& M) :
+			matrix<K, n, n>(M) {}
+		square_matrix(std::vector<std::vector<K>>&& M) :matrix<K, n, n>(std::move(M)) {}
+		square_matrix(matrix<K, n, n>&& M) :matrix<K, n, n>(std::move(M))
 		{	}
-		square_matrix(const matrix<F, n, n>& M) :matrix<F, n, n>(M) {}
-		square_matrix(const F &k) :square_matrix()
+		square_matrix(const matrix<K, n, n>& M) :matrix<K, n, n>(M) {}
+		template<typename H>
+		square_matrix(const matrix<H,n,n>&M):matrix<K,n,n>(M){}
+		square_matrix(const K &k) :square_matrix()
 		{
 			for (int i = 0; i < n; i++)
 				this->u[i][i] = k;
 		}
+
 		square_matrix(int k) :square_matrix()
 		{
 			for (int i = 0; i < n; i++)
 				this->u[i][i] = k;
 
 		}
+
 		template<typename H>
 		square_matrix(const square_matrix<H, n>& M)
 		{
@@ -35,6 +40,9 @@ namespace math_rz
 					this->u[i][j] = M[i][j];
 		}
 
+		/*
+		* returns the transpose of the matrix
+		*/
 		square_matrix transpose() const
 		{
 			square_matrix T;
@@ -44,24 +52,64 @@ namespace math_rz
 			return T;
 		}
 
+		/*
+		* returns the Transpose of a matrix
+		*/
+		square_matrix T() const
+		{
+			return transpose();
+		}
+
+		/*
+		* returns the Hermitian of a matrix
+		*/
+		square_matrix conj_transpose() const
+		{
+			square_matrix M(std::move(matrix<K, n, n>::conj_transpose()));
+			return M;
+		}
+
+		/*
+		* returns the Hermitian
+		*/
+		square_matrix H() const
+		{
+			return conj_transpose();
+		}
+
+		/*
+		* returns the conjugate
+		*/
+		square_matrix conj() const
+		{
+			square_matrix M(std::move(matrix<K,n,n>::conj()));
+			return M;
+		}
+
 		square_matrix& operator+=(const square_matrix& o)
 		{
-			matrix<F, n, n>::operator+=(o);
+			matrix<K, n, n>::operator+=(o);
 			return *this;
 		}
+
 		square_matrix& operator-=(const square_matrix& o)
 		{
-			matrix<F, n, n>::operator-=(o);
+			matrix<K, n, n>::operator-=(o);
 			return *this;
 		}
+
 		square_matrix operator-() const
 		{
-			matrix<F, n, n>::operator-();
+			matrix<K, n, n>::operator-();
 			return *this;
 		}
+
+		/*
+		* matrix multiplication by a matrix
+		*/
 		square_matrix& operator*=(const square_matrix& M)
 		{
-			square_matrix<F, n> P;
+			square_matrix<K, n> P;
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < n; j++)
 					for (int k = 0; k < n; k++)
@@ -70,26 +118,27 @@ namespace math_rz
 			return *this;
 		}
 
-		square_matrix& operator*=(const F& k)
+		/*
+		* Matrix multiplication by a scalar
+		*/
+		square_matrix& operator*=(const K& k)
 		{
-			this->matrix<F, n, n>::operator*=(k);
+			this->matrix<K, n, n>::operator*=(k);
 			return *this;
 		}
 
-		square_matrix& operator/=(const F& k)
+		/*
+		* matrix division by a scalar
+		*/
+		square_matrix& operator/=(const K& k)
 		{
-			this->matrix<F, n, n>::operator/=(k);
+			this->matrix<K, n, n>::operator/=(k);
 			return *this;
 		}
 
-		static square_matrix _0()
-		{
-			return std::move(square_matrix());
-		}
-		static square_matrix _1()
-		{
-			return std::move(square_matrix(1));
-		}
+		/*
+		* is equal to the identity matrix
+		*/
 		bool is_one() const
 		{
 			for (int i = 0; i < n; i++)
@@ -103,20 +152,36 @@ namespace math_rz
 						return false;
 			return true;
 		}
-		F det() const
+
+
+		/*
+		* Calculates the determinant of the given matrix
+		* The complexity of this method is O(n^3)
+		*/
+		K det() const
 		{
-			square_matrix M(std::move(this->row_echelon_form()));
-			F d = 1;
+			using matrix_type_extension = std::conditional_t<field_constraints::field<K>,
+				square_matrix, square_matrix<rational_extension<K>,n>>;
+			using ring_extension = std::conditional_t < field_constraints::field<K>,
+				K, rational_extension<K>>;
+			static_assert(field_constraints::field<rational_extension<K>>);
+			matrix_type_extension S(*this);
+			matrix_type_extension M(S.row_echelon_form());
+			ring_extension d(1);
 			for (int i = 0; i < n; i++)
 				if (M.at(i).at(i).is_zero())
 					return 0;
 				else d *= M.at(i).at(i);
-			return d;
+			return (K)d;
 		}
 
+		/*
+		* Calculate the inverse of the given matrix
+		* the complexity of this method is O(n^3)
+		*/
 		square_matrix inv() const
 		{
-			auto Q = matrix<F, n, 2 * n>();
+			auto Q = matrix<K, n, 2 * n>();
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < n; j++)
 					Q[i][j] = this->u[i][j];
@@ -155,41 +220,48 @@ namespace math_rz
 			return *this *= M.inv();
 		}
 
-		polynomial<F> caracteristic_polynomial() const
+		/*
+		* calculate the characteristic polynomial of this matrix
+		* Note that this method is of exponential complexity, this is because of the exponential
+		* blow up of degrees of the intermediate polynomials in the calculations
+		* This effect is presented because of Guassian-Elimination
+		* There exist a polynomial time algorithm for this problem
+		*/
+		poly::polynomial<K> caracteristic_polynomial() const
 		{
-			square_matrix<rational_extension<polynomial<F>>, n> J;
+			square_matrix<rational_extension<poly::polynomial<K>>, n> J;
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < n; j++)
 				{
 					if (i != j)
-						J.at(i).at(j) = polynomial<F>(this->at(i).at(j));
-					else J.at(i).at(j) = polynomial<F>({ this->at(i).at(j),-1 });
+						J.at(i).at(j) = poly::polynomial<K>(this->at(i).at(j));
+					else J.at(i).at(j) = poly::polynomial<K>({ this->at(i).at(j),-1 });
 				}
-			return (polynomial<F>)J.det();
+			return (poly::polynomial<K>)J.det();
 		}
 	};
 
-	template <typename F, int n>
-	square_matrix<F, n> operator+(
-		const square_matrix<F, n>& a, const square_matrix<F, n>& b)
+	template <typename K, int n>
+	square_matrix<K, n> operator+(
+		const square_matrix<K, n>& a, const square_matrix<K, n>& b)
 	{
 		auto c(a);
 		return c += b;
 	}
 
-	template <typename F, int n>
-	square_matrix<F, n> operator-(
-		const square_matrix<F, n>& a, const square_matrix<F, n>& b)
+	template <typename K, int n>
+	square_matrix<K, n> operator-(
+		const square_matrix<K, n>& a, const square_matrix<K, n>& b)
 	{
 		auto c(a);
 		return c -= b;
 	}
 
-	template <typename F, int n>
-	square_matrix <F, n> operator*(
-		const square_matrix<F, n>& M, const square_matrix<F, n>& N)
+	template <typename K, int n>
+	square_matrix <K, n> operator*(
+		const square_matrix<K, n>& M, const square_matrix<K, n>& N)
 	{
-		square_matrix<F, n> P;
+		square_matrix<K, n> P;
 		for (int i = 0; i < n; i++)
 			for (int k = 0; k < n; k++)
 				for (int j = 0; j < n; j++)
@@ -197,19 +269,19 @@ namespace math_rz
 		return P;
 	}
 
-	template <typename F, int n>
-	square_matrix <F, n> operator/(
-		const square_matrix<F, n>& M, const square_matrix<F, n>& N)
+	template <typename K, int n>
+	square_matrix <K, n> operator/(
+		const square_matrix<K, n>& M, const square_matrix<K, n>& N)
 	{
 		return M * N.inv();
 	}
 
 
-	template <typename F, int n>
-	square_matrix <F, n> operator*(
-		const F& k, const square_matrix<F, n>& N)
+	template <typename K, int n>
+	square_matrix <K, n> operator*(
+		const K& k, const square_matrix<K, n>& N)
 	{
-		square_matrix<F, n> P;
+		square_matrix<K, n> P;
 		for (int i = 0; i < n; i++)
 			for (int j = 0; j < n; j++)
 				P.at(i).at(j) = k* N.at(i).at(j);

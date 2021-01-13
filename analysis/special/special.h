@@ -1,6 +1,6 @@
 #pragma once
 
-namespace math_rz
+namespace math_rz::analysis
 {
 	template<typename A>
 	A exp(const A& w,const integer& n)
@@ -120,7 +120,7 @@ namespace math_rz
 	template<typename A,typename B>
 	auto pow(const A& u, const B& v,int n)
 	{
-		return math_rz::exp(math_rz::log(u, n) * v, n);
+		return exp(log(u, n) * v, n);
 	}
 
 }

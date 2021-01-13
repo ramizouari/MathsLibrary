@@ -12,6 +12,7 @@ namespace math_rz
     {
     public:
         inline static constexpr int dimension = 1;
+        using base_field = real_field;
         real_field(long double m);
         real_field(double m);
         real_field(float m);
@@ -30,6 +31,7 @@ namespace math_rz
         real_field norm() const;
         real_field conj() const;
         real_field inner_product(const real_field& a);
+        real_field inv()const;
         bool is_zero() const;
         bool is_one() const;
 

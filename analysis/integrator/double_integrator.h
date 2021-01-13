@@ -1,9 +1,11 @@
 #pragma once
 #include "integrator.h"
 #include "analysis/normed_finite_dimensional_space.h"
+/*
+* This is a 
+*/
 
-
-namespace math_rz {
+namespace math_rz::analysis {
 	template<typename F,int p=2>
 	class double_integrator :public integrator <Lp_finite_dimensional_space< real_field,p,2>,F>
 	{
@@ -46,7 +48,7 @@ namespace math_rz {
 			real_field u=a, v=c;
 			for (int i=0;i<cuts1;i++,v=c,u+=eps1)
 				for (int j=0;j<cuts2;j++,v+=eps2)
-					result += (eps1 * eps2*real_field(.25)) * 
+					result += real_field(eps1 * eps2*(.25)) *
 					(
 						f(Lp({ u,v })) +
 						f(Lp({ u + eps1,v })) +

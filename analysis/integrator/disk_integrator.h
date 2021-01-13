@@ -5,7 +5,7 @@
 #include "analysis/normed_finite_dimensional_space.h"
 #include "analysis/general_function.h"
 #include "special_integrator.h"
-namespace math_rz {
+namespace math_rz::analysis {
 
 	template<typename F, int p = 2>
 	class disk_integrator :
@@ -29,10 +29,14 @@ namespace math_rz {
 
 		F integrate(const function<Lp, F>& f) const override
 		{
-			return this->I_ptr->integrate(general_function<Lp2, F>([&](const Lp2& s)->F {
-				Lp u({ s[0] * std::cos(s[1]), s[0] * std::sin(s[1])});
-				return s[0] * f(u);
-				}));
+			return this->I_ptr->integrate
+			(
+				general_function<Lp2, F>([&](const Lp2& s)->F 
+					{
+						Lp u({ s[0] * std::cos(s[1]), s[0] * std::sin(s[1])});
+						return s[0] * f(u);
+					})
+			);
 		}
 	};
 }

@@ -5,7 +5,7 @@
 #include "analysis/normed_finite_dimensional_space.h"
 #include "analysis/general_function.h"
 #include "special_integrator.h"
-namespace math_rz {
+namespace math_rz::analysis {
 
 	template<typename F, int p = 2>
 	class ball_integrator :
@@ -29,12 +29,16 @@ namespace math_rz {
 
 		F integrate(const function<Lp, F>& f) const override
 		{
-			return this->I_ptr->integrate(general_function<Lp3, F>([&](const Lp3& s)->F {
-				Lp u({ s[0] * std::cos(s[1]) * std::sin(s[2]),
-					s[0] * std::sin(s[1]) * std::sin(s[2]),
-					s[0] *std::cos(s[2]) });
-				return std::pow(s[0], 2) * std::sin(s[2]) * f(u);
-				}));
+			return this->I_ptr->integrate
+			(
+				general_function<Lp3, F>([&](const Lp3& s)->F 
+					{
+						Lp u({ s[0] * std::cos(s[1]) * std::sin(s[2]),
+							s[0] * std::sin(s[1]) * std::sin(s[2]),
+							s[0] *std::cos(s[2]) });
+						return std::pow(s[0], 2) * std::sin(s[2]) * f(u);
+					})
+			);
 		}
 	};
 }
