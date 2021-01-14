@@ -8,6 +8,10 @@ namespace math_rz::linalg::structure::vector
 		using vector_type = norm_topology<K, n>::vector_type;
 	public:
 		virtual K inner_product(const vector_type& p, const vector_type& q) const = 0;
+		virtual K dot_product(const vector_type& p, const vector_type& q) const
+		{
+			return inner_product(p.conj(), q);
+		}
 		virtual real_field norm(const vector_type& p) const
 		{
 			return std::sqrt(static_cast<real_field>(inner_product(p, p)));

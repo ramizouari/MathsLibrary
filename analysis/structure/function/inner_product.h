@@ -11,6 +11,11 @@ namespace math_rz::analysis::structure::function
 		using function_type = math_rz::analysis::function<A,B>;
 	public:
 		virtual K inner_product(const function_type& p, const function_type& q) const = 0;
+		virtual K dot_product(const function_type& p, const function_type& q) const
+		{
+			return inner_product(p.conj(), q);
+		}
+
 		virtual real_field norm(const function_type& p) const
 		{
 			return std::sqrt(static_cast<real_field>(inner_product(p, p)));

@@ -6,7 +6,14 @@
 
 namespace math_rz::analysis
 {
-	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F> requires (E::dimension == F::dimension || F::dimension == 1)
+	/*
+	* This class is responsible for calculating the integral of a function along a (smooth enough) curve
+	* There are 2 cases:
+	* 1. The function is scalar
+	* 2. The function is a vector function
+	*/
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F> 
+	requires (E::dimension == F::dimension || F::dimension == 1)
 	class line_integrator : public special_integrator<E, F, real_field, real_field,real_field>
 	{
 		const function<real_field, E>& phi_ptr;

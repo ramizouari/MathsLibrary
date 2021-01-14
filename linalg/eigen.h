@@ -39,4 +39,28 @@ namespace math_rz::linalg
 	{
 		return std::sqrt(static_cast<real_field>(largest_eig(square_matrix<K,m>(M.conj_transpose()*M))));
 	}
+
+	template<typename K, int n, int m>
+	void gram_schmidt_inplace(matrix<K,n,m>&M )
+	{
+		std::vector<coordinate_space<K, m>> orthonormal_vectors;
+		for (int i = 0; i < n; i++)
+		{
+			coordinate_space<K, m> w(M[i]);
+			for (auto& s : orthonormal_vectors)
+				w -= s.inner_product(w) * s;
+			if(!w.is_zero())
+				w /= w.norm();
+			orthonormal_vectors.push_back(w);
+			M[i] = orthonormal_vectors[i].get_vect();
+		}
+	}
+
+	template<typename K, int n, int m>
+	matrix<K,n,m> gram_schmidt(const matrix<K, n, m>& M)
+	{
+		matrix<K, n, m> W(M);
+		gram_schmidt_inplace<K,n,m>(W);
+		return W;
+	}
 }

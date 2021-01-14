@@ -7,6 +7,10 @@ namespace math_rz::poly::structure
 	{
 	public:
 		virtual K inner_product(const polynomial<K>& p, const polynomial<K>& q) const = 0;
+		virtual K dot_product(const polynomial<K>& p, const polynomial<K>& q) const
+		{
+			return inner_product(p.conj(), q);
+		}
 		virtual real_field norm(const polynomial<K>& p) const
 		{
 			return std::sqrt(static_cast<real_field>(inner_product(p, p)));

@@ -17,7 +17,7 @@ namespace math_rz::analysis {
 
 		F integrate(const function<E, F>& h)const override
 		{
-			K eps3=(f-e)/cuts3,eps2 = (d - c) / cuts2, eps1 = (b - a) / cuts1;
+			K eps3=(f-e)/K(cuts3),eps2 = (d - c) / K(cuts2), eps1 = (b - a) / K(cuts1);
 			F result;
 			//u,v,w are dummy variables used for integration
 			K u=e, v=c, w=a;
@@ -45,13 +45,13 @@ namespace math_rz::analysis {
 
 		F integrate(const function<E, F>& h)const override
 		{
-			K eps3 = (f - e) / cuts3, eps2 = (d - c) / cuts2, eps1 = (b - a) / cuts1;
+			K eps3 = (f - e) / K(cuts3), eps2 = (d - c) / K(cuts2), eps1 = (b - a) / K(cuts1);
 			F result;
 			K u=e, v=c, w=a;
 			for (int i = 0; i < cuts1; i++, v = c, u += eps1, v = c, w = a)
 				for (int j = 0; j < cuts2; j++, v += eps2, w = a)
 					for (int k = 0; k < cuts3; k++, w += eps3)
-						result += K(eps1 * eps2 * eps3*(.125)) *
+						result += (eps1 * eps2 * eps3*K(.125)) *
 						(
 							h(E({ u,v,w }))+ h(E({ u+eps1,v,w }))+
 							h(E({ u,v+eps2,w })) + h(E({ u + eps1,v+eps2,w })) +

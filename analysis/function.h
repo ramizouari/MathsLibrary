@@ -4,6 +4,9 @@
 #include "structure/function/inner_product.h"
 
 namespace math_rz::analysis {
+	template<typename A,typename B>
+	class function_conjugate;
+
 	template<typename A, typename B>
 	class abstract_function
 	{
@@ -24,6 +27,7 @@ namespace math_rz::analysis {
 	template<typename A, typename B>
 	class function : public summable_function<A, B>
 	{
+		class function_conjugate;
 	protected:
 		using structure_type = analysis::structure::function::metric_topology<A, B>;
 		inline static std::unique_ptr<structure_type> structure_ptr;
@@ -65,6 +69,10 @@ namespace math_rz::analysis {
 		{
 			return (*structure_ptr);
 		}
+		function_conjugate<A,B> conj() const requires field_constraints::field_with_conj<K>
+		{
+			return function_conjugate<A,B>(*this);
+		}
 
 		real_field metric(const function& p)
 		{
@@ -85,6 +93,38 @@ namespace math_rz::analysis {
 		{
 			return dynamic_cast<math_rz::analysis::structure::function::inner_product_topology<A,B>*>
 				(structure_ptr.get())->inner_product(*this, q);
+		}
+	};
+
+	template<typename A, typename B>
+	class function_conjugate :public function<A, B>
+	{
+		const function<A, B>& f;
+	public:
+		function_conjugate(const function<A, B>& _f) :f(_f) {}
+		virtual B operator()(const A& a) const override
+		{
+			return f(a).conj();
+		}
+		bool is_zero() const
+		{
+			return false;
+		}
+	};
+
+	template<typename A,typename B>
+	class function_additive_inverse :public function<A, B>
+	{
+		const function<A, B>& f;
+	public:
+		function_additive_inverse(const function<A, B>& _f) :f(_f) {}
+		virtual B operator()(const A& a) const override
+		{
+			return -f(a);
+		}
+		bool is_zero() const
+		{
+			return false;
 		}
 	};
 
@@ -152,6 +192,12 @@ namespace math_rz::analysis {
 			return false;
 		}
 	};
+
+	template<typename A, typename B>
+	function_additive_inverse<A, B> operator-(const function<A, B>& a)
+	{
+		return function_additive_inverse<A, B>(a);
+	}
 
 	template<typename A,typename B>
 	function_sum<A, B> operator+(const function<A, B>& a, const function<A, B>& b)

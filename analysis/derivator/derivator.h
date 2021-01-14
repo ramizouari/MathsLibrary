@@ -63,6 +63,22 @@ namespace math_rz::analysis {
 		{
 			return jacobian(f, x0).as_vector();
 		}
+
+		E1 curl(const function<E1, base_field>& f, const E1& x0) const requires
+			(domain_dimension == 3 && domain_dimension == codomain_dimension)
+		{
+			auto J = jacobian(f, x0);
+			E1 rot;
+			for (int i = 0; i < 3; i++)
+				rot[i] = J[(i + 1) % 3][(i + 2) % 3]- J[(i + 2) % 3][(i + 1) % 3];
+			return rot;
+		}
+
+		base_field divergence(const function<E1, base_field>& f, const E1& x0) const requires
+			(domain_dimension == codomain_dimension)
+		{
+			return jacobian(f, x0).trace();
+		}
 	protected:
 	};
 }

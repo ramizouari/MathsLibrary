@@ -142,6 +142,8 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>true</EnableModules>
       <AdditionalIncludeDirectories>.;D:\Libraries\cpp\boost_1_75_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,6 +166,7 @@
     <ClInclude Include="analysis\general_function.h" />
     <ClInclude Include="analysis\integrable_function.h" />
     <ClInclude Include="analysis\integrator\ball_integrator.h" />
+    <ClInclude Include="analysis\integrator\boundary_integrator.h" />
     <ClInclude Include="analysis\integrator\circular_integrator.h" />
     <ClInclude Include="analysis\integrator\disk_integrator.h" />
     <ClInclude Include="analysis\integrator\double_integrator.h" />

@@ -19,6 +19,7 @@ namespace math_rz
 		complex(float s);
 		complex(long double s);
 		complex(int a);
+		complex(long long a);
 		static complex _0() { return std::complex<real_field >(); }
 		static complex _1() { return std::complex<real_field>(1); }
 		bool is_zero() const;
@@ -26,9 +27,11 @@ namespace math_rz
 		real_field abs() const;
 		complex conj() const;
 		complex inner_product(const complex&z)const;
+		complex dot_product(const complex& z)const;
 		complex inv()const;
 		real_field norm() const;
-		inline operator std::complex<long double>() { return *this; }
+		inline operator std::complex<long double>() { return std::complex<long double>(real(),imag()); }
+		//inline operator std::complex<double>() { return std::complex<double>(real(), imag()); }
 		explicit inline operator real_field() { return real(); }
 		complex& operator/=(const real_field& s);
 		complex operator-() const;

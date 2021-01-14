@@ -59,6 +59,7 @@ namespace math_rz::analysis
 	*
 	* Constraints on the integrator: the integrator must be a single variable integrator on the line (c-i,c+i) for a well
 	* chosen real constant c with respect to the standard mesure
+	* The real constant c must be greater then all real component of singularities of the function to be transformed
 	*/
 	class inverse_laplace_transform : public function<complex_function_space, general_function<complex, complex>>
 	{
@@ -86,7 +87,7 @@ namespace math_rz::analysis
 
 
 		/*
-		* The laplace transform is not zero on the space of operators:
+		* The inverse laplace transform is not zero on the space of operators:
 		*/
 		bool is_zero() const override
 		{

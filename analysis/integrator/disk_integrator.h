@@ -7,7 +7,13 @@
 #include "special_integrator.h"
 namespace math_rz::analysis {
 
-	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F> requires (E::dimension == 2)
+	/*
+	* This class is responsible for integrating a function over (possibly portion of) a disk
+	* If the integral is over the whole disk, the integrator must be compatible with the standard mesure
+	* over the set [0,R]x[0,2pi] where R is the radius of the disk
+	*/
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F>
+	requires (E::dimension == 2)
 	class disk_integrator :
 		public  special_integrator<E, F,E, F>
 	{

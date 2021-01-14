@@ -24,6 +24,11 @@ real_field math_rz::real_field::inner_product(const real_field& a)
 	return (*this) * a;
 }
 
+real_field math_rz::real_field::dot_product(const real_field& a)
+{
+	return this->inner_product(a);
+}
+
 real_field math_rz::real_field::inv() const
 {
 	return 1 / _v;

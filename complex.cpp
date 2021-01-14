@@ -22,6 +22,11 @@ complex::complex(int a) : std::complex<real_field>(a)
 {
 }
 
+math_rz::complex::complex(long long a)
+{
+    _Val[0] = a;
+}
+
 bool complex::is_zero() const
 {
     return real().is_zero() && imag().is_zero();
@@ -44,7 +49,12 @@ complex complex::conj() const
 
 complex math_rz::complex::inner_product(const complex& z) const
 {
-    return (*this) * z.conj();
+    return this->conj()* z;
+}
+
+complex math_rz::complex::dot_product(const complex& z) const
+{
+    return (*this)*z;
 }
 
 complex math_rz::complex::inv() const
@@ -59,8 +69,8 @@ real_field math_rz::complex::norm() const
 
 complex& math_rz::complex::operator/=(const real_field& s)
 {
-    real() /= s;
-    imag() /= s;
+    _Val[0] /= s;
+    _Val[1] /= s;
     return *this;
 }
 

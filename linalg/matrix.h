@@ -269,6 +269,12 @@ namespace math_rz::linalg {
 			return dynamic_cast<math_rz::linalg::structure::matrix::inner_product_topology<K,n,m>*>
 				(structure_ptr.get())->inner_product(*this, q);
 		}
+
+		K dot_product(const matrix& q) const
+		{
+			return dynamic_cast<math_rz::linalg::structure::matrix::inner_product_topology<K, n, m>*>
+				(structure_ptr.get())->dot_product(*this, q);
+		}
 	protected:
 		//boost::multi_array<K,2> u;
 		//using structure_type = math_rz::linalg::structure::matrix::L22_operator_norm;

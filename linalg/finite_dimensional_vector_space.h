@@ -90,6 +90,27 @@ namespace math_rz::linalg
 
 		}
 
+		/*
+		* Construct a vector from three vectors
+		*/
+		template<vector_space_constraint::vector_space E1, vector_space_constraint::vector_space E2,
+			vector_space_constraint::vector_space E3>
+			explicit finite_dimensional_vector_space(const E1& u1, const E2& u2, const E3& u3)
+			requires vector_space_constraint::vector_space_over_same_base_field<E1, E2>
+			&& vector_space_constraint::vector_space_over_same_base_field<E2, E3>
+			&& vector_space_constraint::vector_space_over_same_base_field<finite_dimensional_vector_space, E2> && (E1::dimension + E2::dimension + E3::dimension == n)
+		{
+			if constexpr (E1::dimension > 1) for (const auto& w : u1.get_vect())
+				u.push_back(w);
+			else u.push_back(u1);
+			if constexpr (E2::dimension > 1) for (const auto& w : u2.get_vect())
+				u.push_back(w);
+			else u.push_back(u2);
+			if constexpr (E3::dimension > 1) for (const auto& w : u3.get_vect())
+				u.push_back(w);
+			else u.push_back(u3);
+		}
+
 
 		finite_dimensional_vector_space& operator+=(const finite_dimensional_vector_space& o)
 		{
@@ -225,6 +246,12 @@ namespace math_rz::linalg
 		{
 			return dynamic_cast<math_rz::linalg::structure::vector::inner_product_topology<K, n>*>
 				(structure_ptr.get())->inner_product(*this, q);
+		}
+
+		K dot_product(const finite_dimensional_vector_space& q) const
+		{
+			return dynamic_cast<math_rz::linalg::structure::vector::inner_product_topology<K, n>*>
+				(structure_ptr.get())->dot_product(*this, q);
 		}
 	protected:
 		std::vector<K> u;

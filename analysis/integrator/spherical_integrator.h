@@ -8,7 +8,7 @@
 #include "special_integrator.h"
 namespace math_rz::analysis {
 	/*
-	* This class is responsible for integrating a function over a sphere of a given radius R (equals 1 by default)
+	* This class is responsible for integrating a function over a sphere of a given radius R (R=1 by default)
 	*/
 	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F> requires (E::dimension == 3)
 	class spherical_integrator :

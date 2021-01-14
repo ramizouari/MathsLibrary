@@ -48,13 +48,14 @@
 #include "analysis/structure/function/inner_product.h"
 #include "analysis/integral_transform.h"
 #include "analysis/transforms.h"
+#include "analysis/integrator/boundary_integrator.h"
 
 using namespace std;
 using namespace math_rz;
 using namespace math_rz::linalg;
 using namespace math_rz::analysis;
-using K = math_rz::complex;
-using E = K;
+using K = math_rz::real_field;
+using E = math_rz::linalg::coordinate_space<K,2>;
 using E2 = math_rz::linalg::finite_dimensional_vector_space<K, 2>;
 using F = K;
 using M = math_rz::linalg::square_matrix<K, 2>;
@@ -66,7 +67,7 @@ public:
 	F operator()(const E& s) const override
 	{
 		static M rot({ {1,-1},{4,2} });
-		return s;
+		return 1;
 	}
 
 	bool is_zero() const override
@@ -78,14 +79,20 @@ public:
 int main()
 {
 	mat_exp f;
-	std::shared_ptr<integrator<K, K>> I_ptr(new trapezoidal_integrator<K, K>(0, 10, 500));
-	std::shared_ptr<integrator<K, K>> J_ptr(new trapezoidal_integrator<K, K>(2.+-100.i,2.+ 100.i, 2000));
-	laplace_transform L(I_ptr);
-	inverse_laplace_transform L_(J_ptr);
-	cout << L(f)(1) << L(f)(2) << endl;
-	cout << L_(L(f))(5);
-	std::shared_ptr<integrator<real_field, real_field>> R_ptr(new trapezoidal_integrator<real_field,real_field >(0, 10, 500));
-	std::shared_ptr<integrator<real_field, real_field>> W_ptr(new trapezoidal_integrator<real_field,real_field>(2. , 2., 200));
-	cout << R_ptr->integrate(general_function<real_field, real_field>([](const auto& a) {return a; }));
+	std::shared_ptr<integrator<K, K>> 
+		J_ptr(new multiple_integrator<K, K>({0,0}, 
+			{ 2 * std::numbers::pi,std::numbers::pi }, { 1000,1000 }));
+	std::shared_ptr<derivator<K, E>> D_ptr(new two_way_derivator<K,E>(1e-8));
+	general_function<K, E> phi([](const K& u) 
+		{
+			return E(K(std::cos(u)),K(std::sin(2*u)));
+		});
+	boundary_integrator<E, F> S(phi,J_ptr,D_ptr,false);
+	uniform_real_generator G(-3, 3, 5);
+	line_integrator<E, F> S2(phi, J_ptr, D_ptr);
+	cout << S.integrate(f) << '\t' << S2.integrate(f) << endl;
+	matrix<K, 3, 3> A({ {1,5,6},{3,2,5},G.generate_vector<3>().get_vect() });
+	auto H=linalg::gram_schmidt<K, 3, 3>(A);
+	cout << H;
 	return false;
 }

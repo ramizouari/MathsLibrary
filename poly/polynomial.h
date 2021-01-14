@@ -169,6 +169,12 @@ namespace math_rz::poly {
 			return dynamic_cast<poly::structure::inner_product_topology<K>*>
 				(structure_ptr.get())->inner_product(*this, q);
 		}
+
+		K dot_product(const polynomial& q) const
+		{
+			return dynamic_cast<poly::structure::inner_product_topology<K>*>
+				(structure_ptr.get())->dot_product(*this, q);
+		}
 		
 	};
 

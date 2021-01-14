@@ -258,6 +258,9 @@
     <ClInclude Include="analysis\transforms.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="analysis\integrator\boundary_integrator.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="integer.cpp">
