@@ -107,6 +107,7 @@ complex math_rz::operator""_c(unsigned long long a)
     return complex(a,0);
 }
 
+
 /*complex math_rz::operator*(int a, const complex& s)
 {
     auto w = s;

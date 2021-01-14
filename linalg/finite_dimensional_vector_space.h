@@ -54,8 +54,8 @@ namespace math_rz::linalg
 	protected:
 		using structure_type = math_rz::linalg::structure::vector::metric_topology<K,n>;
 	public:
-
-		finite_dimensional_vector_space(const std::vector<K>& a) :u(n)
+		template<typename H>
+		finite_dimensional_vector_space(const std::vector<H>& a) :u(n)
 		{
 			if (n != a.size())
 				throw std::domain_error("Dimensions are not compatible");
@@ -67,15 +67,18 @@ namespace math_rz::linalg
 				throw std::domain_error("Dimensions are not compatible");
 		}
 
+		finite_dimensional_vector_space(const finite_dimensional_vector_space& a) :u(a.u)
+		{
+		}
+
 		finite_dimensional_vector_space() :u(n) {}
 		inline constexpr static int dimension = n;
 		using base_field = K;
-
 		/*
 		* Construct a vector from two vectors
 		*/
 		template<vector_space_constraint::vector_space E1, vector_space_constraint::vector_space E2>
-		finite_dimensional_vector_space(const E1& u1, const E2& u2) requires vector_space_constraint::vector_space_over_same_base_field<E1,E2>
+		explicit finite_dimensional_vector_space(const E1& u1, const E2& u2) requires vector_space_constraint::vector_space_over_same_base_field<E1,E2>
 			&& std::is_same_v<typename E1::base_field,K> && (E1::dimension+ E2::dimension ==n)
 		{
 			if constexpr (E1::dimension > 1) for (const auto& w : u1.get_vect())

@@ -7,33 +7,31 @@
 #include "special_integrator.h"
 namespace math_rz::analysis {
 
-	template<typename F, int p = 2>
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F> requires (E::dimension == 2)
 	class disk_integrator :
-		public  special_integrator<Lp_finite_dimensional_space<real_field, p, 2>, F,
-		Lp_finite_dimensional_space<real_field, p, 2>, F>
+		public  special_integrator<E, F,E, F>
 	{
-		using Lp = Lp_finite_dimensional_space<real_field, p, 2>;
-		using Lp2 = Lp;
+		
 	public:
-		disk_integrator(integrator<Lp2, F>* _I, real_field r = 1)
-			:special_integrator<Lp, F, Lp2, F>(_I)
+		disk_integrator(integrator<E, F>* _I, real_field r = 1)
+			:special_integrator<E, F, E, F>(_I)
 		{
 
 		}
 
-		disk_integrator(std::shared_ptr<integrator<Lp2, F>> _I, real_field r = 1)
-			:special_integrator<Lp, F, Lp2, F>(_I)
+		disk_integrator(std::shared_ptr<integrator<E, F>> _I, real_field r = 1)
+			:special_integrator<E, F, E, F>(_I)
 		{
 
 		}
 
-		F integrate(const function<Lp, F>& f) const override
+		F integrate(const function<E, F>& f) const override
 		{
 			return this->I_ptr->integrate
 			(
-				general_function<Lp2, F>([&](const Lp2& s)->F 
+				general_function<E, F>([&](const E& s)->F 
 					{
-						Lp u({ s[0] * std::cos(s[1]), s[0] * std::sin(s[1])});
+						E u({ s[0] * std::cos(s[1]), s[0] * std::sin(s[1])});
 						return s[0] * f(u);
 					})
 			);

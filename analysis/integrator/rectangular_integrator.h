@@ -5,20 +5,21 @@
 
 namespace math_rz::analysis
 {
-	template<typename E,typename F>
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F>
 	class rectangular_integrator :public  integrator<E, F>
 	{
+		using K = typename E::base_field;
 		integer cuts;
-		real_field a, b;
+		K a, b;
 	public:
-		rectangular_integrator(real_field _a, real_field _b, integer _cuts = 100) :a(_a), b(_b), cuts(_cuts)
+		rectangular_integrator(K _a, K _b, integer _cuts = 100) :a(_a), b(_b), cuts(_cuts)
 		{
 
 		}
 		F integrate(const function<E, F>& f) const override
 		{
-			real_field eps = (b - a) / cuts;
-			real_field u = a;
+			K eps = (b - a) / K(cuts);
+			K u = a;
 			F result;
 			for (int i = 0; i < cuts; i++, u += eps)
 				result += eps * f(u);

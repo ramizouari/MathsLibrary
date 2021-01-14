@@ -6,54 +6,57 @@
 */
 
 namespace math_rz::analysis {
-	template<typename F,int p=2>
-	class double_integrator :public integrator <Lp_finite_dimensional_space< real_field,p,2>,F>
+	template <linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F > requires (E::dimension == 2)
+	class double_integrator :public integrator <E,F>
 	{
-		using Lp = Lp_finite_dimensional_space< real_field, p, 2>;
+		using K = typename E::base_field;
 		integer cuts1, cuts2;
-		real_field a, b, c, d;
+		K a, b, c, d;
 	public:
-		double_integrator(real_field _a,real_field _b,real_field _c,real_field _d,integer _cuts1,integer _cuts2)
+		double_integrator(K _a,K _b,K _c,K _d,integer _cuts1,integer _cuts2)
 			:a(_a),b(_b),c(_c),d(_d),cuts1(_cuts1),cuts2(_cuts2)
 		{}
 
-		F integrate(const function<Lp, F>& f)const override
+		F integrate(const function<E, F>& f)const override
 		{
-			real_field eps2 = (d - c) / cuts2, eps1 = (b - a) / cuts1;
+			K eps2 = (d - c) / cuts2, eps1 = (b - a) / cuts1;
 			F result;
-			real_field u = a, v = c;
+			K u = a, v = c;
 			for (int i = 0; i < cuts1; i++, v = c, u += eps1)
 				for (int j = 0; j < cuts2; j++, v += eps2)
-					result += (eps1 * eps2) *f(Lp({ u,v }));
+				{
+					E s({ u,v });
+					result += (eps1 * eps2) * f(s);
+				}
 			return result;
 		}
 	};
 
 
-	template<typename F, int p = 2>
-	class trapezoidal_double_integrator :public integrator <Lp_finite_dimensional_space< real_field, p, 2>, F>
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F > requires (E::dimension == 2)
+	class trapezoidal_double_integrator :public integrator <E, F>
 	{
-		using Lp = Lp_finite_dimensional_space< real_field, p, 2>;
+		using K = typename E::base_field;
 		integer cuts1, cuts2;
-		real_field a, b, c, d;
+		K a, b, c, d;
 	public:
-		trapezoidal_double_integrator(real_field _a, real_field _b, real_field _c, real_field _d, integer _cuts1, integer _cuts2)
+		trapezoidal_double_integrator(K _a, K _b, K _c, K _d, integer _cuts1, integer _cuts2)
 			:a(_a), b(_b), c(_c), d(_d), cuts1(_cuts1), cuts2(_cuts2)
 		{}
 
-		F integrate(const function<Lp, F>& f) const override
+		F integrate(const function<E, F>& f) const override
 		{
-			real_field eps2 = (d - c) / cuts2, eps1 = (b - a) / cuts1;
+			K eps2 = (d - c) / K(cuts2), eps1 = (b - a) / K(cuts1);
 			F result;
-			real_field u=a, v=c;
+			K u=a, v=c;
 			for (int i=0;i<cuts1;i++,v=c,u+=eps1)
 				for (int j=0;j<cuts2;j++,v+=eps2)
-					result += real_field(eps1 * eps2*(.25)) *
+					result += K(eps1 * eps2*real_field(.25)) *
 					(
-						f(Lp({ u,v })) +
-						f(Lp({ u + eps1,v })) +
-						f(Lp({ u,v+eps2 })) +
-						f(Lp({ u+eps1,v+eps2 }))
+						f(E({ u,v })) +
+						f(E({ u + eps1,v })) +
+						f(E({ u,v+eps2 })) +
+						f(E({ u+eps1,v+eps2 }))
 					);
 			return result;
 		}

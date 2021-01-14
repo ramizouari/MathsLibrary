@@ -53,47 +53,19 @@ using namespace std;
 using namespace math_rz;
 using namespace math_rz::linalg;
 using namespace math_rz::analysis;
-using K = math_rz::real_field;
-using E = math_rz::linalg::finite_dimensional_vector_space<real_field,3>;
-using F = real_field;
-using M = math_rz::linalg::square_matrix<math_rz::complex, 3>;
+using K = math_rz::complex;
+using E = K;
+using E2 = math_rz::linalg::finite_dimensional_vector_space<K, 2>;
+using F = K;
+using M = math_rz::linalg::square_matrix<K, 2>;
 using R_X = math_rz::poly::polynomial<K>;
 
 class mat_exp :public math_rz::analysis::function<E,F>
 {
 public:
-	K operator()(const E& s) const override
+	F operator()(const E& s) const override
 	{
-		static M rot({ {1,-1,1},{2,6,3},{5,2,4} });
-		return s.norm();
-	}
-
-	bool is_zero() const override
-	{
-		return false;
-	}
-};
-
-
-class function_class :public math_rz::analysis::function<finite_dimensional_vector_space<K,2>, K>
-{
-public:
-	K operator()(const finite_dimensional_vector_space<K,2>& s) const override
-	{
-		return s[0];
-	}
-
-	bool is_zero() const override
-	{
-		return false;
-	}
-};
-
-class id :public math_rz::analysis::function<K, K>
-{
-public:
-	K operator()(const K& s) const override
-	{
+		static M rot({ {1,-1},{4,2} });
 		return s;
 	}
 
@@ -105,19 +77,15 @@ public:
 
 int main()
 {
-	square_matrix<math_rz::complex, 3> H({ {59. + 1.i,5,1},{62. + 5.i,6,1.i},{2,8,1} }), S = H.T();
-	uniform_cyclic_generator<2, true> G(200);
-	square_matrix<cyclic_field<2>, 512> W(G.generate_matrix<512>());
-	using namespace finite_dimensional;
-	using V = finite_dimensional_vector_space<real_field, 2>;
-	std::shared_ptr<rectangular_integrator<real_field, real_field>> I ( new
-		rectangular_integrator<real_field, real_field>(-10, 10, 100));
-	mat_exp* N = new mat_exp;
-	integral_transform<K,V , real_field> T(N, I);
-	function_class f;
-	id x;
-	transforms::hartley_transform hart(I);
-	cout << hart(hart(x))(1) << hart(hart(x))(2);
-	//cout << T(x)(1) << T(f)(V({2, 2}));
+	mat_exp f;
+	std::shared_ptr<integrator<K, K>> I_ptr(new trapezoidal_integrator<K, K>(0, 10, 500));
+	std::shared_ptr<integrator<K, K>> J_ptr(new trapezoidal_integrator<K, K>(2.+-100.i,2.+ 100.i, 2000));
+	laplace_transform L(I_ptr);
+	inverse_laplace_transform L_(J_ptr);
+	cout << L(f)(1) << L(f)(2) << endl;
+	cout << L_(L(f))(5);
+	std::shared_ptr<integrator<real_field, real_field>> R_ptr(new trapezoidal_integrator<real_field,real_field >(0, 10, 500));
+	std::shared_ptr<integrator<real_field, real_field>> W_ptr(new trapezoidal_integrator<real_field,real_field>(2. , 2., 200));
+	cout << R_ptr->integrate(general_function<real_field, real_field>([](const auto& a) {return a; }));
 	return false;
 }

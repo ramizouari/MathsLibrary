@@ -6,13 +6,12 @@
 #include <compare>
 namespace math_rz {
     class real_field;
-    class integer :
-        public integral_ring
+    class integer 
     {
     public:
-        integer(const int m = 0);
-        integer(long long int m);
-        integer(const double s);
+        constexpr integer(const int m = 0):_v(m) {};
+        constexpr integer(long long int m) :_v(m) {};
+        constexpr integer(const double s) :_v(s) {};
         inline static integer _0() { return integer(); };
         inline static integer _1() { return integer(1); };
         integer mod(const integer& a) const;

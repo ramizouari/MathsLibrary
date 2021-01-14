@@ -13,7 +13,7 @@ namespace math_rz
 		complex(const std::complex<double>& a) :std::complex<real_field>(a) {}
 		complex(const std::complex<float>& a) :std::complex<real_field>(a) {}
 		complex(const std::complex<long double>& a) :std::complex<real_field>(a) {}
-
+		inline complex(integer s):std::complex<real_field>(s._v) {};
 		complex(const real_field& a = 0, const real_field& b = 0);
 		complex(double s);
 		complex(float s);
@@ -51,6 +51,5 @@ namespace math_rz
 	//complex operator*(const real_field &a, const complex& b);
 //	complex operator/(const std::complex<real_field>& a, const std::complex<real_field>& b);
 	//complex operator/(const complex &s ,const real_field& a);
-
 }
 

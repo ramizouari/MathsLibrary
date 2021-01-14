@@ -6,7 +6,7 @@
 
 namespace math_rz::analysis
 {
-	template<typename E,typename F>
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F>
 	class stieltjes_integrator :public  integrator<real_field, F,real_field>
 	{
 		integer cuts;

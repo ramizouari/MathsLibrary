@@ -281,7 +281,7 @@ namespace math_rz::linalg {
 		*/
 		inline static std::unique_ptr<structure_type> structure_ptr =
 			std::unique_ptr<structure_type>
-			(new std::conditional_t< vector_space_constraint::normed_vector_space<K>,
+			(new std::conditional_t< field_constraints::field_with_abs<K>,
 				math_rz::linalg::structure::matrix::L22_operator_norm<K,n,m>,
 				math_rz::linalg::structure::matrix::hamming_metric<K,n,m>>);
 	};

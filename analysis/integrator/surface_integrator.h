@@ -7,21 +7,21 @@
 
 namespace math_rz::analysis
 {
-	template<typename E, typename F>
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F> requires (E::dimension == 3)
 	class surface_integrator : public special_integrator<E, F, 
-		L2_finite_dimensional_space<real_field,2>, real_field, real_field>
+		linalg::coordinate_space<typename E::base_field,2>, real_field, real_field>
 	{
-		using L2 = L2_finite_dimensional_space<real_field, 2>;
-		function<L2, E>& phi_ptr;
-		std::shared_ptr<derivator<L2, E>> D;
+		using E2 = linalg::coordinate_space<typename E::base_field, 2>;
+		function<E2, E>& phi_ptr;
+		std::shared_ptr<derivator<E2, E>> D;
 	public:
-		surface_integrator(function<L2, E>& _phi_ptr, integrator<L2, real_field, real_field>* _I_ptr,
-			derivator<L2, E>* _D)
-			:special_integrator<E, F, L2, real_field, real_field>(_I_ptr), phi_ptr(_phi_ptr), D(_D) {}
+		surface_integrator(function<E2, E>& _phi_ptr, integrator<E2, real_field, real_field>* _I_ptr,
+			derivator<E2, E>* _D)
+			:special_integrator<E, F, E2, real_field, real_field>(_I_ptr), phi_ptr(_phi_ptr), D(_D) {}
 
-		surface_integrator(function<L2, E>&& _phi_ptr, integrator<L2, real_field, real_field>* _I_ptr,
-			derivator<L2, E>* _D)
-			:special_integrator<E, F, L2, real_field, real_field>(_I_ptr), 
+		surface_integrator(function<E2, E>&& _phi_ptr, integrator<E2, real_field, real_field>* _I_ptr,
+			derivator<E2, E>* _D)
+			:special_integrator<E, F, E2, real_field, real_field>(_I_ptr), 
 			phi_ptr(std::move(_phi_ptr)), D(_D) {}
 		
 		real_field integrate(const function<E, F>& f) const override
@@ -29,11 +29,11 @@ namespace math_rz::analysis
 			if constexpr (F::dimension == 1)
 				return this->I_ptr->integrate
 				(
-					general_function<L2, F>([&](const L2& s)->F 
+					general_function<E2, F>([&](const E2& s)->F 
 					{
 						//Used to calculate cross product
-						static cross_product<F> C;
-						L2_finite_dimensional_space<real_field, 3> u, v;
+						static linalg::cross_product<F> C;
+						E u, v;
 						auto differential = D->jacobian(phi_ptr, s);
 						for (int i = 0; i < u.dimension; i++)
 						{
@@ -45,11 +45,11 @@ namespace math_rz::analysis
 				);
 			else return this->I_ptr->integrate
 			(
-				general_function<L2, real_field>([&](const L2& s)->real_field 
+				general_function<E2, real_field>([&](const E2& s)->real_field 
 				{
 					//Used to calculate cross product
-					static cross_product<F> C;
-					L2_finite_dimensional_space<real_field, 3> u, v;
+					static linalg::cross_product<F> C;
+					E u, v;
 					auto differential = D->jacobian(phi_ptr, s);
 					for (int i = 0; i < u.dimension; i++)
 					{

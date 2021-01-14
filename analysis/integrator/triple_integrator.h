@@ -4,60 +4,59 @@
 
 
 namespace math_rz::analysis {
-	template<typename F, int p = 2>
-	class triple_integrator :public integrator <Lp_finite_dimensional_space< real_field, p, 3>, F>
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F> requires (E::dimension == 3)
+	class triple_integrator :public integrator <E, F>
 	{
-		using Lp = Lp_finite_dimensional_space< real_field, p, 3>;
+		using K = typename E::base_field;
 		integer cuts1, cuts2,cuts3;
-		real_field a, b, c, d,e,f;
+		K a, b, c, d,e,f;
 	public:
-		triple_integrator(real_field _a, real_field _b, real_field _c, real_field _d, 
-			real_field _e,real_field _f, integer _cuts1, integer _cuts2,integer _cuts3)
+		triple_integrator(K _a, K _b, K _c, K _d, K _e,K _f, integer _cuts1, integer _cuts2,integer _cuts3)
 			:a(_a), b(_b), c(_c), d(_d),e(_e),f(_f), cuts1(_cuts1), cuts2(_cuts2),cuts3(_cuts3)
 		{}
 
-		F integrate(const function<Lp, F>& h)const override
+		F integrate(const function<E, F>& h)const override
 		{
-			real_field eps3=(f-e)/cuts3,eps2 = (d - c) / cuts2, eps1 = (b - a) / cuts1;
+			K eps3=(f-e)/cuts3,eps2 = (d - c) / cuts2, eps1 = (b - a) / cuts1;
 			F result;
 			//u,v,w are dummy variables used for integration
-			real_field u=e, v=c, w=a;
+			K u=e, v=c, w=a;
 			//This nested for loop of depth 3 calculates the integral
 			for (int i = 0; i < cuts1; i++, v = c, u += eps1,v=c,w=a)
 				for (int j = 0; j < cuts2; j++, v += eps2,w=a)
 					for(int k=0;k<cuts3;k++,w+=eps3)
-						result += (eps1 * eps2*eps3) * h(Lp({ u,v,w }));
+						result += (eps1 * eps2*eps3) * h(E({ u,v,w }));
 			return result;
 		}
 	};
 
 
-	template<typename F, int p = 2>
-	class trapezoidal_triple_integrator :public integrator <Lp_finite_dimensional_space< real_field, p, 3>, F>
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F> requires (E::dimension == 3)
+	class trapezoidal_triple_integrator :public integrator <E, F>
 	{
-		using Lp = Lp_finite_dimensional_space< real_field, p, 3>;
+		using K = typename E::base_field;
 		integer cuts1, cuts2, cuts3;
-		real_field a, b, c, d, e, f;
+		K a, b, c, d, e, f;
 	public:
-		trapezoidal_triple_integrator(real_field _a, real_field _b, real_field _c, real_field _d,
-			real_field _e, real_field _f, integer _cuts1, integer _cuts2, integer _cuts3)
+		trapezoidal_triple_integrator(K _a, K _b, K _c, K _d,
+			K _e, K _f, integer _cuts1, integer _cuts2, integer _cuts3)
 			:a(_a), b(_b), c(_c), d(_d), e(_e), f(_f), cuts1(_cuts1), cuts2(_cuts2), cuts3(_cuts3)
 		{}
 
-		F integrate(const function<Lp, F>& h)const override
+		F integrate(const function<E, F>& h)const override
 		{
-			real_field eps3 = (f - e) / cuts3, eps2 = (d - c) / cuts2, eps1 = (b - a) / cuts1;
+			K eps3 = (f - e) / cuts3, eps2 = (d - c) / cuts2, eps1 = (b - a) / cuts1;
 			F result;
-			real_field u=e, v=c, w=a;
+			K u=e, v=c, w=a;
 			for (int i = 0; i < cuts1; i++, v = c, u += eps1, v = c, w = a)
 				for (int j = 0; j < cuts2; j++, v += eps2, w = a)
 					for (int k = 0; k < cuts3; k++, w += eps3)
-						result += real_field(eps1 * eps2 * eps3*(.125)) *
+						result += K(eps1 * eps2 * eps3*(.125)) *
 						(
-							h(Lp({ u,v,w }))+ h(Lp({ u+eps1,v,w }))+
-							h(Lp({ u,v+eps2,w })) + h(Lp({ u + eps1,v+eps2,w })) +
-							h(Lp({ u,v+eps2,w+eps3 })) + h(Lp({ u + eps1,v+eps2,w+eps3 })) +
-							h(Lp({ u,v,w+eps3 })) + h(Lp({ u + eps1,v,w+eps3 }))
+							h(E({ u,v,w }))+ h(E({ u+eps1,v,w }))+
+							h(E({ u,v+eps2,w })) + h(E({ u + eps1,v+eps2,w })) +
+							h(E({ u,v+eps2,w+eps3 })) + h(E({ u + eps1,v+eps2,w+eps3 })) +
+							h(E({ u,v,w+eps3 })) + h(E({ u + eps1,v,w+eps3 }))
 						);
 			return result;
 		}

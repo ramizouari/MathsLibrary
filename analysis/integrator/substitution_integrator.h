@@ -9,9 +9,12 @@
 namespace math_rz::analysis
 {
 	/*
-	* This class is used for a change of variable when integrating multivariable function
+	* This class is used for a change of variable when integrating a function
+	* Let S be the set covered by the integrator
+	* Constraints:
+	* - The change of variable phi must be a diffeomorphism between S and phi(S)
 	*/
-	template<typename E,typename F>
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F>
 	class substitution_integrator :public  special_integrator<E, F, E, F>
 	{
 	

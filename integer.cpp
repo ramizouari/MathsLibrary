@@ -3,17 +3,6 @@
 
 
 using namespace math_rz;
-integer::integer(const int m):_v(m)
-{
-}
-
-integer::integer(long long int m):_v(m)
-{
-}
-
-integer::integer(const double s):_v(s)
-{
-}
 
 integer integer::mod(const integer& a) const
 {

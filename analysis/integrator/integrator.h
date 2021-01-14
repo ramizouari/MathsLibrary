@@ -24,23 +24,24 @@ namespace math_rz::analysis {
 	* This class gives an implementation of trapezoidal rule of a univariate (possibly vector) function
 	*/
 
-	template<typename E,typename F>
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F>
 	class trapezoidal_integrator :public  integrator<E, F,F>
 	{
+		using K = typename E::base_field;
 		integer cuts;
-		real_field a, b;
+		K a, b;
 	public:
-		trapezoidal_integrator(real_field _a, real_field _b, integer _cuts = 100) :a(_a), b(_b), cuts(_cuts)
+		trapezoidal_integrator(K _a, K _b, integer _cuts = 100) :a(_a), b(_b), cuts(_cuts)
 		{
 
 		}
 		F integrate(const function<E, F>& f) const override
 		{
 			F R;
-			real_field eps = (b - a) / cuts;
-			real_field u = a;
+			K eps = (b - a) / K(cuts);
+			K u = a;
 			for (int i = 0; i < cuts; i++, u += eps)
-				R += real_field(eps._v*.5) * (f(u)+f(u+eps));
+				R += (eps*K(.5)) * (f(u)+f(u+eps));
 			return R;
 		}
 	};

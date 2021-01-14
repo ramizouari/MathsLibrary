@@ -10,8 +10,10 @@ namespace math_rz::analysis
 		linalg::vector_space_constraint::vector_space F>
 	class  integral_transform : public function<function<E1,F>,general_function<E2,F>>
 	{
-	protected:
 		using E = linalg::vector_space_constraint::product_space<E1, E2>;
+
+	protected:
+		using kernel_domain = linalg::vector_space_constraint::product_space<E1, E2>;
 		//Kernel of the transform
 		std::shared_ptr<function<E, F>> K_ptr;
 		//Integrator
