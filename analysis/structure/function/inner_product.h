@@ -3,7 +3,7 @@
 #include "linalg/finite_dimensional_vector_space.h"
 namespace math_rz::analysis::structure::function
 {
-	template<typename A, math_rz::linalg::vector_space_constraint::vector_space B>
+	template<typename A, math_rz::linalg::vector_space_constraint::normed_vector_space B >
 	class inner_product_topology:public norm_topology<A,B>
 	{
 	public:
@@ -44,18 +44,27 @@ namespace math_rz::analysis::structure::function
 		}
 	};
 
-	/*template<typename A,typename B>
-	class L2_induced_vect_inner_product :public inner_product_topology<A,B>
+	template<typename A,
+		linalg::vector_space_constraint::normed_vector_space B>
+	class L2_induced_function_inner_product :public inner_product_topology<A, B>
 	{
-		using function_type = norm_topology<A,B>::function_type;
-		square_matrix<A,B> M;
+		using function_type = math_rz::analysis::function<A, B>;
+		using K = typename  norm_topology<A, B>::K;
+		std::shared_ptr<integrator<A, K>> I_ptr;
+		const analysis::function<A, real_field>& f;
 	public:
-		L2_induced_vect_inner_product(const square_matrix<A,B>& P):M(P){}
-		F inner_product(const function_type& p, const function_type& q) const
+		L2_induced_function_inner_product(const analysis::function<A,real_field>&_f,integrator<A, K>* _I_ptr) : I_ptr(_I_ptr),f(_f) {}
+		L2_induced_function_inner_product(const analysis::function<A, real_field>& _f,std::shared_ptr<integrator<A, K>> _I_ptr) : I_ptr(_I_ptr),f(_f) {}
+
+		K inner_product(const function_type& p, const function_type& q) const
 		{
-			auto w = p.conj(),z=(M*q);
-			return std::inner_product(w.get_vect().cbegin(), w.get_vect().cend(),
-				z.get_vect().cbegin(), F(0));
+			return I_ptr->integrate
+			(
+				general_function<A, K>([&](const K& u)->K
+					{
+						return p(u).inner_product(q(u))*f(u);
+					})
+			);
 		}
-	};*/
+	};
 }

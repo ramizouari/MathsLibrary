@@ -159,6 +159,7 @@
     <ClInclude Include="absalg\structure\abs.h" />
     <ClInclude Include="analysis\derivator\default_derivator.h" />
     <ClInclude Include="analysis\derivator\derivator.h" />
+    <ClInclude Include="analysis\derivator\differential.h" />
     <ClInclude Include="analysis\derivator\two_way_derivator.h" />
     <ClInclude Include="analysis\finite_dimensional_inner_product_space.h" />
     <ClInclude Include="analysis\fourier_transform.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="analysis\integrator\special_integrator.h" />
     <ClInclude Include="analysis\integrator\spherical_integrator.h" />
     <ClInclude Include="analysis\integrator\stieltjes_integrator.h" />
+    <ClInclude Include="analysis\integrator\stokes_integrator.h" />
     <ClInclude Include="analysis\integrator\substitution_integrator.h" />
     <ClInclude Include="analysis\integrator\surface_integrator.h" />
     <ClInclude Include="analysis\integrator\trapezoidal_integrator.h" />
@@ -235,6 +237,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="complex.cpp" />
+    <ClCompile Include="examples\divergence_verification.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="examples\divergence_verification_plane.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="examples\green_theorem_verification.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="examples\curl_theorem_verification.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="guassian_integer.cpp" />
     <ClCompile Include="integer.cpp" />
     <ClCompile Include="main.cpp" />

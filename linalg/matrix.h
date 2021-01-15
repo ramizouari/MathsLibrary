@@ -75,9 +75,9 @@ namespace math_rz::linalg {
 			return conj_transpose();
 		}
 
-		matrix<K, m, n> conj() const
+		matrix conj() const
 		{
-			matrix<K, m, n> T;
+			matrix T;
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < m; j++)
 					T[i][j] = this->at(i).at(j).conj();

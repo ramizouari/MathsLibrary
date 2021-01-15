@@ -46,35 +46,65 @@ namespace math_rz::analysis {
 			linalg::square_matrix<base_field, codomain_dimension>, 
 			linalg::matrix<base_field,codomain_dimension, domain_dimension>>;
 
+		/*
+		* Generally,The dimension of the curl is n(n-1)/2
+		* It can be perfectly represented by an antisymmetric matrix, but for historical reasons:
+		* the curl of 3D vector function is represented as a vector.
+		* Here the type of curl is :
+		* 1. scalar if the function is two dimensional
+		* 2. vector if the function is three dimensional
+		* 3. an anti-symmetric matrix other wise
+		*/
+		using curl_type = std::conditional_t<domain_dimension == 3, E1,
+			std::conditional_t<domain_dimension==2,base_field,
+			linalg::square_matrix<base_field,domain_dimension>>>;
+
 		virtual matrix_type jacobian(const function<E1, E2>& f,const E1& x0) const = 0;
 		base_field jacobian_det(const function<E1, E2>& f, const E1& x0) const 
 			requires (codomain_dimension==domain_dimension)
 		{
 			return jacobian(f, x0).det();
 		}
-		E2 derivative(const function<base_field, E2>& f, const base_field& x0) const
+		E2 derivative(const function<E1, E2>& f, const base_field& x0) const
 			requires (domain_dimension == 1)
 		{
 			return jacobian(f, x0).as_vector();
 		}
 
-		E1 gradient(const function<E1, base_field>& f, const E1& x0) const
+		E1 gradient(const function<E1, E2>& f, const E1& x0) const
 			requires (codomain_dimension == 1)
 		{
 			return jacobian(f, x0).as_vector();
 		}
 
-		E1 curl(const function<E1, base_field>& f, const E1& x0) const requires
-			(domain_dimension == 3 && domain_dimension == codomain_dimension)
+		curl_type curl(const function<E1, E2>& f, const E1& x0) const requires
+			(domain_dimension == codomain_dimension)
 		{
+			/*
+			* We calculate the jacobian
+			*/
 			auto J = jacobian(f, x0);
-			E1 rot;
-			for (int i = 0; i < 3; i++)
-				rot[i] = J[(i + 1) % 3][(i + 2) % 3]- J[(i + 2) % 3][(i + 1) % 3];
-			return rot;
+			/*
+			* Calculate the curl for 3D functions
+			*/
+			if constexpr (domain_dimension == 3)
+			{
+				E1 rot;
+				for (int i = 0; i < 3; i++)
+					rot[i] = J[(i + 2) % 3][(i + 1) % 3] - J[(i + 1) % 3][(i + 2) % 3];
+				return rot;
+			}
+			/*
+			* Calculate the curl for 2D functions
+			*/
+			else if constexpr (domain_dimension == 2) return J[1][0] - J[0][1];
+			/*
+			* Calculate the curl for n dimensional functions
+			*/
+			else return J - J.T();
 		}
 
-		base_field divergence(const function<E1, base_field>& f, const E1& x0) const requires
+		base_field divergence(const function<E1, E2>& f, const E1& x0) const requires
 			(domain_dimension == codomain_dimension)
 		{
 			return jacobian(f, x0).trace();

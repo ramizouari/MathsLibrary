@@ -10,40 +10,36 @@
 namespace math_rz::analysis
 {
 	/*
-	* This integrator gives the integral along the boundary of a (smooth enough) manifold parameterized by phi
-	* Let M be a manifold of dimension n and B its boundary 
-	* Constraints:
-	* - The integrator must act on n-1 dimensions (the boundary)
-	* - The function phi must be a diffeomorphism between the set S it is acting on and B=phi(S)
+	* This integrator gives the integral along a (smooth enough) manifold parameterized by phi
 	*/
-	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F>
+	template<linalg::vector_space_constraint::vector_space H,
+		linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F>
 	requires (F::dimension == E::dimension || F::dimension == 1)
-		class boundary_integrator : public special_integrator<E, 
+		class stokes_integrator : public special_integrator<E,
 		F,
-		std::conditional_t<E::dimension==2,typename E::base_field,
-		linalg::coordinate_space<typename E::base_field, E::dimension-1>>, 
-		real_field, 
+		H,
+		real_field,
 		real_field>
 	{
 		using base_field = typename E::base_field;
 		inline static constexpr int n = E::dimension;
-		using H = std::conditional_t<n==2,base_field,linalg::coordinate_space<base_field, n-1>>;
+		inline static constexpr int p = H::dimension;
 		function<H, E>& phi_ptr;
 		std::shared_ptr<derivator<H, E>> D;
 		bool reverse_orientation;
 	public:
-		boundary_integrator(function<H, E>& _phi_ptr, integrator<H, real_field, real_field>* _I_ptr,
+		stokes_integrator(function<H, E>& _phi_ptr, integrator<H, real_field, real_field>* _I_ptr,
 			derivator<H, E>* _D, bool reverse = false)
 			:special_integrator<E, F, H, real_field, real_field>(_I_ptr), phi_ptr(_phi_ptr), D(_D),
 			reverse_orientation(reverse)
 		{}
 
-		boundary_integrator(function<H, E>& _phi_ptr, std::shared_ptr<integrator<H, real_field, real_field>> _I_ptr,
+		stokes_integrator(function<H, E>& _phi_ptr, std::shared_ptr<integrator<H, real_field, real_field>> _I_ptr,
 			std::shared_ptr<derivator<H, E>> _D, bool reverse = false)
 			:special_integrator<E, F, H, real_field, real_field>(_I_ptr), phi_ptr(_phi_ptr), D(_D),
 			reverse_orientation(reverse) {}
 
-		boundary_integrator(function<H, E>&& _phi_ptr, integrator<H, real_field, real_field>* _I_ptr,
+		stokes_integrator(function<H, E>&& _phi_ptr, integrator<H, real_field, real_field>* _I_ptr,
 			derivator<H, E>* _D)
 			:special_integrator<E, F, H, real_field, real_field>(_I_ptr),
 			phi_ptr(std::move(_phi_ptr)), D(_D) {}
@@ -59,7 +55,7 @@ namespace math_rz::analysis
 							/*
 							* The determinant of the following matrix gives the  squared product of the singular values of the differential
 							*/
-							auto K = std::sqrt(square_matrix<base_field, n-1>(differential.H() * differential).det());
+							auto K = std::sqrt(square_matrix<base_field, p>(differential.H() * differential).det());
 							return  K * f(phi_ptr(s));
 						})
 				);
@@ -74,8 +70,8 @@ namespace math_rz::analysis
 						/*
 						* Store the differential in p
 						*/
-						std::vector<std::vector<base_field>> p=differential_T.get_vect_vect();
-						static uniform_real_generator G(-1,1,432);
+						std::vector<std::vector<base_field>> p = differential_T.get_vect_vect();
+						static uniform_real_generator G(-1, 1, 432);
 						/*
 						* Add to p a random vector
 						* Almost surely, the random won't be in the span of p before the addition
@@ -97,7 +93,7 @@ namespace math_rz::analysis
 						* differential, or the hyperplane defined by the differential is tangent to the manifold
 						*-> The vector w will be a unit normal vector to the manifold
 						*/
-						linalg::gram_schmidt_inplace<base_field,n,n>(M);
+						linalg::gram_schmidt_inplace<base_field, n, n>(M);
 						/*
 						* To get a consistent choice of the unit normal vector, we will impose that the resultant
 						* gram-schmidt basis must be positively oriented
@@ -112,8 +108,8 @@ namespace math_rz::analysis
 						/*
 						* Calculate the differential change of hypervolume
 						*/
-						auto K = std::sqrt(square_matrix<base_field,n-1>(differential_T * differential_T.H()).det());
-						return  K*w.inner_product(f((phi_ptr)(s)));
+						auto K = std::sqrt(square_matrix<base_field, n - 1>(differential_T * differential_T.H()).det());
+						return  K * w.inner_product(f((phi_ptr)(s)));
 					})
 			);
 		}

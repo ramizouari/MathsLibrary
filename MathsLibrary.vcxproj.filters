@@ -261,6 +261,12 @@
     <ClInclude Include="analysis\integrator\boundary_integrator.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="analysis\integrator\stokes_integrator.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\derivator\differential.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="integer.cpp">
@@ -276,6 +282,18 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="complex.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="examples\divergence_verification.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="examples\divergence_verification_plane.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="examples\green_theorem_verification.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="examples\curl_theorem_verification.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
