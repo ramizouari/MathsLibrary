@@ -302,5 +302,8 @@
     <ClCompile Include="examples\curl_theorem_verification.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="analysis\integrator\boole_integrator.h">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,6 +1,5 @@
 #pragma once
 #include "finite_dimensional_vector_space.h"
-#include "boost/multi_array.hpp"
 #include "linalg/structure/matrix/inner_product.h"
 
 

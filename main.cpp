@@ -9,7 +9,7 @@
 #include "absalg/rational_extension.h"
 #include "complex.h"
 #include "analysis/normed_finite_dimensional_space.h"
-#include <analysis/finite_dimensional_inner_product_space.h>
+#include "analysis/finite_dimensional_inner_product_space.h"
 #include "analysis/integrable_function.h"
 #include "analysis/integrator/integrator.h"
 #include "analysis/derivator/derivator.h"
@@ -36,7 +36,6 @@
 #include "prob/uniform_cyclic_generator.h"
 #include "prob/uniform_real_generator.h"
 #include "prob/uniform_complex_generator.h"
-#include "boost/multi_array.hpp"
 #include "poly/multiplicator/multiplicator.h"
 #include "poly/structure/inner_product.h"
 #include "analysis/integrator/disk_integrator.h"
@@ -52,6 +51,7 @@
 #include "analysis/derivator/differential.h"
 #include "analysis/integrator/stokes_integrator.h"
 #include "linalg/multiplicator/multiplicator.h"
+#include "analysis/integrator/boole_integrator.h"
 #include <chrono>
 
 using namespace std;
@@ -67,38 +67,10 @@ using F = K;
 using M = math_rz::linalg::square_matrix<K, 3>;
 using R_X = math_rz::poly::polynomial<K>;
 
-class mat_exp :public math_rz::analysis::function<E<3>,E<3>>
-{
-public:
-	E<3> operator()(const E<3>& s) const override
-	{
-		static M rot({ {0,-1,0},{1,0,0},{0,0,1} });
-		return rot*s;
-	}
-
-	bool is_zero() const override
-	{
-		return false;
-	}
-};
 
 int main()
 {
-	uniform_int_generator G(-5, 5, 200);
-	constexpr int n = 3000,p=3000,m=3000;
-	using matrix_type1 = std::conditional_t<n == p, square_matrix<K, n>, matrix<K, n, p>>;
-	using matrix_type2 = std::conditional_t<m == p, square_matrix<K, p>, matrix<K, p, m>>;
-	using matrix_type3 = std::conditional_t<n == m, square_matrix<K, n>, matrix<K, n, m>>;
-	matrix_type1 A(G.generate_matrix<n,p>());
-	matrix_type2 B(G.generate_matrix<p, m>());
-	parallel_strassen_multiplicator<K> M(1);
-	std::chrono::time_point<std::chrono::system_clock> t1(std::chrono::system_clock::now());
-	auto H1=M.multiply<n, p, m>(A, B);
-	std::chrono::time_point<std::chrono::system_clock> t2(std::chrono::system_clock::now());
-	cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() << endl;
-	auto H2=(A * B);
-	std::chrono::time_point<std::chrono::system_clock> t3(std::chrono::system_clock::now());
-	cout << std::chrono::duration_cast<std::chrono::milliseconds>(t3 - t2).count() << endl;
-	cout << H2.metric(H1);
+	trapezoidal_integrator<K, K> S(0,std::numbers::pi,30);
+	std::cout << S.integrate(analysis::general_function<K,K>([](const real_field& p) {return std::sin(p); }));
 	return false;
 }

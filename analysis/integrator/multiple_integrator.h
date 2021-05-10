@@ -153,6 +153,90 @@ namespace math_rz::analysis {
 		}
 	};
 
+	/*
+* This class is for integration of high dimensional (n>=2) spaces
+* In pratice, due to exponential complexity, we advice that n<=10
+*/
+	template<linalg::vector_space_constraint::vector_space E, linalg::vector_space_constraint::vector_space F>
+	class simpsons_multiple_integrator :public integrator <E, F>
+	{
+		std::vector<integer> cuts_set;
+		using K = typename E::base_field;
+		std::vector<K> lower_bounds, upper_bounds;
+		inline static constexpr int n = E::dimension;
+	public:
+		simpsons_multiple_integrator(const std::vector<K>& L, const std::vector<K>& U, const std::vector<integer>& C)
+			:lower_bounds(L), upper_bounds(U), cuts_set(C)
+		{}
+
+
+		/*
+		* This function calculates the multiple integral by the multi dimensional "trapezoidal method"
+		* Let W the product of elements of cuts_set
+		* The complexity is O(W*n*2^n)
+		*/
+		F integrate(const function<E, F>& f)const override
+		{
+			F R;
+			if constexpr (E::dimension < 2)
+				R = simpsons_integrator<E, F>(lower_bounds[0], upper_bounds[0], cuts_set[0]).integrate(f);
+			else
+			{
+				E w(lower_bounds);
+				E eps;
+				K V(1);
+				for (int i = 0; i < n; i++)
+				{
+					eps[i] = (upper_bounds[i] - lower_bounds[i]) / K(cuts_set[i]);
+					V *= eps[i];
+				}
+				std::vector<integer> counts(n, 0);
+				counts.reserve(n);
+				int m = counts.size();
+				real_field a = std::pow(2, n);
+				while (m > 0)
+				{
+					for (int i = m; i < n; i++)
+					{
+						counts[i] = 0;
+						w[i] = lower_bounds[i];
+					}
+					m = n;
+					F r;
+					for (unsigned int k = 0; k < std::pow(2, n); k++)
+					{
+						for (unsigned int p = 0; p < n; p++)
+						{
+							if (!(k & (1 << p)))
+								continue;
+							w[p] += eps[p];
+						}
+						r += V * f(w);
+						for (unsigned int p = 0; p < n; p++)
+						{
+							if (!(k & (1 << p)))
+								continue;
+							w[p] -= eps[p];
+						}
+					}
+					r /= a;
+					R += r;
+					while (m > 0 && counts[m - 1] == (cuts_set[m - 1] - 1))
+					{
+						m--;
+					}
+					if (m > 0)
+					{
+						counts[m - 1]++;
+						w[m - 1] += eps[m - 1];
+					}
+				}
+			}
+			return R;
+		}
+	};
+
+
 
 	/*
 	* This class is for integration of high dimensional (n>=2) E spaces
