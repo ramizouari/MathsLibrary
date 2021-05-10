@@ -267,6 +267,12 @@
     <ClInclude Include="analysis\derivator\differential.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="linalg\diagonalisation\diagonalisator.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\diagonalisation\positive_semi_definite_diagonalisator.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="integer.cpp">

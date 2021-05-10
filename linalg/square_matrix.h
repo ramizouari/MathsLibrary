@@ -10,6 +10,19 @@ namespace math_rz::linalg
 	class square_matrix :virtual public matrix<K, n, n>, virtual  public ring
 	{
 	public:
+		square_matrix(const std::vector<K>& D)
+		{
+			if (D.size() != n)
+				throw std::exception("Size Mismatch");
+			for (int i = 0; i < n; i++)
+				this->u[i][i] = D[i];
+		}
+
+		square_matrix(const coordinate_space<K,n>& D)
+		{
+			for (int i = 0; i < n; i++)
+				this->u[i][i] = D[i];
+		}
 		square_matrix() {}
 		square_matrix(const std::vector<std::vector<K>>& M) :
 			matrix<K, n, n>(M) {}

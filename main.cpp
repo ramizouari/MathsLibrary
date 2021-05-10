@@ -51,6 +51,8 @@
 #include "analysis/integrator/boundary_integrator.h"
 #include "analysis/derivator/differential.h"
 #include "analysis/integrator/stokes_integrator.h"
+#include "linalg/multiplicator/multiplicator.h"
+#include <chrono>
 
 using namespace std;
 using namespace math_rz;
@@ -82,62 +84,21 @@ public:
 
 int main()
 {
-	/*
-	* Verification of Divergence Theorem
-	*/
-	mat_exp f;
-	/*
-	* Integrator along the boundary
-	*/
-	std::shared_ptr<integrator<real_field, F>> 
-		J_ptr_boundary(new multiple_integrator<real_field, F>({0}, 
-			{ 2 * std::numbers::pi }, { 2000 }));
-	/*
-	* Integrator over the manifold
-	*/
-	std::shared_ptr<integrator<E<2>, F>>
-		J_ptr_manifold(new multiple_integrator<E<2>, F>({0, 0 },
-			{5, 2 * std::numbers::pi}, {1000, 1000 }));
-	/*
-	* Derivator over the manifold
-	*/
-	std::shared_ptr<derivator<E<2>, E<3>>> D_ptr_manifold(new two_way_derivator<E<2>,E<3>>(1e-8));
-	/*
-	* Derivator used by differential
-	*/
-	std::shared_ptr<derivator<E<3>, E<3>>> D_ptr_differential(new two_way_derivator<E<3>, E<3>>(1e-8));
-
-	/*
-	* Derivator along the boundary
-	*/
-	std::shared_ptr<derivator<real_field, E<3>>> D_ptr_boundary(new two_way_derivator<real_field, E<3>>(1e-8));
-	
-	general_function<real_field, E<3>> phi_boundary([](const real_field& u) 
-		{
-			return 5*E<3>({std::cos(u),
-				std::sin(u),0});
-		});
-
-	general_function<E<2>, E<3>> phi_manifold([](const E<2>& u)
-		{
-			return u[0]*E<3>({ std::cos(u[1]), std::sin(u[1]),0 });
-		});
-
-	/*
-	* Creating a differential operator acting on the space of vector functions (form R3 to itself)
-	*/
-	differential<E<3>, E<3>> diff(D_ptr_differential);
-	/*
-	* Creating a line integrator going along the circle of radius 5 centered at the origin 
-	* located on the xy axis 
-	*/
-	line_integrator<E<3>, E<3>> S(phi_boundary,J_ptr_boundary,D_ptr_boundary);
-	/*
-	* Creating a surface integrator going over the disk of radius 5 centered at the origin located on the 
-	* xy axis
-	*/
-	surface_integrator<E<3>, E<3>> B(phi_manifold,J_ptr_manifold, D_ptr_manifold);
-	cout << S.integrate((f));
-	cout << '\t' << B.integrate(diff.curl(f));
+	uniform_int_generator G(-5, 5, 200);
+	constexpr int n = 3000,p=3000,m=3000;
+	using matrix_type1 = std::conditional_t<n == p, square_matrix<K, n>, matrix<K, n, p>>;
+	using matrix_type2 = std::conditional_t<m == p, square_matrix<K, p>, matrix<K, p, m>>;
+	using matrix_type3 = std::conditional_t<n == m, square_matrix<K, n>, matrix<K, n, m>>;
+	matrix_type1 A(G.generate_matrix<n,p>());
+	matrix_type2 B(G.generate_matrix<p, m>());
+	parallel_strassen_multiplicator<K> M(1);
+	std::chrono::time_point<std::chrono::system_clock> t1(std::chrono::system_clock::now());
+	auto H1=M.multiply<n, p, m>(A, B);
+	std::chrono::time_point<std::chrono::system_clock> t2(std::chrono::system_clock::now());
+	cout << std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count() << endl;
+	auto H2=(A * B);
+	std::chrono::time_point<std::chrono::system_clock> t3(std::chrono::system_clock::now());
+	cout << std::chrono::duration_cast<std::chrono::milliseconds>(t3 - t2).count() << endl;
+	cout << H2.metric(H1);
 	return false;
 }

@@ -144,6 +144,8 @@
       <AdditionalIncludeDirectories>.;D:\Libraries\cpp\boost_1_75_0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <FloatingPointModel>Precise</FloatingPointModel>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -197,6 +199,8 @@
     <ClInclude Include="analysis\transforms.h" />
     <ClInclude Include="complex.h" />
     <ClInclude Include="absalg\field.h" />
+    <ClInclude Include="linalg\diagonalisation\diagonalisator.h" />
+    <ClInclude Include="linalg\diagonalisation\positive_semi_definite_diagonalisator.h" />
     <ClInclude Include="linalg\eigen.h" />
     <ClInclude Include="linalg\finite_dimensional_module.h" />
     <ClInclude Include="linalg\finite_dimensional_vector_space.h" />
@@ -239,15 +243,19 @@
     <ClCompile Include="complex.cpp" />
     <ClCompile Include="examples\divergence_verification.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="examples\divergence_verification_plane.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="examples\green_theorem_verification.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="examples\curl_theorem_verification.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="guassian_integer.cpp" />
     <ClCompile Include="integer.cpp" />

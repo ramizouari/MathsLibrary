@@ -23,7 +23,7 @@ namespace math_rz::analysis
 			real_field eps = (v - u) / cuts;
 			int i = 0;
 			for (real_field k1 = u,k2=k1+eps; k2 <= v; k1 += eps,k2+=eps,i++)
-					R += (eps/2. ) * (f(k1)+2.*f((k1+k2)/2.)+f(k2));
+					R += (eps/6 ) * (f(k1)+4.*f((k1+k2)/2.)+f(k2));
 			if (a < b)
 				return R;
 			else return -R;
