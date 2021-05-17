@@ -19,14 +19,24 @@ real_field math_rz::real_field::conj() const
 	return _v;
 }
 
-real_field math_rz::real_field::inner_product(const real_field& a)
+real_field math_rz::real_field::inner_product(const real_field& a)const
 {
 	return (*this) * a;
 }
 
-real_field math_rz::real_field::dot_product(const real_field& a)
+real_field math_rz::real_field::dot_product(const real_field& a)const
 {
 	return this->inner_product(a);
+}
+
+real_field math_rz::real_field::distance(const real_field& a)const
+{
+	return std::abs(_v-a._v);
+}
+
+real_field math_rz::real_field::metric(const real_field& a) const
+{
+	return std::abs(_v - a._v);
 }
 
 real_field math_rz::real_field::inv() const

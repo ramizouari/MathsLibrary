@@ -67,6 +67,16 @@ real_field math_rz::complex::norm() const
     return abs();
 }
 
+real_field math_rz::complex::distance(const complex& a) const
+{
+    return std::abs(*this - a);
+}
+
+real_field math_rz::complex::metric(const complex& a) const
+{
+    return std::abs(*this - a);
+}
+
 complex& math_rz::complex::operator/=(const real_field& s)
 {
     _Val[0] /= s;

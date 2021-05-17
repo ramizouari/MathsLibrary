@@ -30,6 +30,8 @@ namespace math_rz
 		complex dot_product(const complex& z)const;
 		complex inv()const;
 		real_field norm() const;
+		real_field distance(const complex& a) const;
+		real_field metric(const complex& a) const;
 		inline operator std::complex<long double>() { return std::complex<long double>(real(),imag()); }
 		//inline operator std::complex<double>() { return std::complex<double>(real(), imag()); }
 		explicit inline operator real_field() { return real(); }

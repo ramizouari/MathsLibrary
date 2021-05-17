@@ -53,12 +53,18 @@
 #include "linalg/multiplicator/multiplicator.h"
 #include "analysis/integrator/boole_integrator.h"
 #include <chrono>
+#include "analysis/minimser/gradient_descent.h"
+#include "analysis/minimser/fixed_rate_gradient_descent.h"
+#include "analysis/minimser/barzilai_borwein_gradient_descent.h"
+#include "analysis/solver/fixed_point_iteration.h"
+#include "analysis/solver/newton_raphson.h"
+
 
 using namespace std;
 using namespace math_rz;
 using namespace math_rz::linalg;
 using namespace math_rz::analysis;
-using K = math_rz::real_field;
+using K = math_rz::complex;
 using E3 = math_rz::linalg::finite_dimensional_vector_space<K, 3>;
 using E2 = math_rz::linalg::finite_dimensional_vector_space<K, 2>;
 template<int n>
@@ -70,7 +76,11 @@ using R_X = math_rz::poly::polynomial<K>;
 
 int main()
 {
-	trapezoidal_integrator<K, K> S(0,std::numbers::pi,30);
-	std::cout << S.integrate(analysis::general_function<K,K>([](const real_field& p) {return std::sin(p); }));
+	two_way_derivator<K,K> D(1e-5);
+	newton_raphson<K> I(0,D);
+	std::cout << I.root(general_function<K,K>([](auto u)->K
+		{
+			return u * u * u - u - 1_c;
+		}));
 	return false;
 }

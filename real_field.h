@@ -28,8 +28,10 @@ namespace math_rz
         real_field abs() const;
         real_field norm() const;
         real_field conj() const;
-        real_field inner_product(const real_field& a);
-        real_field dot_product(const real_field& a);
+        real_field inner_product(const real_field& a)const;
+        real_field dot_product(const real_field& a)const;
+        real_field distance(const real_field &a)const;
+        real_field metric(const real_field& a)const;
         real_field inv()const;
         bool is_zero() const;
         bool is_one() const;

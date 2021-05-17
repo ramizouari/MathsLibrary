@@ -90,7 +90,7 @@ namespace math_rz::analysis {
 						4*f(E({ u,v+eps2/2 })) +
 						f(E({ u+ eps1 ,v })) +
 						4 * f(E({ u + eps1,v + eps2 / 2 })) +
-						f(E({ u+ eps1,v + eps2 })) +
+						f(E({ u+ eps1,v + eps2 })) 
 						);
 			return result;
 		}

@@ -68,7 +68,9 @@ namespace math_rz::analysis {
 		E2 derivative(const function<E1, E2>& f, const base_field& x0) const
 			requires (domain_dimension == 1)
 		{
-			return jacobian(f, x0).as_vector();
+			if constexpr (E1::dimension > 1)
+				return jacobian(f, x0).as_vector();
+			else return jacobian(f, x0)[0][0];
 		}
 
 		E1 gradient(const function<E1, E2>& f, const E1& x0) const

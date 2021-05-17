@@ -15,12 +15,19 @@ namespace math_rz::linalg
 		template<typename K, int n, typename M>
 		concept is_vector = std::is_base_of_v<finite_dimensional_vector_space<K, n>, M>;
 
+		template<typename X>
+		concept metric_space = requires(const X&u,const X&v)
+		{
+			u.distance(v);
+		};
+		
 		template<typename M>
 		concept vector_space = requires
 		{
 			typename M::base_field;
 			M::dimension;
 		};
+
 
 		template<typename E>
 		concept normed_vector_space = vector_space<E> && requires(const E & u)
@@ -226,12 +233,12 @@ namespace math_rz::linalg
 		{
 			return (*structure_ptr);
 		}
-		real_field metric(const finite_dimensional_vector_space& p)
+		real_field metric(const finite_dimensional_vector_space& p) const
 		{
 			return structure_ptr->metric(*this, p);
 		}
 
-		real_field distance(const finite_dimensional_vector_space& p)
+		real_field distance(const finite_dimensional_vector_space& p) const
 		{
 			return metric(p);
 		}
