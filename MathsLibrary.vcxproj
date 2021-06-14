@@ -157,6 +157,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="absalg\cyclic.h" />
+    <ClInclude Include="absalg\direct_product.h" />
     <ClInclude Include="absalg\ring_extension.h" />
     <ClInclude Include="absalg\structure\abs.h" />
     <ClInclude Include="analysis\derivator\default_derivator.h" />
@@ -197,8 +198,10 @@
     <ClInclude Include="analysis\sequence.h" />
     <ClInclude Include="analysis\solver\fixed_point_iteration.h" />
     <ClInclude Include="analysis\solver\fixed_point_finder.h" />
+    <ClInclude Include="analysis\solver\halley_method.h" />
     <ClInclude Include="analysis\solver\newton_raphson.h" />
     <ClInclude Include="analysis\solver\root_finder.h" />
+    <ClInclude Include="analysis\solver\secant_method.h" />
     <ClInclude Include="analysis\special\special.h" />
     <ClInclude Include="analysis\structure\function\inner_product.h" />
     <ClInclude Include="analysis\structure\function\metric.h" />
@@ -207,15 +210,20 @@
     <ClInclude Include="analysis\transforms.h" />
     <ClInclude Include="complex.h" />
     <ClInclude Include="absalg\field.h" />
+    <ClInclude Include="linalg\decomposer\decomposer.h" />
     <ClInclude Include="linalg\diagonalisation\diagonalisator.h" />
     <ClInclude Include="linalg\diagonalisation\positive_semi_definite_diagonalisator.h" />
     <ClInclude Include="linalg\eigen.h" />
+    <ClInclude Include="linalg\decomposer\cholesky.h" />
+    <ClInclude Include="linalg\decomposer\QR_decomposition.h" />
     <ClInclude Include="linalg\finite_dimensional_module.h" />
     <ClInclude Include="linalg\finite_dimensional_vector_space.h" />
     <ClInclude Include="absalg\group.h" />
     <ClInclude Include="guassian_integer.h" />
     <ClInclude Include="integer.h" />
     <ClInclude Include="absalg\integral_ring.h" />
+    <ClInclude Include="linalg\inverter\moore_penrose_pseudo_inverter.h" />
+    <ClInclude Include="linalg\inverter\pseudo_inverter.h" />
     <ClInclude Include="linalg\matrix_factory.h" />
     <ClInclude Include="linalg\multiplicator\cross_product.h" />
     <ClInclude Include="linalg\multiplicator\multiplicator.h" />

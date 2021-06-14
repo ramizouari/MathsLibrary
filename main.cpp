@@ -51,14 +51,15 @@
 #include "analysis/derivator/differential.h"
 #include "analysis/integrator/stokes_integrator.h"
 #include "linalg/multiplicator/multiplicator.h"
-#include "analysis/integrator/boole_integrator.h"
 #include <chrono>
 #include "analysis/minimser/gradient_descent.h"
 #include "analysis/minimser/fixed_rate_gradient_descent.h"
 #include "analysis/minimser/barzilai_borwein_gradient_descent.h"
 #include "analysis/solver/fixed_point_iteration.h"
 #include "analysis/solver/newton_raphson.h"
-
+#include "analysis/solver/secant_method.h"
+#include "linalg/decomposer/QR_decomposition.h"
+#include "linalg/inverter/moore_penrose_pseudo_inverter.h"
 
 using namespace std;
 using namespace math_rz;
@@ -70,17 +71,22 @@ using E2 = math_rz::linalg::finite_dimensional_vector_space<K, 2>;
 template<int n>
 using E = math_rz::linalg::coordinate_space<K, n>;
 using F = K;
-using M = math_rz::linalg::square_matrix<K, 3>;
+using M = math_rz::linalg::matrix<K, 3,5>;
 using R_X = math_rz::poly::polynomial<K>;
 
-
+#include <fstream>
 int main()
 {
-	two_way_derivator<K,K> D(1e-5);
-	newton_raphson<K> I(0,D);
-	std::cout << I.root(general_function<K,K>([](auto u)->K
-		{
-			return u * u * u - u - 1_c;
-		}));
-	return false;
+	uniform_complex_generator G(0,20,0,20,500);
+	matrix<K, 300, 200> A=G.generate_matrix<300,200>();
+	E3 b({ 1,1,1 });
+	square_matrix<K, 3> I(1);
+	std::ofstream file("out.txt");
+	decomposer::cholesky<K,300> Ch;
+	decomposer::QR_decomposition<K,300,200> QR;
+	inverter::moore_penrose_pseudo_inverter<K,300,200> P_INV;
+	auto [Q, R] = QR.decompose(A);
+	file << P_INV.pinv(A);
+	file << "\n\n";
+	file << (pow(square_matrix<K,300>(A*P_INV.pinv(A)),2)-A*P_INV.pinv(A)).norm() ;
 }

@@ -1,13 +1,10 @@
 #pragma once
-#pragma once
-#include "integrator.h"
 #include "real_field.h"
-#include "linalg/finite_dimensional_vector_space.h"
-
+#include "integrator.h"
 namespace math_rz::analysis
 {
 	template<typename E, typename F>
-	class boole_integrator :public  integrator<E, F>
+	class boole_integrator :public  integrator<E, F,F>
 	{
 		integer cuts;
 		real_field a, b;

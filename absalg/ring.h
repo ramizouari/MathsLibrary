@@ -52,9 +52,35 @@ namespace math_rz
 	namespace ring_constraints
 	{
 
-		template<typename R>
-		concept is_ring = std::is_base_of_v<ring, R>;
+		template<typename G>
+		concept group = requires (const G & a, const G & b)
+		{
+			{a* b}->std::convertible_to<G>;
+			{inv(a)}->std::convertible_to<G>;
+		};
 
+		template<typename G>
+		concept commutative_group = requires (const G & a, const G & b)
+		{
+			{a + b}->std::convertible_to<G>;
+			{a - b}->std::convertible_to<G>;
+			{-a}->std::convertible_to<G>;
+		};
+
+		template<typename G>
+		concept ring = commutative_group<G> && requires (const G & a, const G & b)
+		{
+			{a * b}->std::convertible_to<G>;
+		};
+		template<typename G>
+		concept field = ring<G> && commutative_group<G> && group<G>;
+
+		template<typename S>
+		concept ordered = requires(const S & a, const S & b)
+		{
+			{a <=> b};
+		};
+	
 		template<typename R>
 		concept has_abs = requires(R a)
 		{

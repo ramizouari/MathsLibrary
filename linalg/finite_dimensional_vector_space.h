@@ -7,6 +7,7 @@
 #include "complex.h"
 #include "structure/vector/inner_product.h"
 #include <concepts>
+#include <utility>
 
 namespace math_rz::linalg
 {
@@ -55,6 +56,9 @@ namespace math_rz::linalg
 	}
 	template<typename K,int n,int m>
 	class matrix;
+	template<typename K, int n>
+	class square_matrix;
+
 	template<typename K, int n>
 	class finite_dimensional_vector_space :public vector_space<K>
 	{
@@ -185,13 +189,22 @@ namespace math_rz::linalg
 		template<int m>
 		matrix<K, n, m> outer_product(const finite_dimensional_vector_space<K, m>&s) const
 		{
-			return as_matrix()*s.transpose();
+			return as_matrix().conj() *s.transpose();
 		}
 
 		template<int m>
 		finite_dimensional_vector_space<K, n*m> kroenecker_product(const finite_dimensional_vector_space<K, m>& s) const
 		{
 			return (as_matrix() * s.transpose()).as_vector();
+		}
+
+		template<int p,int q> 
+		std::conditional_t<p == q, square_matrix<K, p>, matrix<K, p, q>> reshape() const requires (p* q == n)
+		{
+			std::conditional_t<p == q, square_matrix<K, p>, matrix<K, p, q>>M;
+			for (int i = 0; i < p; i++) for (int j = 0; j < q; j++)
+				M[i][j] = u[i * q + j];
+			return M;
 		}
 
 		const K& operator[](int i) const

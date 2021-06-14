@@ -117,16 +117,12 @@ namespace math_rz
 
 	template<long long n>
 	using cubic_field = ring_extension<rational_extension<integer>,false, -n, 0, 0, 1>;
-	
-	namespace finite_fields
-	{
-		using F4 = ring_extension<F2,true,1, 1, 1>;
-		using F9 = ring_extension<F3,true, 1, 0, 1>;
-		using F25 = ring_extension<F5,true, 1, 1, 1>;
-	}
 
 	namespace finite_rings
 	{
+		using F4 = ring_extension<F2, true, 1, 1, 1>;
+		using F9 = ring_extension<F3, true, 1, 0, 1>;
+		using F25 = ring_extension<F5, true, 1, 1, 1>;
 		template<typename F>
 		using idompotent_ring = ring_extension<F, false, 0, -1, 1>;
 	}

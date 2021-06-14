@@ -10,7 +10,7 @@
 */
 
 namespace math_rz::analysis {
-	template <typename A, typename B,typename I=B>
+	template <typename A, typename B,typename I>
 	class integrator
 	{
 	public:

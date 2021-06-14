@@ -4,7 +4,7 @@
 #include "prob/uniform_complex_generator.h"
 #include "prob/uniform_real_generator.h"
 
-namespace math_rz::linalg
+namespace math_rz::linalg::diagonalisation
 {
 	template<typename K,int n>
 	class diagonalisator
