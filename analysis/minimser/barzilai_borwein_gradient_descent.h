@@ -32,4 +32,7 @@ namespace math_rz::analysis
 			this->p = (L).inner_product(x - s) / L.inner_product(L);
 		}
 	};
+
+	template<typename E>
+	using BB_gradient_descent = barzilai_borwein_gradient_descent<E>;
 }

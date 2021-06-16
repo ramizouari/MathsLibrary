@@ -54,6 +54,11 @@ bool real_field::is_one() const
 	return _v==1;
 }
 
+void math_rz::real_field::foreach(const std::function<void(real_field&)>& f)
+{
+	f(*this);
+}
+
 
 std::ostream& operator<<(std::ostream& H, const real_field& a)
 {

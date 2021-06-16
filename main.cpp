@@ -60,12 +60,15 @@
 #include "analysis/solver/secant_method.h"
 #include "linalg/decomposer/QR_decomposition.h"
 #include "linalg/inverter/moore_penrose_pseudo_inverter.h"
+#include "multialg/tensor.h"
+#include "analysis/minimser/lagrangian_minimiser.h"
+#include "analysis/minimser/karush_kuhn_tucker_minimiser.h"
 
 using namespace std;
 using namespace math_rz;
 using namespace math_rz::linalg;
 using namespace math_rz::analysis;
-using K = math_rz::complex;
+using K = math_rz::real_field;
 using E3 = math_rz::linalg::finite_dimensional_vector_space<K, 3>;
 using E2 = math_rz::linalg::finite_dimensional_vector_space<K, 2>;
 template<int n>
@@ -77,16 +80,25 @@ using R_X = math_rz::poly::polynomial<K>;
 #include <fstream>
 int main()
 {
-	uniform_complex_generator G(0,20,0,20,500);
-	matrix<K, 300, 200> A=G.generate_matrix<300,200>();
-	E3 b({ 1,1,1 });
-	square_matrix<K, 3> I(1);
-	std::ofstream file("out.txt");
-	decomposer::cholesky<K,300> Ch;
-	decomposer::QR_decomposition<K,300,200> QR;
-	inverter::moore_penrose_pseudo_inverter<K,300,200> P_INV;
-	auto [Q, R] = QR.decompose(A);
-	file << P_INV.pinv(A);
-	file << "\n\n";
-	file << (pow(square_matrix<K,300>(A*P_INV.pinv(A)),2)-A*P_INV.pinv(A)).norm() ;
+	general_function<E3, real_field> f([](const auto& x)->real_field
+		{
+			static E3 w({ 1,0,0 });
+			return w.inner_product(x);
+		});
+	general_function<E3, E<0>> C([](const auto& x)->auto
+		{
+			return E<0>();
+		});
+	general_function<E3, K> I([](const auto& x)->auto
+		{
+		return x.inner_product(x)-1;
+		});
+	two_way_derivator<E<4>, K> D(1e-5);
+	fixed_rate_gradient_descent  GD(E<4>({.1,.1,.1,0.1}), D, .001);
+	KKT_minimiser<E3,E<0>,K> L_minimiser(C,I, GD);
+
+	multialg::tensor<K, 2, 2, 2, 2> T({ { { { 1,2 }, { 3,4 } }, { { 5,6 }, { 7 ,8 } } },
+		{ { { 9,10 }, { 11,12 } }, { { 13,14 }, { 15,16 } } } });
+	T.foreach([](auto& a) {a *= 2; });
+	std::cout << T;
 }

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <iostream>
 #include <compare>
+#include <functional>
 #include "integer.h"
 
 namespace math_rz
@@ -35,6 +36,8 @@ namespace math_rz
         real_field inv()const;
         bool is_zero() const;
         bool is_one() const;
+
+        void foreach(const std::function<void(real_field&)>& f);
 
         real_field div(const real_field& s) { return _v/ s._v; }
         inline constexpr operator long double& () { return _v; };

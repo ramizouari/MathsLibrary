@@ -26,6 +26,7 @@ namespace math_rz {
         real_field abs() const;
         real_field inner_product(const real_field& other) const;
         inline integer operator-() const { return -_v; }
+        integer& operator+=(const integer& o);
 
         inline operator long long& () { return _v; }
         inline operator const long long& () const { return _v; }

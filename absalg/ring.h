@@ -42,6 +42,8 @@ namespace math_rz
 		return r * pow(u, n % 2);
 	}
 
+	
+
 	template<typename A>
 	A commutator(const A& u,const A& v)
 	{

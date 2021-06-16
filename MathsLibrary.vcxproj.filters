@@ -321,6 +321,21 @@
     <ClInclude Include="linalg\inverter\moore_penrose_pseudo_inverter.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="multialg\tensor.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\minimser\constrained_minimiser.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\minimser\lagrangian_minimiser.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\minimser\karush_kuhn_tucker_minimiser.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="analysis\minimser\constrained_barzilai_borwein_gradient_descent.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="integer.cpp">

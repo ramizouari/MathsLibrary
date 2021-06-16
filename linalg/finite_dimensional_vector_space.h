@@ -53,6 +53,7 @@ namespace math_rz::linalg
 
 		template<vector_space E, vector_space F> requires vector_space_over_same_base_field<E, F>
 			using product_space = finite_dimensional_vector_space<typename E::base_field, E::dimension + F::dimension>;
+		
 	}
 	template<typename K,int n,int m>
 	class matrix;
@@ -215,6 +216,16 @@ namespace math_rz::linalg
 		{
 			return u[i];
 		}
+
+		template<int p,int q> requires (p<=q)
+		finite_dimensional_vector_space<K, q - p> get() const
+		{
+			finite_dimensional_vector_space<K, q - p> x;
+			for (int i = p; i < q; i++)
+				x[i - p] = u[i];
+			return x;
+		}
+
 		const K& at(int i) const
 		{
 			return u.at(i);
@@ -236,6 +247,12 @@ namespace math_rz::linalg
 		const std::vector<K>& get_vect() const
 		{
 			return u;
+		}
+
+		void foreach(const std::function<void(K&)>& f)
+		{
+			for (auto& a : u)
+				f(a);
 		}
 
 		static void set_structure(structure_type* S)
@@ -273,6 +290,16 @@ namespace math_rz::linalg
 			return dynamic_cast<math_rz::linalg::structure::vector::inner_product_topology<K, n>*>
 				(structure_ptr.get())->dot_product(*this, q);
 		}
+
+		operator K& () requires (n == 1)
+		{
+			return u[0];
+		}
+		operator const K& () const requires (n == 1)
+		{
+			return u[0];
+		}
+
 	protected:
 		std::vector<K> u;
 

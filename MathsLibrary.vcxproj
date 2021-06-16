@@ -190,8 +190,12 @@
     <ClInclude Include="analysis\integrator\triple_integrator.h" />
     <ClInclude Include="analysis\laplace_tranform.h" />
     <ClInclude Include="analysis\minimser\barzilai_borwein_gradient_descent.h" />
+    <ClInclude Include="analysis\minimser\constrained_barzilai_borwein_gradient_descent.h" />
+    <ClInclude Include="analysis\minimser\constrained_minimiser.h" />
     <ClInclude Include="analysis\minimser\fixed_rate_gradient_descent.h" />
     <ClInclude Include="analysis\minimser\gradient_descent.h" />
+    <ClInclude Include="analysis\minimser\karush_kuhn_tucker_minimiser.h" />
+    <ClInclude Include="analysis\minimser\lagrangian_minimiser.h" />
     <ClInclude Include="analysis\minimser\minimiser.h" />
     <ClInclude Include="analysis\normed_finite_dimensional_space.h" />
     <ClInclude Include="analysis\normed_space.h" />
@@ -233,6 +237,7 @@
     <ClInclude Include="linalg\structure\vector\inner_product.h" />
     <ClInclude Include="linalg\structure\matrix\metric.h" />
     <ClInclude Include="linalg\structure\matrix\norm.h" />
+    <ClInclude Include="multialg\tensor.h" />
     <ClInclude Include="poly\free_algebra.h" />
     <ClInclude Include="linalg\abstract_module.h" />
     <ClInclude Include="linalg\matrix.h" />

@@ -9,6 +9,8 @@ namespace math_rz::linalg {
 	{
 	protected:
 		using structure_type = math_rz::linalg::structure::matrix::metric_topology<K, n, m>;
+		inline static constexpr struct empty_matrix_t{} empty_matrix;
+		matrix(empty_matrix_t) {};
 	public:
 		matrix():u(n)
 		{
@@ -274,6 +276,13 @@ namespace math_rz::linalg {
 			return dynamic_cast<math_rz::linalg::structure::matrix::inner_product_topology<K, n, m>*>
 				(structure_ptr.get())->dot_product(*this, q);
 		}
+
+		void foreach(const std::function<void(K&)>& f)
+		{
+			for (auto& R : u) for(auto &a:R)
+				f(a);
+		}
+
 	protected:
 		//boost::multi_array<K,2> u;
 		//using structure_type = math_rz::linalg::structure::matrix::L22_operator_norm;

@@ -9,6 +9,8 @@ namespace math_rz::linalg
 		template<typename K, int n>
 	class square_matrix :virtual public matrix<K, n, n>, virtual  public ring
 	{
+	protected:
+		square_matrix(matrix<K, n, n>::empty_matrix_t A):matrix<K,n,n>(A) {}
 	public:
 		square_matrix(const std::vector<K>& D)
 		{
