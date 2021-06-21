@@ -12,7 +12,7 @@ namespace math_rz::linalg::diagonalisation
 		using eig_couple_vector = std::pair<coordinate_space<K, n>, square_matrix<K, n>>;
 		using eig_couple = std::pair<K, coordinate_space<K, n>>;
 	public:
-		eig_couple_vector diagonalise() const
+		virtual eig_couple_vector diagonalise(const square_matrix<K, n>& M) const
 		{
 
 		}

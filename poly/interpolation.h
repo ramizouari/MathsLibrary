@@ -25,4 +25,26 @@ namespace math_rz::poly
 			L += y[i] * lagrange_basis_vector(x, i);
 		return L;
 	}
+
+	template<typename K>
+	polynomial<K> newton_interpolation(const std::vector<K>& x, const std::vector<K>& y)
+	{
+		if (x.size() != y.size())
+			throw std::exception("x & y must have the same size");
+		std::vector<std::vector<K>> divided_difference(x.size());
+		divided_difference[0] = y;
+		int n = y.size() - 1;
+		for (int r = 1; r <= n; r++)
+		{
+			divided_difference[r].resize(n-r+1);
+			for (int i = 0; i + r <= n; i++)
+				divided_difference[r][i] = (divided_difference[r - 1][i + 1] - divided_difference[r - 1][i]) / (x[i + r] - x[i]);
+		}
+		polynomial<K> L=0;
+		for (int r = n; r >= 0; r--)
+			L = L * polynomial<K>({ -x[r],1 }) + divided_difference[r][0];
+		return L;
+	}
+
+
 }

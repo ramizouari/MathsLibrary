@@ -183,6 +183,14 @@ namespace math_rz::linalg
 			return matrix<K, 1, n>({ this->u });
 		}
 
+		matrix<K, 1, n> conj_transpose() const
+		{
+			auto v = this->u;
+			for (auto& s : v)
+				s = s.conj();
+			return matrix<K, 1, n>({ v });
+		}
+
 		matrix<K, n, 1> as_matrix() const
 		{
 			return transpose().transpose();
@@ -190,7 +198,7 @@ namespace math_rz::linalg
 		template<int m>
 		matrix<K, n, m> outer_product(const finite_dimensional_vector_space<K, m>&s) const
 		{
-			return as_matrix().conj() *s.transpose();
+			return as_matrix() *s.conj_transpose();
 		}
 
 		template<int m>
@@ -338,7 +346,7 @@ namespace math_rz::linalg
 
 	template <typename K, int n>
 	finite_dimensional_vector_space<K, n> operator/(
-		const K& k, const finite_dimensional_vector_space<K, n>& a)
+		 const finite_dimensional_vector_space<K, n>& a, const K& k)
 	{
 		auto c(a);
 		return c /= k;

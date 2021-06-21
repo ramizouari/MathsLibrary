@@ -21,7 +21,7 @@ namespace math_rz::linalg::decomposer
 	public:
 		QR decompose(const matrix_type& A) const
 		{
-			auto R = Ch.iterative_cholesky(A.conj_transpose() * A).conj_transpose();
+			auto R = Ch.orthogonalisation_cholesky(A.conj_transpose() * A).conj_transpose();
 			auto Q = A*R.inv();
 			return { Q,R };
 		}

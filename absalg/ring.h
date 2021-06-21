@@ -35,14 +35,10 @@ namespace math_rz
 			return 1;
 		else if (n == 1)
 			return u;
-		//else if (n < 0)
-		//	return A(1) / pow(u, -n);
 		A r = pow(u, n / 2);
 		r *= r;
 		return r * pow(u, n % 2);
 	}
-
-	
 
 	template<typename A>
 	A commutator(const A& u,const A& v)
@@ -88,5 +84,19 @@ namespace math_rz
 		{
 			a.abs();
 		};
+	}
+
+	template<ring_constraints::field A>
+	A pow(const A& u, long long n)
+	{
+		if (n < 0)
+			return pow(u.inv(), -n);
+		if (n == 0)
+			return 1;
+		else if (n == 1)
+			return u;
+		A r = pow(u, n / 2);
+		r *= r;
+		return r * pow(u, n % 2);
 	}
 }
