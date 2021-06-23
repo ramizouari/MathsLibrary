@@ -1,12 +1,12 @@
 #pragma once
-#include "square_matrix.h"
+#include "matrix.h"
 #include "analysis/finite_dimensional_inner_product_space.h"
 #include "prob/uniform_real_generator.h"
 #include "prob/uniform_complex_generator.h"
 namespace math_rz::linalg
 {
 	template<typename K, int n> requires vector_space_constraint::normed_vector_space<K>
-		K largest_eig(const square_matrix<K, n>& M, const real_field& eps = 1e-5)
+		K largest_eig(const matrix<K, n,n>& M, const real_field& eps = 1e-5)
 		{
 			if constexpr (n == 1)
 				return 1;
@@ -39,7 +39,7 @@ namespace math_rz::linalg
 		}
 
 	template<typename K,int n> requires vector_space_constraint::normed_vector_space<K>
-	K largest_pos_eig(const square_matrix<K, n>& M,const real_field &eps=1e-5)
+	K largest_pos_eig(const matrix<K, n,n>& M,const real_field &eps=1e-5)
 	{
 		if constexpr (n == 1)
 			return 1;
@@ -70,7 +70,7 @@ namespace math_rz::linalg
 
 	template<typename K, int n> requires vector_space_constraint::normed_vector_space<K>
 		std::pair<K, coordinate_space<K, n>> 
-			largest_eig_couple(const square_matrix<K, n>& M, const real_field& eps = 1e-5,
+			largest_eig_couple(const matrix<K, n,n>& M, const real_field& eps = 1e-5,
 				const std::vector < std::pair<K, coordinate_space<K, n>>> P = {})
 		{
 			if constexpr (n == 1)
@@ -122,7 +122,7 @@ namespace math_rz::linalg
 
 	template<typename K, int n> requires vector_space_constraint::normed_vector_space<K>
 	std::pair<K,coordinate_space<K,n>> 
-		largest_pos_eig_couple(const square_matrix<K, n>& M, const real_field& eps = 1e-5)
+		largest_pos_eig_couple(const matrix<K, n,n>& M, const real_field& eps = 1e-5)
 		{
 			if constexpr (n == 1)
 				return { 1,1 };
@@ -164,7 +164,7 @@ namespace math_rz::linalg
 	template<typename K,int n,int m> requires vector_space_constraint::normed_vector_space<K>
 	real_field largest_sing(const matrix<K, n,m>& M, const real_field& eps = 1e-5)
 	{
-		return std::sqrt(static_cast<real_field>(largest_pos_eig(square_matrix<K,m>(M.conj_transpose()*M))));
+		return std::sqrt(static_cast<real_field>(largest_pos_eig(matrix<K,m,m>(M.conj_transpose()*M))));
 	}
 
 	template<typename K, int n, int m>
@@ -192,9 +192,9 @@ namespace math_rz::linalg
 	}
 
 	template<typename K,int n>
-	square_matrix<K, n> proj(const coordinate_space<K, n>& w)
+	matrix<K, n,n> proj(const coordinate_space<K, n>& w)
 	{
-		square_matrix<K, n> M;
+		matrix<K, n,n> M;
 		coordinate_space<K, n> s;
 		for (int i = 0; i < n; i++)
 		{
@@ -206,8 +206,8 @@ namespace math_rz::linalg
 
 	template<typename K, int n> 
 	requires vector_space_constraint::normed_vector_space<K>
-	std::pair<coordinate_space<K,n>, square_matrix<K, n>>
-		eigdecomposition_inplace(square_matrix<K, n>& M, const real_field& eps = 1e-5)
+	std::pair<coordinate_space<K,n>, matrix<K, n,n>>
+		eigdecomposition_inplace(matrix<K, n,n>& M, const real_field& eps = 1e-5)
 	{
 		std::vector<std::vector<K>> U(n,std::vector<K>(n));
 		std::vector<K> D(n);
@@ -225,14 +225,14 @@ namespace math_rz::linalg
 			P.push_back({ D[i],U[i] });
 			//M -= S;
 		}
-		return { coordinate_space<K,n>(D),square_matrix<K,n>(U).T() };
+		return { coordinate_space<K,n>(D),matrix<K,n,n>(U).T() };
 	}
 
 	template<typename K, int n> requires vector_space_constraint::normed_vector_space<K>
-		std::pair<coordinate_space<K, n>, square_matrix<K, n>>
-			eigdecomposition(const square_matrix<K, n>& M, const real_field& eps = 1e-5)
+		std::pair<coordinate_space<K, n>, matrix<K, n,n>>
+			eigdecomposition(const matrix<K, n,n>& M, const real_field& eps = 1e-5)
 		{
-			square_matrix<K, n> S(M);
+			matrix<K, n,n> S(M);
 			return eigdecomposition_inplace<K, n>(S, eps);
 		}
 }

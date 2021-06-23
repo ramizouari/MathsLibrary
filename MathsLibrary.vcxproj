@@ -105,12 +105,16 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <EnableModules>true</EnableModules>
       <AdditionalIncludeDirectories>.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\Libraries\cpp\boost_1_75_0\lib64-msvc-14.1;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -197,6 +201,7 @@
     <ClInclude Include="analysis\minimser\karush_kuhn_tucker_minimiser.h" />
     <ClInclude Include="analysis\minimser\lagrangian_minimiser.h" />
     <ClInclude Include="analysis\minimser\minimiser.h" />
+    <ClInclude Include="analysis\minimser\simplex.h" />
     <ClInclude Include="analysis\normed_finite_dimensional_space.h" />
     <ClInclude Include="analysis\normed_space.h" />
     <ClInclude Include="analysis\sequence.h" />
@@ -227,23 +232,29 @@
     <ClInclude Include="guassian_integer.h" />
     <ClInclude Include="integer.h" />
     <ClInclude Include="absalg\integral_ring.h" />
+    <ClInclude Include="linalg\matrix\givens_matrix.h" />
+    <ClInclude Include="linalg\square_matrix.old" />
     <ClInclude Include="linalg\inverter\moore_penrose_pseudo_inverter.h" />
     <ClInclude Include="linalg\inverter\pseudo_inverter.h" />
     <ClInclude Include="linalg\matrix\circulant_matrix.h" />
     <ClInclude Include="linalg\matrix\house_holder_matrix.h" />
     <ClInclude Include="linalg\matrix\ones.h" />
-    <ClInclude Include="linalg\matrix_factory.h" />
     <ClInclude Include="linalg\multiplicator\cross_product.h" />
     <ClInclude Include="linalg\multiplicator\multiplicator.h" />
+    <ClInclude Include="linalg\multiplicator\pointwise_multiplicator.h" />
     <ClInclude Include="linalg\structure\matrix\inner_product.h" />
     <ClInclude Include="linalg\structure\vector\metric.h" />
     <ClInclude Include="linalg\structure\vector\norm.h" />
     <ClInclude Include="linalg\structure\vector\inner_product.h" />
     <ClInclude Include="linalg\structure\matrix\metric.h" />
     <ClInclude Include="linalg\structure\matrix\norm.h" />
-    <ClInclude Include="multialg\structure\matrix\inner_product.h" />
-    <ClInclude Include="multialg\structure\matrix\metric.h" />
-    <ClInclude Include="multialg\structure\matrix\norm.h" />
+    <ClInclude Include="linalg\transformation\axes_dilation.h" />
+    <ClInclude Include="linalg\transformation\givens_rotation.h" />
+    <ClInclude Include="linalg\transformation\homothety.h" />
+    <ClInclude Include="linalg\transformation\house_holder_reflection.h" />
+    <ClInclude Include="linalg\transformation\linear_transformation.h" />
+    <ClInclude Include="linalg\transformation\orthogonal_projection.h" />
+    <ClInclude Include="linalg\transformation\orthogonal_reflection.h" />
     <ClInclude Include="multialg\structure\tensor\inner_product.h" />
     <ClInclude Include="multialg\structure\tensor\metric.h" />
     <ClInclude Include="multialg\structure\tensor\norm.h" />

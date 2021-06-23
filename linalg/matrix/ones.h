@@ -1,6 +1,6 @@
 #pragma once
 #pragma once
-#include "linalg/square_matrix.h"
+#include "linalg/matrix.h"
 #include "linalg/finite_dimensional_vector_space.h"
 namespace math_rz::linalg::special
 {

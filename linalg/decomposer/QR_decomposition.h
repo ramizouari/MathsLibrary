@@ -8,14 +8,13 @@ namespace math_rz::linalg::decomposer
 	template<typename K, int n, int m = n>
 	struct QR
 	{
-		using matrix_type = std::conditional_t<n == m, square_matrix<K, n>, matrix<K, n, m>>;
-		matrix_type Q;
-		square_matrix<K, m> R;
+		matrix<K,n,m> Q;
+		matrix<K, m,m> R;
 	};
 	template<typename K, int n,int m=n>
 	class QR_decomposition:public decomposer<K,n,m,QR<K,n,m>>
 	{
-		using matrix_type = std::conditional_t<n == m, square_matrix<K, n>, matrix<K, n, m>>;
+		using matrix_type = matrix<K,n,m>;
 		using QR = QR<K, n, m>;
 		cholesky<K,m> Ch;
 	public:

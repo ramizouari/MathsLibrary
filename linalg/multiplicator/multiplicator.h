@@ -1,5 +1,5 @@
 #pragma once
-#include "linalg/square_matrix.h"
+#include "linalg/matrix.h"
 #include <type_traits>
 #include <bit>
 #include <thread>
@@ -12,7 +12,7 @@ namespace math_rz::linalg
 	class multiplicator
 	{
 		template<int n,int m>
-		using matrix_type = std::conditional_t<n == m, square_matrix<K, n>, matrix<K, n, m>>;
+		using matrix_type = std::conditional_t<n == m, matrix<K, n,n>, matrix<K, n, m>>;
 	public:
 		template<int n,int m,int p>
 		matrix_type<n, p> multiply(const matrix_type<n, m>& A, const matrix_type<m, p>& B) const
@@ -39,7 +39,7 @@ namespace math_rz::linalg
 	class strassen_multiplicator : public multiplicator<K>
 	{
 		template<int n, int m>
-		using matrix_type = std::conditional_t<n == m, square_matrix<K, n>, matrix<K, n, m>>;
+		using matrix_type = std::conditional_t<n == m, matrix<K, n, n>, matrix<K, n, m>>;
 	protected:
 		static constexpr int size_limit = 64;
 	public:
@@ -82,7 +82,7 @@ namespace math_rz::linalg
 			for (int i = std::min(S / 2, m); i < m; i++)
 				for (int j = std::min(S / 2, p); j < p; j++)
 					B4[i - S / 2][j - S / 2] = B[i][j];
-			square_matrix<K,S / 2> T1 = this->multiply<S / 2, S / 2,S/2>(A1 + A4, B1 + B4),
+			matrix<K,S / 2,S/2> T1 = this->multiply<S / 2, S / 2,S/2>(A1 + A4, B1 + B4),
 				T2 = this->multiply<S / 2, S / 2,S/2>(A3 + A4, B1),
 				T3 = this->multiply<S / 2, S / 2,S/2>(A1, B2- B4),
 				T4 = this->multiply<S / 2, S / 2,S/2>(A4, B3 - B1),
@@ -113,7 +113,7 @@ namespace math_rz::linalg
 	class parallel_strassen_multiplicator : public strassen_multiplicator<K>
 	{
 		template<int n, int m>
-		using matrix_type = std::conditional_t<n == m, square_matrix<K, n>, matrix<K, n, m>>;
+		using matrix_type = std::conditional_t<n == m, matrix<K,n, n>, matrix<K, n, m>>;
 		mutable std::atomic<int> threads = 0;
 		int coeff;
 	public:
@@ -161,13 +161,6 @@ namespace math_rz::linalg
 			for (int i = std::min(S / 2, m); i < m; i++)
 				for (int j = std::min(S / 2, p); j < p; j++)
 					B4[i - S / 2][j - S / 2] = B[i][j];
-			/*square_matrix<K,S / 2> T1 = this->multiply<S / 2, S / 2,S/2>(A1 + A4, B1 + B4),
-				T2 = this->multiply<S / 2, S / 2,S/2>(A3 + A4, B1),
-				T3 = this->multiply<S / 2, S / 2,S/2>(A1, B2- B4),
-				T4 = this->multiply<S / 2, S / 2,S/2>(A4, B3 - B1),
-				T5 = this->multiply<S / 2, S / 2,S/2>(A1 + A2, B4),
-				T6 = this->multiply<S / 2, S / 2,S/2>(A3 - A1, B1 + B2),
-				T7 = this->multiply<S / 2, S / 2,S/2>(A2 - A4, B3 + B4);*/
 			auto F1 = std::async(&parallel_strassen_multiplicator::multiply<S / 2, S / 2, S / 2>, this, A1 + A4, B1 + B4);
 			auto F2 = std::async(&parallel_strassen_multiplicator::multiply<S / 2, S / 2, S / 2>, this, A3 + A4, B1);
 			auto F3 = std::async(&parallel_strassen_multiplicator::multiply<S / 2, S / 2, S / 2>, this, A1, (B2 - B4));

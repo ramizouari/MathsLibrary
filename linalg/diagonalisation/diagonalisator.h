@@ -9,15 +9,15 @@ namespace math_rz::linalg::diagonalisation
 	template<typename K,int n>
 	class diagonalisator
 	{
-		using eig_couple_vector = std::pair<coordinate_space<K, n>, square_matrix<K, n>>;
+		using eig_couple_vector = std::pair<coordinate_space<K, n>, matrix<K, n, n>>;
 		using eig_couple = std::pair<K, coordinate_space<K, n>>;
 	public:
-		virtual eig_couple_vector diagonalise(const square_matrix<K, n>& M) const
+		virtual eig_couple_vector diagonalise(const matrix<K, n, n>& M) const
 		{
 
 		}
 	protected:
-		virtual eig_couple eigen_couple(const square_matrix<K,n>&M) const
+		virtual eig_couple eigen_couple(const matrix<K,n,n>&M) const
 		{
 			if constexpr (n == 1)
 				return { 1,1 };
@@ -63,7 +63,7 @@ namespace math_rz::linalg::diagonalisation
 				return { (s[k] / v[k])-delta,s };
 			}
 		}
-		virtual eig_couple_vector diagonalise_inplace(square_matrix<K,n> &M) const
+		virtual eig_couple_vector diagonalise_inplace(matrix<K,n,n> &M) const
 		{
 			eig_couple_vector C;
 			K offset;

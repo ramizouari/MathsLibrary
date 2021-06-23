@@ -10,12 +10,12 @@ namespace math_rz::linalg::diagonalisation
 	template<typename K, int n>
 	class QR_algorithm
 	{
-		using eig_couple_vector = std::pair<coordinate_space<K, n>, square_matrix<K, n>>;
+		using eig_couple_vector = std::pair<coordinate_space<K, n>, matrix<K, n, n>>;
 		using eig_couple = std::pair<K, coordinate_space<K, n>>;
 		linalg::decomposer::QR_decomposition<K,n> QR;
 		int steps = 50;
 	public:
-		finite_dimensional_vector_space<K,n> eigenvalues(const square_matrix<K, n>& _M) const 
+		finite_dimensional_vector_space<K,n> eigenvalues(const matrix<K, n ,n>& _M) const 
 		{
 			
 			auto M = _M;

@@ -125,5 +125,9 @@ namespace math_rz
 		using F25 = ring_extension<F5, true, 1, 1, 1>;
 		template<typename F>
 		using idompotent_ring = ring_extension<F, false, 0, -1, 1>;
+		template<typename F>
+		using dual_number = ring_extension<F, false, 0, 0, 1>;
+		template<typename F>
+		using split_complex = ring_extension<F, false, -1, 0, 1>;
 	}
 }

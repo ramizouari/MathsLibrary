@@ -193,7 +193,10 @@ namespace math_rz::linalg
 
 		matrix<K, n, 1> as_matrix() const
 		{
-			return transpose().transpose();
+			matrix<K, n, 1> A;
+			for (int i = 0; i < n; i++)
+				A[i][0] = u[i];
+			return A;
 		}
 		template<int m>
 		matrix<K, n, m> outer_product(const finite_dimensional_vector_space<K, m>&s) const
@@ -207,6 +210,15 @@ namespace math_rz::linalg
 			return (as_matrix() * s.transpose()).as_vector();
 		}
 
+		explicit operator matrix<K, n, 1>() const
+		{
+			return as_matrix();
+		}
+
+		operator K() const requires(n == 1)
+		{
+			return u[0];
+		}
 		template<int p,int q> 
 		std::conditional_t<p == q, square_matrix<K, p>, matrix<K, p, q>> reshape() const requires (p* q == n)
 		{

@@ -62,7 +62,7 @@ using E2 = math_rz::linalg::finite_dimensional_vector_space<K, 2>;
 template<int n>
 using E = math_rz::linalg::coordinate_space<K, n>;
 using F = K;
-using M = math_rz::linalg::square_matrix<K, 2>;
+using M = math_rz::linalg::matrix<K, 2>;
 using R_X = math_rz::poly::polynomial<K>;
 
 class mat_exp :public math_rz::analysis::function<E<2>,E<2>>

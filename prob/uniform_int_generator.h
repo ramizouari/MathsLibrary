@@ -43,7 +43,7 @@ namespace math_rz
 			return X;
 		}
 
-		template<int n, int m, typename R = integer>
+		template<int n, int m=n, typename R = integer>
 		linalg::matrix<R, n, m> generate_matrix()
 		{
 			linalg::matrix<R, n, m> X;
@@ -51,12 +51,6 @@ namespace math_rz
 				for (int j = 0; j < m; j++)
 					X[i][j] = generate();
 			return X;
-		}
-
-		template<int n,typename R=integer>
-		linalg::square_matrix<R, n> generate_matrix()
-		{
-			return generate_matrix<n, n>();
 		}
 	};
 }
