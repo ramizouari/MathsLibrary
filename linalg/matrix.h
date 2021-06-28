@@ -347,6 +347,15 @@ namespace math_rz::linalg
 		{
 			return u;
 		}
+
+		const std::vector<K> get_column(int k) const
+		{
+			std::vector<K> S(n);
+			for (int i = 0; i < n; i++)
+				S[i] = u[i][k];
+			return S;
+		}
+
 		static void set_structure(structure_type* S)
 		{
 			structure_ptr.reset(S);

@@ -387,6 +387,18 @@
     <ClInclude Include="linalg\transformation\orthogonal_reflection.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="linalg\transformation\rotation.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\matrix\diagonal.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\diagonalisation\gram_schmidt_diagonalisation.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\diagonalisation\upper_triangular_diagonalisator.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="integer.cpp">

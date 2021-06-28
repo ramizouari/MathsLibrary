@@ -5,7 +5,7 @@
 
 namespace math_rz
 {
-	template<typename long long n,bool is_prime=false>
+	template<long long n,bool is_prime=false>
 	class cyclic:public std::conditional<is_prime,field,ring>::type
 	{
 	public:
@@ -60,7 +60,9 @@ namespace math_rz
 		}
 		cyclic inv()const
 		{
-			return math_rz::bezout<integer>(w,n).first;
+			if constexpr (is_prime)
+				return math_rz::pow(w, n - 2);
+			else return math_rz::bezout<integer>(w, n).first;
 		}
 
 		cyclic operator/=(const cyclic& a)

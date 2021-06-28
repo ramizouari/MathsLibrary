@@ -221,8 +221,10 @@
     <ClInclude Include="absalg\field.h" />
     <ClInclude Include="linalg\decomposer\decomposer.h" />
     <ClInclude Include="linalg\diagonalisation\diagonalisator.h" />
+    <ClInclude Include="linalg\diagonalisation\gram_schmidt_diagonalisation.h" />
     <ClInclude Include="linalg\diagonalisation\positive_semi_definite_diagonalisator.h" />
     <ClInclude Include="linalg\diagonalisation\QR_algorithm.h" />
+    <ClInclude Include="linalg\diagonalisation\upper_triangular_diagonalisator.h" />
     <ClInclude Include="linalg\eigen.h" />
     <ClInclude Include="linalg\decomposer\cholesky.h" />
     <ClInclude Include="linalg\decomposer\QR_decomposition.h" />
@@ -232,6 +234,7 @@
     <ClInclude Include="guassian_integer.h" />
     <ClInclude Include="integer.h" />
     <ClInclude Include="absalg\integral_ring.h" />
+    <ClInclude Include="linalg\matrix\diagonal.h" />
     <ClInclude Include="linalg\matrix\givens_matrix.h" />
     <ClInclude Include="linalg\square_matrix.old" />
     <ClInclude Include="linalg\inverter\moore_penrose_pseudo_inverter.h" />
@@ -255,6 +258,7 @@
     <ClInclude Include="linalg\transformation\linear_transformation.h" />
     <ClInclude Include="linalg\transformation\orthogonal_projection.h" />
     <ClInclude Include="linalg\transformation\orthogonal_reflection.h" />
+    <ClInclude Include="linalg\transformation\rotation.h" />
     <ClInclude Include="multialg\structure\tensor\inner_product.h" />
     <ClInclude Include="multialg\structure\tensor\metric.h" />
     <ClInclude Include="multialg\structure\tensor\norm.h" />

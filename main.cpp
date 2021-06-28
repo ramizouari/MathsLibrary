@@ -11,6 +11,10 @@
 #include "linalg/transformation/givens_rotation.h"
 #include "linalg/transformation/axes_dilation.h"
 #include "linalg/transformation/house_holder_reflection.h"
+#include "linalg/transformation/rotation.h"
+#include "linalg/diagonalisation/QR_algorithm.h"
+#include "linalg/matrix/diagonal.h"
+#include "linalg/diagonalisation/gram_schmidt_diagonalisation.h"
 using namespace math_rz;
 using namespace math_rz::linalg;
 using namespace math_rz::analysis;
@@ -25,13 +29,16 @@ using M = math_rz::linalg::matrix<K, 3,5>;
 int main()
 {
 	using namespace std::complex_literals;
-	inverter::moore_penrose_pseudo_inverter<K,3,3> PP;
-	matrix<K, 3> A({ {1,2,3},{1,2,3}, {1,2,3} });
-	special::givens_matrix<K,3> B(0,1,1.+5.i,1);
-	finite_dimensional_vector_space<K, 3> u({ 1,2,5 });
-	givens_rotation<decltype(u)> GR(0,1, 1. + 5.i, 1);
-	axes_dilation<decltype(u)> AD({ 2,1,3 });
-	house_holder_reflection<decltype(u)> HHR({ 0,0,1 });
-	poly::polynomial<K>::set_structure(new poly::structure::L2_vect_inner_product<K>);
-	std::cout << B*u << "\n\n" << HHR(u);
+	inverter::moore_penrose_pseudo_inverter < K, 4, 4 > PP;
+	matrix<K, 4, 4> A({ {1,1,1,1},{1,2,1,2},{0,0,3,3},{4,1,1,-2} });
+	
+	diagonalisation::QR_algorithm<K,4> QR;
+
+	std::cout << QR.eigenvalues(A.H()*A) << "\n\n";
+	diagonalisation::gram_schmidt_diagonalisation<K, 4> GSD;
+
+	auto [P,D] = GSD.diagonalise(A.H() * A);
+	auto [D1,P1] = eigdecomposition(A.H() * A);
+	auto [P2,D2] = QR.eigendecomposition(A);
+	std::cout << P2 << "\n\n" << D2 << "\n\n" << P2.inv() * A * P2;
 }
