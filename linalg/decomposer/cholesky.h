@@ -28,7 +28,7 @@ namespace math_rz::linalg::decomposer
 				e[i] =1;
 				finite_dimensional_vector_space<K, n> R;
 				for (int j = 0; j < i; j++)
-					R += P.inner_product(e,B[j]) * B[j];
+					R += P.inner_product(B[j],e) * B[j];
 				B[i] = e - R;
 				real_field N = P.norm(B[i]);
 				if (N > eps)

@@ -19,7 +19,7 @@ namespace math_rz::linalg::diagonalisation
 			{
 				finite_dimensional_vector_space<K, n> R, u;
 				for (auto& s : B)
-					R += A[i].inner_product(s) * s;
+					R += s.inner_product(A[i]) * s;
 				u = A[i] - R;
 				real_field N = u.norm();
 				if (N > eps)
@@ -110,6 +110,7 @@ namespace math_rz::linalg::diagonalisation
 				* Raising it to the nth power to detect potential generalized eigenvalues
 				*/
 				auto N = pow(M, 1);
+
 				/*
 				* Finding an orthonormal basis of the correspending eigenspace
 				*/

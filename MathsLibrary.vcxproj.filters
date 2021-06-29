@@ -399,6 +399,18 @@
     <ClInclude Include="linalg\diagonalisation\upper_triangular_diagonalisator.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="linalg\diagonalisation\self_adjoint_diagonalisator.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\decomposer\polar_decomposition.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\decomposer\LQ_decomposition.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="linalg\decomposer\SVD_decomposition.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="integer.cpp">

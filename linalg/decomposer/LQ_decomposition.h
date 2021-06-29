@@ -7,19 +7,18 @@
 namespace math_rz::linalg::decomposer
 {
 	template<typename K, int n, int m = n>
-	struct QR
+	struct LQ
 	{
-		matrix<K,n,m> Q;
-		matrix<K, m,m> R;
+		matrix<K, n, n> L;
+		matrix<K, n, m> Q;
 	};
-	template<typename K, int n,int m=n>
-	class QR_decomposition:public decomposer<K,n,m,QR<K,n,m>>
+	template<typename K, int n, int m = n>
+	class LQ_decomposition :public decomposer<K, n, m, LQ<K, n, m>>
 	{
-		using matrix_type = matrix<K,n,m>;
-		using QR = QR<K, n, m>;
-		cholesky<K,m> Ch;
+		using matrix_type = matrix<K, n, m>;
+		using LQ = LQ<K, n, m>;
+		cholesky<K, m> Ch;
 		real_field eps = 1e-7;
-
 		std::vector<finite_dimensional_vector_space<K, n>> gram_schmidt(const std::vector<finite_dimensional_vector_space<K, n>>& A)const
 		{
 
@@ -51,11 +50,11 @@ namespace math_rz::linalg::decomposer
 			return gram_schmidt(U);
 		}
 	public:
-		QR decompose(const matrix_type& A) const
+		LQ decompose(const matrix_type& A) const
 		{
-			auto R = Ch.iterative_cholesky(A.conj_transpose() * A).conj_transpose();
+			auto L = Ch.iterative_cholesky(A* A.conj_transpose());
+			auto Q = L.inv()*A;
 			std::vector<finite_dimensional_vector_space<K, n>> G;
-			auto Q = A*R.inv();
 			for (int i = 0; i < n; i++)
 				G.push_back(Q.get_column(i));
 			for (int i = 0; i < n; i++)
@@ -64,11 +63,11 @@ namespace math_rz::linalg::decomposer
 				e[i] = 1;
 				G.push_back(e);
 			}
-			auto B= gram_schmidt(G);
+			auto B = gram_schmidt(G);
 			for (int i = 0; i < n; i++)
-				for(int j = 0; j < n; j++)
+				for (int j = 0; j < n; j++)
 					Q[i][j] = B[j][i];
-			return { Q,R };
+			return { L,Q };
 		}
 	};
 }

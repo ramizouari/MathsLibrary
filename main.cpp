@@ -15,6 +15,9 @@
 #include "linalg/diagonalisation/QR_algorithm.h"
 #include "linalg/matrix/diagonal.h"
 #include "linalg/diagonalisation/gram_schmidt_diagonalisation.h"
+#include "linalg/matrix/ones.h"
+#include "linalg/decomposer/polar_decomposition.h"
+#include "linalg/decomposer/SVD_decomposition.h"
 using namespace math_rz;
 using namespace math_rz::linalg;
 using namespace math_rz::analysis;
@@ -25,20 +28,21 @@ template<int n>
 using E = math_rz::linalg::coordinate_space<K, n>;
 using F = K;
 using M = math_rz::linalg::matrix<K, 3,5>;
+constexpr int dimension = 100;
 #include <fstream>
 int main()
 {
 	using namespace std::complex_literals;
-	inverter::moore_penrose_pseudo_inverter < K, 4, 4 > PP;
-	matrix<K, 4, 4> A({ {1,1,1,1},{1,2,1,2},{0,0,3,3},{4,1,1,-2} });
+	inverter::moore_penrose_pseudo_inverter < K, 3, 3 > PP;
+	special::ones<K, dimension, dimension> A;
+	decomposer::polar_decomposition<K, dimension, dimension> PD;
+	diagonalisation::QR_algorithm<K, dimension> QR;
 	
-	diagonalisation::QR_algorithm<K,4> QR;
-
-	std::cout << QR.eigenvalues(A.H()*A) << "\n\n";
-	diagonalisation::gram_schmidt_diagonalisation<K, 4> GSD;
-
-	auto [P,D] = GSD.diagonalise(A.H() * A);
-	auto [D1,P1] = eigdecomposition(A.H() * A);
-	auto [P2,D2] = QR.eigendecomposition(A);
-	std::cout << P2 << "\n\n" << D2 << "\n\n" << P2.inv() * A * P2;
+	std::cout << A << "\n\n";
+	diagonalisation::gram_schmidt_diagonalisation<K, dimension> GSD;
+	decomposer::SVD_decomposition<K, dimension, dimension> PDD;
+	decomposer::LQ_decomposition<K,dimension,dimension> LQ;
+	auto [U, D,V] = PDD.decompose(A);
+	auto [S1, S2] = QR.decompose(A);
+	std::cout << D;
 }

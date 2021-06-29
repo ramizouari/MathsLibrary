@@ -8,19 +8,22 @@
 #include <unordered_set>
 #include <unordered_map>
 #include "upper_triangular_diagonalisator.h"
+#include "self_adjoint_diagonalisator.h"
+#include "positive_semi_definite_diagonalisator.h"
 
 
 namespace math_rz::linalg::diagonalisation
 {
 	template<typename K, int n>
-	class QR_algorithm :public diagonalisator<K,n>
+	class QR_algorithm :virtual public diagonalisator<K,n>
 	{
+	protected:
 		using eig_couple_vector = std::pair<coordinate_space<K, n>, matrix<K, n, n>>;
 		using eig_couple = std::pair<K, coordinate_space<K, n>>;
 		linalg::decomposer::QR_decomposition<K,n> QR;
 		upper_triangular_diagonalisator<K, n> UTD;
-		int steps = 50;
-		real_field eps = 1e-5;
+		int steps = 200;
+		real_field eps = 1e-7;
 
 		std::vector<finite_dimensional_vector_space<K, n>> gram_schmidt(const std::vector<finite_dimensional_vector_space<K, n>>& A)const
 		{
@@ -52,12 +55,18 @@ namespace math_rz::linalg::diagonalisation
 				U[i] = A.get_column(i);
 			return gram_schmidt(U);
 		}
-	public:
-		struct eigenbasis
+
+		real_field lower_triangular_norm(const matrix<K, n, n>& A) const
 		{
-			matrix<K, n, n> B;
-			finite_dimensional_vector_space<K, n>D;
-		};
+			real_field S=0;
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < i; j++)
+					S = std::max(S, A[i][j].norm());
+			return S;
+		}
+
+	public:
+		using eigenbasis = diagonalisator<K, n>::eigenbasis;
 
 		finite_dimensional_vector_space<K,n> eigenvalues(const matrix<K, n ,n>& _M) const 
 		{
@@ -81,7 +90,7 @@ namespace math_rz::linalg::diagonalisation
 			EB.B = matrix<K, n, n>(1);
 			auto M = _M;
 			int p = steps;
-			while (p--)
+			while (lower_triangular_norm(M) > eps &&p--)
 			{
 				auto [Q, R] = QR.decompose(M);
 				M = R * Q;
@@ -93,5 +102,33 @@ namespace math_rz::linalg::diagonalisation
 			return EB;
 		}
 	
+	};
+
+	template<typename K, int n>
+	class QR_algorithm_hermitian :virtual public QR_algorithm<K,n>,virtual public self_adjoint_diagonalisator<K,n>
+	{
+	public:
+		using eigenbasis = QR_algorithm<K, n>::eigenbasis;
+		eigenbasis eigendecomposition(const matrix<K, n, n>& _M) const
+		{
+			eigenbasis EB;
+			EB.B = matrix<K, n, n>(1);
+			auto M = _M;
+			int p = this->steps;
+			while (this->lower_triangular_norm(M)>this->eps && p--)
+			{
+				auto [Q, R] = this->QR.decompose(M);
+				M = R * Q;
+				EB.B = EB.B * Q;
+			}
+			for (int i = 0; i < n; i++)
+				EB.D[i] = M[i][i];
+			return EB;
+		}
+	};
+
+	template<typename K, int n>
+	class QR_algorithm_positive_semi_definite :virtual public QR_algorithm_hermitian<K, n>, virtual public positive_semi_definite_diagonalisator<K, n>
+	{
 	};
 }

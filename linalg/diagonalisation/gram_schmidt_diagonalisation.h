@@ -41,22 +41,18 @@ namespace math_rz::linalg::diagonalisation
 		}
 
 	public:
-		struct eigenbase
-		{
-			matrix<K, n, n> B;
-			finite_dimensional_vector_space<K, n> L;
-		};
+		using eigenbasis = diagonalisator<K, n>::eigenbasis;
 		gram_schmidt_diagonalisation(real_field _eps=1e-5):eps(_eps){}
-		eigenbase diagonalise(const matrix<K,n,n> &A) const
+		eigenbasis eigendecomposition(const matrix<K,n,n> &A) const
 		{
 			auto [B, N] = gram_schmidt(A);
-			eigenbase EB;
+			eigenbasis EB;
 			EB.B=std::move(B);
 			linalg::structure::vector::L2_induced_vect_inner_product<K, n> P(A);
 			for (int i = 0; i < n; i++)
 			{
 				finite_dimensional_vector_space<K,n> u(EB.B.get_column(i));
-				EB.L[i] = P.inner_product(u,u);
+				EB.D[i] = P.inner_product(u,u);
 			}
 			return EB;
 		}

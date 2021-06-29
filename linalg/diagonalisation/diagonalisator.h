@@ -3,6 +3,7 @@
 #include "linalg/finite_dimensional_vector_space.h"
 #include "prob/uniform_complex_generator.h"
 #include "prob/uniform_real_generator.h"
+#include "linalg/decomposer/decomposer.h"
 
 namespace math_rz::linalg::diagonalisation
 {
@@ -13,9 +14,14 @@ namespace math_rz::linalg::diagonalisation
 		finite_dimensional_vector_space<K, n> D;
 	};
 	template<typename K,int n>
-	class diagonalisator
+	class diagonalisator:public decomposer::decomposer<K,n,n,eigenbasis<K,n>>
 	{
 	public:
 		using eigenbasis = eigenbasis<K, n>;
+		virtual eigenbasis eigendecomposition(const matrix<K, n, n>& A) const = 0;
+		eigenbasis decompose(const matrix<K, n, n>& A) const
+		{
+			return eigendecomposition(A);
+		}
 	};
 }

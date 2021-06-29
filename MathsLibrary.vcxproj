@@ -220,10 +220,14 @@
     <ClInclude Include="complex.h" />
     <ClInclude Include="absalg\field.h" />
     <ClInclude Include="linalg\decomposer\decomposer.h" />
+    <ClInclude Include="linalg\decomposer\LQ_decomposition.h" />
+    <ClInclude Include="linalg\decomposer\polar_decomposition.h" />
+    <ClInclude Include="linalg\decomposer\SVD_decomposition.h" />
     <ClInclude Include="linalg\diagonalisation\diagonalisator.h" />
     <ClInclude Include="linalg\diagonalisation\gram_schmidt_diagonalisation.h" />
     <ClInclude Include="linalg\diagonalisation\positive_semi_definite_diagonalisator.h" />
     <ClInclude Include="linalg\diagonalisation\QR_algorithm.h" />
+    <ClInclude Include="linalg\diagonalisation\self_adjoint_diagonalisator.h" />
     <ClInclude Include="linalg\diagonalisation\upper_triangular_diagonalisator.h" />
     <ClInclude Include="linalg\eigen.h" />
     <ClInclude Include="linalg\decomposer\cholesky.h" />
