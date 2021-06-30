@@ -114,7 +114,9 @@ namespace math_rz::linalg::diagonalisation
 				/*
 				* Finding an orthonormal basis of the correspending eigenspace
 				*/
+				std::cout << N;
 				auto C = matrix<K, n, n>(1) - PI.pinv(N) * N;
+				std::cout << C;
 				auto B1 = gram_schmidt(C);
 				for (int a = 0; a < m; a++)
 					B.push_back(B1[a]);

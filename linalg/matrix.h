@@ -348,11 +348,20 @@ namespace math_rz::linalg
 			return u;
 		}
 
-		const std::vector<K> get_column(int k) const
+		std::vector<K> get_column(int k) const
 		{
-			std::vector<K> S(n);
+			std::vector<K> S;
 			for (int i = 0; i < n; i++)
-				S[i] = u[i][k];
+				S.emplace_back(u[i][k]);
+			return S;
+		}
+
+
+		std::vector<std::reference_wrapper<K>> get_column_ref(int k)
+		{
+			std::vector<std::reference_wrapper<K>> S;
+			for (int i = 0; i < n; i++)
+				S.push_back(u[i][k]);
 			return S;
 		}
 

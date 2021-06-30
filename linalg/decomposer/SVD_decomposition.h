@@ -5,6 +5,7 @@
 #include "decomposer.h"
 #include "QR_decomposition.h"
 #include "LQ_decomposition.h"
+#include "linalg/diagonalisation/QR_algorithm.h"
 namespace math_rz::linalg::decomposer
 {
 	template<typename K, int n, int m = n>
@@ -23,6 +24,7 @@ namespace math_rz::linalg::decomposer
 		LQ_decomposition<K, n, m> LQ;
 		integer steps = 100;
 		cholesky<K, m> Ch;
+		diagonalisation::QR_algorithm_hermitian < K, std::min(n, m)> QR_diag;
 	public:
 		SVD decompose(const matrix_type& A) const
 		{
@@ -41,6 +43,18 @@ namespace math_rz::linalg::decomposer
 			}
 			UDV.D = M;
 			return UDV;
+		}
+
+		SVD svd_decomposition(const matrix_type& A) const
+		{
+
+		}
+
+		finite_dimensional_vector_space<K, std::min(m,n)> singular_values(const matrix_type&A) const
+		{
+			if constexpr (n <= m)
+				return QR_diag.eigenvalues(A * A.H());
+			else return QR_diag.eigenvalues(A.H() * A);
 		}
 	};
 }

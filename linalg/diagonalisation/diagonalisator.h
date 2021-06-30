@@ -23,5 +23,10 @@ namespace math_rz::linalg::diagonalisation
 		{
 			return eigendecomposition(A);
 		}
+
+		virtual finite_dimensional_vector_space<K, n> eigenvalues(const matrix<K, n, n>& A) const
+		{
+			return eigendecomposition(A).D;
+		}
 	};
 }

@@ -238,6 +238,8 @@
     <ClInclude Include="guassian_integer.h" />
     <ClInclude Include="integer.h" />
     <ClInclude Include="absalg\integral_ring.h" />
+    <ClInclude Include="linalg\matrix\centering_matrix.h" />
+    <ClInclude Include="linalg\matrix\DFT_matrix.h" />
     <ClInclude Include="linalg\matrix\diagonal.h" />
     <ClInclude Include="linalg\matrix\givens_matrix.h" />
     <ClInclude Include="linalg\square_matrix.old" />
