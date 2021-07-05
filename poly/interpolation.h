@@ -1,5 +1,6 @@
 #pragma once
 #include "polynomial.h"
+#include "linalg/transformation/fft/cooley_tuckey.h"
 namespace math_rz::poly
 {
 	template<typename K>
@@ -46,5 +47,14 @@ namespace math_rz::poly
 		return L;
 	}
 
+	template<unsigned int n>
+	polynomial<complex> fft_interpolation(const linalg::finite_dimensional_vector_space<complex, n>& y)
+	{
+		static linalg::fft::dynamic_cooley_tuckey<true> CT(n);
+		auto R = CT(y.get_vect());
+		for(auto &x:R)
+			x /= (int)n;
+		return (R);
+	}
 
 }

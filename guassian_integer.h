@@ -11,6 +11,7 @@ namespace math_rz
 		guassian_integer(const std::complex<integer>& a) :std::complex<integer>(a) {}
 		guassian_integer(const integer& a = 0, const integer& b = 0);
 		guassian_integer(int a);
+		guassian_integer(const guassian_integer& a, int b);
 		static guassian_integer _0() { return std::complex<integer>(); }
 		static guassian_integer _1() { return std::complex<integer>(1); }
 		bool is_zero() const;

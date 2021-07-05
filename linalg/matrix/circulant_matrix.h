@@ -4,7 +4,7 @@
 namespace math_rz::linalg::special
 {
 	template<typename K, int n>
-	class circulant_matrix :public square_matrix<K, n>
+	class circulant_matrix :public matrix < K, n,n >
 	{
 	public:
 		circulant_matrix(const finite_dimensional_vector_space<K, n>& v)

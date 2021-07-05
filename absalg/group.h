@@ -5,7 +5,7 @@ namespace math_rz
 	class group
 	{
 	public:
-		inline static enum class Identity0 {} _0;
+		inline static constexpr enum class Identity0 {} _0 = {};
 		group(Identity0)
 		{
 			//	*this = I0();

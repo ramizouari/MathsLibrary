@@ -43,7 +43,7 @@ namespace math_rz::analysis {
 		inline static constexpr int codomain_dimension = E2::dimension;
 		using base_field = typename E1::base_field;
 		using matrix_type = std::conditional_t<domain_dimension == codomain_dimension,
-			linalg::square_matrix<base_field, codomain_dimension>, 
+			linalg::matrix<base_field, codomain_dimension,domain_dimension>, 
 			linalg::matrix<base_field,codomain_dimension, domain_dimension>>;
 
 		/*
@@ -57,7 +57,7 @@ namespace math_rz::analysis {
 		*/
 		using curl_type = std::conditional_t<domain_dimension == 3, E1,
 			std::conditional_t<domain_dimension==2,base_field,
-			linalg::square_matrix<base_field,domain_dimension>>>;
+			linalg::matrix<base_field,domain_dimension,codomain_dimension>>>;
 
 		virtual matrix_type jacobian(const function<E1, E2>& f,const E1& x0) const = 0;
 		base_field jacobian_det(const function<E1, E2>& f, const E1& x0) const 
@@ -68,7 +68,7 @@ namespace math_rz::analysis {
 		E2 derivative(const function<E1, E2>& f, const base_field& x0) const
 			requires (domain_dimension == 1)
 		{
-			if constexpr (E1::dimension > 1)
+			if constexpr (E2::dimension > 1)
 				return jacobian(f, x0).as_vector();
 			else return jacobian(f, x0)[0][0];
 		}

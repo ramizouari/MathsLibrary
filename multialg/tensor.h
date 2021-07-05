@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include "linalg/finite_dimensional_vector_space.h"
 
 namespace math_rz::multialg 
 {
@@ -65,6 +66,15 @@ namespace math_rz::multialg
 		inline static constexpr int dimension = (n * ...*n0);
 		using base_field = K;
 
+		tensor<K, dimension> flatten() const
+		{
+			if constexpr (sizeof...(n) == 0)
+				return *this;
+			/*
+			* implementation not complete
+			*/
+			return *this;
+		}
 		
 		bool operator!=(const tensor<K,n0,n...>& M) const
 		{
@@ -128,6 +138,12 @@ namespace math_rz::multialg
 		const auto& at(int i) const
 		{
 			return u.at(i);
+		}
+
+		linalg::finite_dimensional_vector_space<K,n0> 
+			operator()(const linalg::finite_dimensional_vector_space<K,n>& u...) const
+		{
+
 		}
 
 		bool is_zero() const override

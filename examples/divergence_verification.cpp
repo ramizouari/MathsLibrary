@@ -36,7 +36,6 @@
 #include "prob/uniform_cyclic_generator.h"
 #include "prob/uniform_real_generator.h"
 #include "prob/uniform_complex_generator.h"
-#include "boost/multi_array.hpp"
 #include "poly/multiplicator/multiplicator.h"
 #include "poly/structure/inner_product.h"
 #include "analysis/integrator/disk_integrator.h"
@@ -62,7 +61,7 @@ using E2 = math_rz::linalg::finite_dimensional_vector_space<K, 2>;
 template<int n>
 using E = math_rz::linalg::coordinate_space<K, n>;
 using F = K;
-using M = math_rz::linalg::square_matrix<K, 2>;
+using M = math_rz::linalg::matrix<K, 2>;
 using R_X = math_rz::poly::polynomial<K>;
 
 class mat_exp :public math_rz::analysis::function<E<3>,E<3>>

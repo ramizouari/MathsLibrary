@@ -35,9 +35,9 @@ namespace math_rz::linalg::structure::vector
 	class L2_induced_vect_inner_product :public inner_product_topology<K, n>
 	{
 		using vector_type = norm_topology<K, n>::vector_type;
-		square_matrix<K, n> M;
+		matrix<K, n,n> M;
 	public:
-		L2_induced_vect_inner_product(const square_matrix<K, n>& P):M(P){}
+		L2_induced_vect_inner_product(const matrix<K, n,n>& P):M(P){}
 		K inner_product(const vector_type& p, const vector_type& q) const
 		{
 			if constexpr (n == 1)

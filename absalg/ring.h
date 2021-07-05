@@ -27,26 +27,6 @@ namespace math_rz
 		ring() {};
 	};
 
-
-	template<typename A>
-	A pow(const A& u, long long n)
-	{
-		if (n == 0)
-			return 1;
-		else if (n == 1)
-			return u;
-		A r = pow(u, n / 2);
-		r *= r;
-		return r * pow(u, n % 2);
-	}
-
-	template<typename A>
-	A commutator(const A& u,const A& v)
-	{
-		return u * v - v * u;
-	}
-
-
 	namespace ring_constraints
 	{
 
@@ -54,7 +34,7 @@ namespace math_rz
 		concept group = requires (const G & a, const G & b)
 		{
 			{a* b}->std::convertible_to<G>;
-			{inv(a)}->std::convertible_to<G>;
+			{a.inv()}->std::convertible_to<G>;
 		};
 
 		template<typename G>
@@ -66,19 +46,19 @@ namespace math_rz
 		};
 
 		template<typename G>
-		concept ring = commutative_group<G> && requires (const G & a, const G & b)
+		concept ring = std::is_base_of_v<math_rz::ring, G> && commutative_group<G> && requires (const G & a, const G & b)
 		{
-			{a * b}->std::convertible_to<G>;
+			{a* b}->std::convertible_to<G>;
 		};
 		template<typename G>
 		concept field = ring<G> && commutative_group<G> && group<G>;
 
 		template<typename S>
-		concept ordered = requires(const S & a, const S & b)
+		concept ordered =  requires(const S & a, const S & b)
 		{
 			{a <=> b};
 		};
-	
+
 		template<typename R>
 		concept has_abs = requires(R a)
 		{
@@ -86,17 +66,49 @@ namespace math_rz
 		};
 	}
 
-	template<ring_constraints::field A>
+	template<typename A>
+	A unit(const A&u)
+	{
+		if constexpr (ring_constraints::ring<A>)
+			return 1;
+		else return A(u, 1);
+	}
+
+	template<typename A>
+	A unit()
+	{
+		return 1;
+	}
+
+	template<typename A>
+	A zero(const A& u)
+	{
+		if constexpr (ring_constraints::ring<A>)
+			return A();
+		else return A(u, 0);
+	}
+
+	template<typename A>
+	A zero()
+	{
+		return A();
+	}
+
+	template<typename A>
 	A pow(const A& u, long long n)
 	{
-		if (n < 0)
-			return pow(u.inv(), -n);
 		if (n == 0)
-			return 1;
+			return unit(u);
 		else if (n == 1)
 			return u;
 		A r = pow(u, n / 2);
 		r *= r;
 		return r * pow(u, n % 2);
+	}
+
+	template<typename A>
+	A commutator(const A& u,const A& v)
+	{
+		return u * v - v * u;
 	}
 }

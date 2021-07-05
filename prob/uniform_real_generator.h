@@ -36,7 +36,7 @@ namespace math_rz
 			return X;
 		}
 
-		template<int n, int m>
+		template<int n, int m=n>
 		linalg::matrix<real_field, n, m> generate_matrix()
 		{
 			linalg::matrix<real_field, n, m> X;
@@ -46,10 +46,5 @@ namespace math_rz
 			return X;
 		}
 
-		template<int n>
-		linalg::square_matrix<real_field, n> generate_matrix()
-		{
-			return generate_matrix<n, n>();
-		}
 	};
 }
