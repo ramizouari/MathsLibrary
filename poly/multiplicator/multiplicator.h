@@ -130,46 +130,4 @@ namespace math_rz::poly::multiplicator
 			return r;
 		}
 	};
-	template <typename K>
-	class fast_multiplicator;
-	template<>
-	class fast_multiplicator<complex> :public multiplicator<complex>
-	{
-		using R = complex;
-		linalg::fft::fast_convolution FC;
-	public:
-		
-		inline static constexpr int limit = 50;
-		virtual free_algebra<R> multiply(const free_algebra<R>& _p, const free_algebra<R>& _q) const
-		{
-			int n = _p.degree()+1;
-			int m = _p.degree() + 1;
-			auto h = FC(_p.get_vect(), _q.get_vect());
-			h.resize(m + n-1);
-			return free_algebra(h);
-		}
-	};
-
-	template<>
-	class fast_multiplicator<real_field> :public multiplicator<real_field>
-	{
-		using R = real_field;
-		fast_multiplicator<complex> fast_mult;
-	public:
-
-		inline static constexpr int limit = 50;
-		virtual free_algebra<R> multiply(const free_algebra<R>& _p, const free_algebra<R>& _q) const
-		{
-			std::vector<complex> p,q;
-			for (const auto& s : _p.get_vect())
-				p.push_back(s);
-			for (const auto& s : _q.get_vect())
-				q.push_back(s);
-			auto h = fast_mult.multiply(p,q);
-			std::vector<R> _h;
-			for (const auto& s : h.get_vect())
-				_h.push_back(s.real());
-			return free_algebra(_h);
-		}
-	};
 }
