@@ -36,7 +36,7 @@ namespace math_rz
 			return X;
 		}
 
-		template<int n, int m>
+		template<int n, int m=n>
 		linalg::matrix<cyclic<p, is_field>, n, m> generate_matrix()
 		{
 			linalg::matrix<cyclic<p, is_field>, n, m> X;
@@ -44,12 +44,6 @@ namespace math_rz
 				for (int j = 0; j < m; j++)
 					X[i][j] = generate();
 			return X;
-		}
-
-		template<int n>
-		linalg::square_matrix<cyclic<p, is_field>, n> generate_matrix()
-		{
-			return generate_matrix<n, n>();
 		}
 	};
 }

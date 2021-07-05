@@ -277,7 +277,8 @@ namespace math_rz::poly {
 		for (int i = 0; i <= p.degree(); i++)
 			if (i < p.degree())
 				H << p.coeff(i) << ", ";
-			else H << p.coeff(i) << ")";
+			else H << p.coeff(i);
+		H << ")";
 		return H;
 	}
 }

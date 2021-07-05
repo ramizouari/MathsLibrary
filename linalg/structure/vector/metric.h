@@ -5,8 +5,6 @@ namespace math_rz::linalg
 {
 	template<typename K,int n>
 	class finite_dimensional_vector_space;
-	template<typename K, int n>
-	class square_matrix;
 	template<typename K, int n,int m>
 	class matrix;
 }

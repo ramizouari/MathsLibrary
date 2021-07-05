@@ -10,9 +10,9 @@ namespace math_rz::analysis
 	*/
 	template<linalg::vector_space_constraint::normed_vector_space E,
 		linalg::vector_space_constraint::normed_vector_space F>
-		requires linalg::vector_space_constraint::vector_space_over_same_base_field < E,F>
-		using differential_type = std::conditional_t<E::dimension==F::dimension,
-		linalg::square_matrix<typename E::base_field,E::dimension>,
+		requires linalg::vector_space_constraint::vector_space_over_same_base_field < E, F>
+		using differential_type = std::conditional_t < E::dimension == F::dimension,
+		linalg::matrix<typename E::base_field, F::dimension,E::dimension > ,
 		linalg::matrix<typename E::base_field, F::dimension, E::dimension>>;
 
 	/*

@@ -4,6 +4,8 @@
 #include "metric.h"
 #include "analysis/integrator/integrator.h"
 #include "linalg/structure/vector/norm.h"
+#include "linalg/eigen.h"
+#include "linalg/decomposer/QR_decomposition.h"
 namespace math_rz::linalg::structure::matrix
 {
 	template<typename K,int n,int m>

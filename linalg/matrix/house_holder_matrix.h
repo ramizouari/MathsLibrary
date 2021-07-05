@@ -1,10 +1,10 @@
 #pragma once
-#include "linalg/square_matrix.h"
+#include "linalg/matrix.h"
 #include "linalg/finite_dimensional_vector_space.h"
 namespace math_rz::linalg::special
 {
 	template<typename K, int n>
-	class house_holder_matrix :public square_matrix<K, n>
+	class house_holder_matrix :public matrix<K, n,n>
 	{
 	public:
 		house_holder_matrix(const finite_dimensional_vector_space<K, n>& v)

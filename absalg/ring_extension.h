@@ -125,5 +125,117 @@ namespace math_rz
 		using F25 = ring_extension<F5, true, 1, 1, 1>;
 		template<typename F>
 		using idompotent_ring = ring_extension<F, false, 0, -1, 1>;
+		template<typename F>
+		using dual_number = ring_extension<F, false, 0, 0, 1>;
+		template<typename F>
+		using split_complex = ring_extension<F, false, -1, 0, 1>;
+	}
+
+	template<typename R>
+	class dynamic_ring_extension
+	{
+	public:
+		dynamic_ring_extension(const std::vector<R>& e, const std::vector<R>& a) :extension_polynomial(e), 
+			p(a) { reduce(); }
+		dynamic_ring_extension(const poly::polynomial<R>& e,const poly::polynomial<R>& a) 
+			:extension_polynomial(e),p(a) { reduce(); }
+		dynamic_ring_extension(const poly::polynomial<R>& e,int s = 0) :p(s) ,
+		extension_polynomial(e){ reduce(); }
+		dynamic_ring_extension(const poly::polynomial<R>& e, const R& a) :p(a),extension_polynomial(e)
+		{
+			reduce();
+		}
+		template<typename H>
+		dynamic_ring_extension(const dynamic_ring_extension& e, const H& a) :
+			dynamic_ring_extension(e.extension_polynomial,a){}
+		
+		dynamic_ring_extension& operator+=(const dynamic_ring_extension& w)
+		{
+			p += w.p;
+			return *this;
+		}
+
+		dynamic_ring_extension& operator-=(const dynamic_ring_extension& w)
+		{
+			p -= w.p;
+			return *this;
+		}
+		dynamic_ring_extension& operator*=(const dynamic_ring_extension& w)
+		{
+			p *= w.p;
+			reduce();
+			return *this;
+		}
+		dynamic_ring_extension& operator/=(const dynamic_ring_extension& w)
+		{
+			auto s = w.inv();
+			return *this *= s;
+		}
+
+		dynamic_ring_extension inv() const
+		{
+			return math_rz::poly::bezout<poly::polynomial<R>>(p, extension_polynomial).first;
+		}
+		bool is_zero() const override
+		{
+			return p.is_zero();
+		}
+		bool is_one() const override
+		{
+			return p.is_one();
+		}
+		const poly::polynomial<R>& get_polynomial() const { return p; }
+		dynamic_ring_extension quad_conj() const requires is_quadratic_extension<extension_degree>
+		{
+			if (p.degree() < 2)
+				return *this;
+			return dynamic_ring_extension({ p.coeff(0),-p.coeff(1) });
+		}
+	private:
+		void reduce()
+		{
+			if (p.degree() >= extension_polynomial.degree())
+				p = p.mod(extension_polynomial);
+		}
+		poly::polynomial<R> extension_polynomial;
+		poly::polynomial<R> p;
+	};
+
+	template<typename R>
+	dynamic_ring_extension<R> operator+(const dynamic_ring_extension<R>& p, 
+		const dynamic_ring_extension<R>& q)
+	{
+		dynamic_ring_extension<R>h = p;
+		return h += q;
+	}
+
+	template<typename R>
+	dynamic_ring_extension<R> operator-(const dynamic_ring_extension<R>& p,
+		const dynamic_ring_extension<R>& q)
+	{
+		dynamic_ring_extension<R>h = p;
+		return h -= q;
+	}
+
+	template<typename R>
+	dynamic_ring_extension<R> operator*(const dynamic_ring_extension<R>& p,
+		const dynamic_ring_extension<R>& q)
+	{
+		dynamic_ring_extension<R>h = p;
+		return h *= q;
+	}
+
+	template<typename R>
+	dynamic_ring_extension<R> operator/(const dynamic_ring_extension<R>& p,
+		const dynamic_ring_extension<R>& q)
+	{
+		dynamic_ring_extension<R>h = p;
+		return h /= q;
+	}
+
+	template<typename R>
+	std::ostream& operator<<(std::ostream& H, const dynamic_ring_extension<R>& q)
+	{
+		return H << q.get_polynomial();
 	}
 }

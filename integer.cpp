@@ -23,13 +23,13 @@ real_field math_rz::integer::inner_product(const real_field& other) const
 {
 	return _v * other._v;
 }
-
+/*
 integer& math_rz::integer::operator+=(const integer& o)
 {
 	_v+=o._v;
 	return *this;
 }
-
+*/
 bool integer::is_zero() const
 {
 	return _v==0;

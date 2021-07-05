@@ -10,6 +10,6 @@ namespace math_rz::linalg::decomposer
 	template<typename K, int n, typename R>
 	class decomposer<K, n, n, R>
 	{
-		virtual R decompose(const square_matrix<K, n>& A) const = 0;
+		virtual R decompose(const matrix<K, n,n>& A) const = 0;
 	};
 }
