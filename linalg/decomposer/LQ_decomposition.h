@@ -17,6 +17,7 @@ namespace math_rz::linalg::decomposer
 	{
 		using matrix_type = matrix<K, n, m>;
 		using LQ = LQ<K, n, m>;
+	protected:
 		cholesky<K, m> Ch;
 		real_field eps = 1e-7;
 		std::vector<finite_dimensional_vector_space<K, n>> gram_schmidt(const std::vector<finite_dimensional_vector_space<K, n>>& A)const
@@ -67,6 +68,20 @@ namespace math_rz::linalg::decomposer
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < n; j++)
 					Q[i][j] = B[j][i];
+			return { L,Q };
+		}
+	};
+
+	template<typename K,int n,int m=n>
+	class LQ_decomposition_lite :public LQ_decomposition<K, n, m>
+	{
+		using matrix_type = matrix<K, n, m>;
+		using LQ = LQ<K, n, m>;
+	public:
+		LQ decompose(const matrix_type& A) const
+		{
+			auto L = this->Ch.iterative_cholesky(A * A.conj_transpose());
+			auto Q = L.inv() * A;
 			return { L,Q };
 		}
 	};

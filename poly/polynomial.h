@@ -129,7 +129,16 @@ namespace math_rz::poly {
 		}
 		polynomial& operator/=(const K& p)
 		{
-			std::for_each(a.begin(), a.end(), [&p](auto& v) {v /= p; });
+			for (auto& s : a)
+				s /= p;
+			this->reduce();
+			return *this;
+		}
+
+		polynomial& operator/=(int p)
+		{
+			for (auto& s : a)
+				s /= p;
 			this->reduce();
 			return *this;
 		}
@@ -246,6 +255,13 @@ namespace math_rz::poly {
 
 	template<typename K>
 	polynomial<K> operator*(const K& b, const polynomial<K>& a)
+	{
+		polynomial<K> p(a);
+		return p *= b;
+	}
+
+	template<typename K>
+	polynomial<K> operator/(const polynomial<K>& a, int b)
 	{
 		polynomial<K> p(a);
 		return p *= b;

@@ -1,5 +1,6 @@
 #pragma once
 #include "poly/polynomial.h"
+#include "poly/interpolation.h"
 #include <future>
 #include <atomic>
 namespace math_rz::poly::multiplicator
@@ -128,6 +129,18 @@ namespace math_rz::poly::multiplicator
 			r.reduce();
 			threads--;
 			return r;
+		}
+	};
+
+	class fast_multiplicator :public multiplicator<complex>
+	{
+		using R = complex;
+	public:
+		
+		inline static constexpr int limit = 50;
+		virtual free_algebra<R> multiply(const free_algebra<R>& p, const free_algebra<R>& q) const
+		{
+			
 		}
 	};
 }

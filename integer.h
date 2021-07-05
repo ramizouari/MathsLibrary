@@ -12,6 +12,7 @@ namespace math_rz {
         constexpr integer(const int m = 0):_v(m) {};
         constexpr integer(long long int m) :_v(m) {};
         constexpr integer(const double s) :_v(s) {};
+        constexpr integer(const integer &o,long long s) :integer(s) {};
         inline static integer _0() { return integer(); };
         inline static integer _1() { return integer(1); };
         integer mod(const integer& a) const;
@@ -26,7 +27,7 @@ namespace math_rz {
         real_field abs() const;
         real_field inner_product(const real_field& other) const;
         inline integer operator-() const { return -_v; }
-        integer& operator+=(const integer& o);
+        //integer& operator+=(const integer& o);
 
         inline operator long long& () { return _v; }
         inline operator const long long& () const { return _v; }

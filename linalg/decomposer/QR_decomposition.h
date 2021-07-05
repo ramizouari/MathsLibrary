@@ -17,6 +17,7 @@ namespace math_rz::linalg::decomposer
 	{
 		using matrix_type = matrix<K,n,m>;
 		using QR = QR<K, n, m>;
+	protected:
 		cholesky<K,m> Ch;
 		real_field eps = 1e-7;
 
@@ -68,6 +69,20 @@ namespace math_rz::linalg::decomposer
 			for (int i = 0; i < n; i++)
 				for(int j = 0; j < n; j++)
 					Q[i][j] = B[j][i];
+			return { Q,R };
+		}
+	};
+	template<typename K, int n, int m = n>
+	class QR_decomposition_lite :public QR_decomposition<K,n,m>
+	{
+		using matrix_type = matrix<K, n, m>;
+		using QR = QR<K, n, m>;
+
+	public:
+		QR decompose(const matrix_type& A) const
+		{
+			auto R = this->Ch.iterative_cholesky(A.conj_transpose() * A).conj_transpose();
+			auto Q = A * R.inv();
 			return { Q,R };
 		}
 	};

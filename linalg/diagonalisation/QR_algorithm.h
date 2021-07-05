@@ -14,6 +14,12 @@
 
 namespace math_rz::linalg::diagonalisation
 {
+	template<typename K,int n>
+	struct schurbasis
+	{
+		matrix<K, n> B;
+		matrix<K, n> T;
+	};
 	template<typename K, int n>
 	class QR_algorithm :virtual public diagonalisator<K,n>
 	{
@@ -21,8 +27,9 @@ namespace math_rz::linalg::diagonalisation
 		using eig_couple_vector = std::pair<coordinate_space<K, n>, matrix<K, n, n>>;
 		using eig_couple = std::pair<K, coordinate_space<K, n>>;
 		linalg::decomposer::QR_decomposition<K,n> QR;
+		linalg::decomposer::QR_decomposition_lite<K, n> QR_lite;
 		upper_triangular_diagonalisator<K, n> UTD;
-		int steps = 200;
+		int steps = 100;
 		real_field eps = 1e-7;
 
 		std::vector<finite_dimensional_vector_space<K, n>> gram_schmidt(const std::vector<finite_dimensional_vector_space<K, n>>& A)const
@@ -67,15 +74,15 @@ namespace math_rz::linalg::diagonalisation
 
 	public:
 		using eigenbasis = diagonalisator<K, n>::eigenbasis;
-
+		using schurbasis = schurbasis<K, n>;
 		finite_dimensional_vector_space<K,n> eigenvalues(const matrix<K, n ,n>& _M) const 
 		{
 			
 			auto M = _M;
 			int p = steps;
-			while (p--)
+			while (lower_triangular_norm(M) > eps&&p--)
 			{
-				auto [Q, R] = QR.decompose(M);
+				auto [Q, R] = QR_lite.decompose(M);
 				M = R * Q;
 			}
 			finite_dimensional_vector_space<K, n> E;
@@ -99,6 +106,22 @@ namespace math_rz::linalg::diagonalisation
 			auto [V, D] = UTD.eigendecomposition(M);
 			EB.B = EB.B*V;
 			EB.D = D;
+			return EB;
+		}
+
+		schurbasis schurdecomposition(const matrix<K, n, n>& _M) const
+		{
+			schurbasis EB;
+			EB.B = matrix<K, n, n>(1);
+			auto M = _M;
+			int p = steps;
+			while (lower_triangular_norm(M) > eps && p--)
+			{
+				auto [Q, R] = QR_lite.decompose(M);
+				M = R * Q;
+				EB.B = EB.B * Q;
+			}
+			EB.T = std::move(M);
 			return EB;
 		}
 	

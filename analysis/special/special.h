@@ -27,7 +27,6 @@ namespace math_rz::analysis
 	A exp_m1(const A& w, const integer& n)
 	{
 		A r, u(1);
-		int i = 0;
 		for (int i = 0; i <= n; i++, u *= w / A(i))if (i == 0) continue;
 			else r += u;
 		return r;
@@ -121,6 +120,18 @@ namespace math_rz::analysis
 	auto pow(const A& u, const B& v,int n)
 	{
 		return exp(log(u, n) * v, n);
+	}
+
+	template<typename A>
+	A sqrt(const A& u,real_field err=1e-5)
+	{
+		A p(1), q = (p + u) / 2;
+		while ((p - q).norm() > err)
+		{
+			p = q;
+			q = (q + u * q.inv()) / 2;
+		}
+		return q;
 	}
 
 }

@@ -93,35 +93,39 @@ namespace math_rz::linalg
 		explicit finite_dimensional_vector_space(const E1& u1, const E2& u2) requires vector_space_constraint::vector_space_over_same_base_field<E1,E2>
 			&& std::is_same_v<typename E1::base_field,K> && (E1::dimension+ E2::dimension ==n)
 		{
-			if constexpr (E1::dimension > 1) for (const auto& w : u1.get_vect())
+			if constexpr (!std::is_same_v<typename E1::base_field,E1>) for (const auto& w : u1.get_vect())
 				u.push_back(w);
 			else u.push_back(u1);
-			if constexpr (E2::dimension > 1) for (const auto& w : u2.get_vect())
+			if constexpr (!std::is_same_v<typename E2::base_field, E2>) for (const auto& w : u2.get_vect())
 				u.push_back(w);
 			else u.push_back(u2);
 
+		}
+
+		template<vector_space_constraint::vector_space E1, vector_space_constraint::vector_space ...E2>
+		explicit finite_dimensional_vector_space(const E1& u1, const E2& ...u2) requires (std::is_same_v<typename E1::base_field, K> && (E1::dimension+(E2::dimension+...)==n))
+			:finite_dimensional_vector_space(u1,finite_dimensional_vector_space<K, (E2::dimension + ...)>(u2...))
+		{
+		}
+
+		template<vector_space_constraint::vector_space E>
+		explicit finite_dimensional_vector_space(const std::vector<E>& U) requires 
+			(n%E::dimension==0
+			&& vector_space_constraint::vector_space_over_same_base_field<E,K> )
+		{
+			for (const auto& u : U)
+				if constexpr (std::is_same_v<E, typename E::base_field>)
+					this->u.push_back(u);
+				else for (const auto& s : u.get_vect())
+					this->u.push_back(s);
+			if (this->u.size() != n)
+				throw std::exception("size not compatible");
 		}
 
 		/*
 		* Construct a vector from three vectors
 		*/
-		template<vector_space_constraint::vector_space E1, vector_space_constraint::vector_space E2,
-			vector_space_constraint::vector_space E3>
-			explicit finite_dimensional_vector_space(const E1& u1, const E2& u2, const E3& u3)
-			requires vector_space_constraint::vector_space_over_same_base_field<E1, E2>
-			&& vector_space_constraint::vector_space_over_same_base_field<E2, E3>
-			&& vector_space_constraint::vector_space_over_same_base_field<finite_dimensional_vector_space, E2> && (E1::dimension + E2::dimension + E3::dimension == n)
-		{
-			if constexpr (E1::dimension > 1) for (const auto& w : u1.get_vect())
-				u.push_back(w);
-			else u.push_back(u1);
-			if constexpr (E2::dimension > 1) for (const auto& w : u2.get_vect())
-				u.push_back(w);
-			else u.push_back(u2);
-			if constexpr (E3::dimension > 1) for (const auto& w : u3.get_vect())
-				u.push_back(w);
-			else u.push_back(u3);
-		}
+		
 
 
 		finite_dimensional_vector_space& operator+=(const finite_dimensional_vector_space& o)

@@ -119,7 +119,6 @@ namespace math_rz::linalg
 		matrix& operator*=(const matrix& M) requires(n==m)
 		{
 			*this = std::move((*this)*M);
-			u[0][0] *= M[0][0];
 			return *this;
 		}
 
@@ -219,6 +218,8 @@ namespace math_rz::linalg
 			for (int i = 0; i < n; i++)
 			{
 				auto  r = S[i][i];
+				if (r.is_zero())
+					continue;
 				for (int j = 0; j < n; j++)
 				{
 					M1[i][j] = S[i][j] / r;
@@ -285,6 +286,14 @@ namespace math_rz::linalg
 		}
 
 		matrix& operator/=(const K& k)
+		{
+			for (int i = 0; i < n; i++)
+				for (int j = 0; j < m; j++)
+					u.at(i).at(j) /= k;
+			return *this;
+		}
+
+		matrix& operator/=(int k)
 		{
 			for (int i = 0; i < n; i++)
 				for (int j = 0; j < m; j++)
@@ -585,6 +594,13 @@ namespace math_rz::linalg
 
 	template <typename K, int n, int m>
 	matrix<K, n, m> operator/(const matrix<K, n, m>& M, const K& k)
+	{
+		auto c(M);
+		return c /= k;
+	}
+
+	template <typename K, int n, int m>
+	matrix<K, n, m> operator/(const matrix<K, n, m>& M,int k)
 	{
 		auto c(M);
 		return c /= k;

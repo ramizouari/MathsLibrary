@@ -40,7 +40,8 @@ namespace math_rz::linalg
 		E operator()(const E& u) const
 		{
 			E v(u);
-			return apply(v);
+			v = apply(v);
+			return v;
 		}
 	};
 }

@@ -8,7 +8,7 @@ namespace math_rz::linalg::special
 	template<int n>
 	class DFT_matrix :public matrix<complex, n>
 	{
-		inline static complex w = std::exp(complex(0,2* std::numbers::pi/n));
+		inline static complex w = std::exp(complex(0,-2* std::numbers::pi/n));
 	public:
 		DFT_matrix()
 		{
