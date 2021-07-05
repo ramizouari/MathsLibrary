@@ -172,4 +172,24 @@ namespace math_rz::linalg::fft
 			return Z;
 		}
 	};
+
+	class fast_convolution
+	{
+	public:
+		std::vector<complex> operator()(const std::vector<complex>& A,const std::vector<complex>& B) const
+		{
+			std::vector<complex> U(A),V(B);
+			int n = A.size(),m=B.size();
+			int s = std::bit_ceil<unsigned int>(n + m);
+			U.resize(s);
+			V.resize(s);
+			dynamic_cooley_tuckey FFT(s);
+			dynamic_cooley_tuckey<true> inverse_FFT(s);
+			auto I = FFT(U), J = FFT(V);
+			std::vector<complex> H(s);
+			for (int i = 0; i < s; i++)
+				H[i] = I[i] * J[i]/(real_field)s;
+			return inverse_FFT(H);
+		}
+	};
 }
