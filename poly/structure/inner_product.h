@@ -1,5 +1,6 @@
 #pragma once
 #include "norm.h"
+#include "analysis/general_function.h"
 namespace math_rz::poly::structure
 {
 	template<typename K>

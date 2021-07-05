@@ -81,7 +81,36 @@ using R_X = math_rz::poly::polynomial<K>;
 #include "linalg/matrix/house_holder_matrix.h"
 #include "linalg/matrix/circulant_matrix.h"
 #include <fstream>
+#include "analysis/integrator/simpson_integrator.h"
+
 int main()
 {
-	std::cout << poly::newton_interpolation<K>({ 1,2,4 }, { 2,5,2 });
+	using namespace std::complex_literals;
+	matrix<K, dimension> A(special::vandermonde_matrix<K, dimension>({ 1,1,1 }));
+	dynamic_cyclic SS(17, 1);
+	fft::cooley_tuckey<8> CT;
+	fft::dynamic_cooley_tuckey DCT(dimension);
+	characterestic::faddev_leverrier<K, dimension> CP;
+	finite_dimensional_vector_space<K, dimension> u,x;
+	for (int i = 0; i < dimension; i++)
+	{
+		u[i] = 1;
+		x[i] = i;
+	}
+	finite_dimensional_vector_space<K, 3> S({ 1,2,3 });
+	auto R = poly::fft_interpolation(u);
+	cyclic<337> RR;
+	finite_dimensional_vector_space<cyclic<337>, 4> T({ 1,2,3,4 });
+	fft::dynamic_finite_ring_cooley_tuckey<337> CTR(4);
+	fft::fast_convolution FC;
+	std::vector<real_field> S1(5e5);
+	for (int i = 0; i < 5e5; i++)
+		S1[i] = std::cos(i);
+	poly::polynomial<real_field> p(S1);
+	auto R1= p * p;
+	decltype(p)::set_multiplicator(new poly::multiplicator::fast_multiplicator<real_field>());
+	decltype(p)::set_structure(new poly::structure::L2_vect_inner_product<real_field>());
+	auto R2 = p * p;
+	std::cout << (R2 - R1).norm();
+	return false;
 }
