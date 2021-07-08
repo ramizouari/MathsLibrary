@@ -41,12 +41,12 @@ namespace math_rz::linalg::diagonalisation
 		}
 
 	public:
-		using eigenbasis = diagonalisator<K, n>::eigenbasis;
+		using eigenbasis_type = typename diagonalisator<K, n>::eigenbasis_type;
 		gram_schmidt_diagonalisation(real_field _eps=1e-5):eps(_eps){}
-		eigenbasis eigendecomposition(const matrix<K,n,n> &A) const
+        eigenbasis_type eigendecomposition(const matrix<K,n,n> &A) const
 		{
 			auto [B, N] = gram_schmidt(A);
-			eigenbasis EB;
+            eigenbasis_type EB;
 			EB.B=std::move(B);
 			linalg::structure::vector::L2_induced_vect_inner_product<K, n> P(A);
 			for (int i = 0; i < n; i++)

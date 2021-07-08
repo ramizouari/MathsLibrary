@@ -1,4 +1,5 @@
 #include "complex.h"
+#include <complex>
 
 
 using namespace math_rz;
@@ -25,9 +26,8 @@ complex::complex(int a) : std::complex<real_field>(a)
 {
 }
 
-math_rz::complex::complex(long long a)
+math_rz::complex::complex(long long a):std::complex<real_field>(real_field(a))
 {
-    _Val[0] = a;
 }
 
 bool complex::is_zero() const
@@ -82,8 +82,8 @@ real_field math_rz::complex::metric(const complex& a) const
 
 complex& math_rz::complex::operator/=(const real_field& s)
 {
-    _Val[0] /= s;
-    _Val[1] /= s;
+    real(real()/s);
+    imag(imag()/s);
     return *this;
 }
 
@@ -100,8 +100,8 @@ complex math_rz::complex::operator-() const
 
 complex& math_rz::complex::operator*=(int a)
 {
-    this->_Val[0] *= a;
-    this->_Val[1] *= a;
+    real(real()*a);
+    imag(imag()*a);
     return  *this;
 }
 
@@ -127,7 +127,7 @@ complex math_rz::operator""_c(long double a)
 
 complex math_rz::operator""_c(unsigned long long a)
 {
-    return complex(a,0);
+    return complex((long long)a,0);
 }
 
 
@@ -169,7 +169,7 @@ complex operator""_c(long double a)
 
 complex operator""_c(unsigned long long a)
 {
-    return complex(a,0);
+    return complex((long long)a,0);
 }
 
 complex operator""_i(long double a)

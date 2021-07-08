@@ -17,9 +17,9 @@ namespace math_rz::linalg::diagonalisation
 	class diagonalisator:public decomposer::decomposer<K,n,n,eigenbasis<K,n>>
 	{
 	public:
-		using eigenbasis = eigenbasis<K, n>;
-		virtual eigenbasis eigendecomposition(const matrix<K, n, n>& A) const = 0;
-		eigenbasis decompose(const matrix<K, n, n>& A) const
+		using eigenbasis_type = eigenbasis<K, n>;
+		virtual eigenbasis_type eigendecomposition(const matrix<K, n, n>& A) const = 0;
+        eigenbasis_type decompose(const matrix<K, n, n>& A) const
 		{
 			return eigendecomposition(A);
 		}

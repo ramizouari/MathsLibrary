@@ -16,7 +16,7 @@ namespace math_rz::linalg::decomposer
 	class LQ_decomposition :public decomposer<K, n, m, LQ<K, n, m>>
 	{
 		using matrix_type = matrix<K, n, m>;
-		using LQ = LQ<K, n, m>;
+		using LQ_type = LQ<K, n, m>;
 	protected:
 		cholesky<K, m> Ch;
 		real_field eps = 1e-7;
@@ -51,7 +51,7 @@ namespace math_rz::linalg::decomposer
 			return gram_schmidt(U);
 		}
 	public:
-		LQ decompose(const matrix_type& A) const
+        LQ_type decompose(const matrix_type& A) const
 		{
 			auto L = Ch.iterative_cholesky(A* A.conj_transpose());
 			auto Q = L.inv()*A;
@@ -76,9 +76,9 @@ namespace math_rz::linalg::decomposer
 	class LQ_decomposition_lite :public LQ_decomposition<K, n, m>
 	{
 		using matrix_type = matrix<K, n, m>;
-		using LQ = LQ<K, n, m>;
+		using LQ_type = LQ<K, n, m>;
 	public:
-		LQ decompose(const matrix_type& A) const
+        LQ_type decompose(const matrix_type& A) const
 		{
 			auto L = this->Ch.iterative_cholesky(A * A.conj_transpose());
 			auto Q = L.inv() * A;

@@ -1,6 +1,7 @@
 #include "cyclic.h"
 #include <set>
 #include <map>
+#include <cmath>
 math_rz::dynamic_cyclic::dynamic_cyclic(integer _n, integer s):n(_n),w((n._v+s._v)%n)
 {
 }
@@ -52,7 +53,7 @@ using namespace math_rz;
 dynamic_cyclic& math_rz::dynamic_cyclic::operator+=(const dynamic_cyclic& b)
 {
 	if (n != b.n)
-		throw std::exception("incompatible modulus");
+		throw std::domain_error("incompatible modulus");
 	w += b.w;
 	w %= n;
 	return *this;
@@ -62,7 +63,7 @@ dynamic_cyclic& math_rz::dynamic_cyclic::operator-=(const dynamic_cyclic& a)
 {
 
 	if (n != a.n)
-		throw std::exception("incompatible modulus");
+		throw std::domain_error("incompatible modulus");
 	w -= a.w;
 	w %= n;
 	return *this;
@@ -71,7 +72,7 @@ dynamic_cyclic& math_rz::dynamic_cyclic::operator-=(const dynamic_cyclic& a)
 dynamic_cyclic& math_rz::dynamic_cyclic::operator*=(const dynamic_cyclic& a)
 {
 	if (n != a.n)
-		throw std::exception("incompatible modulus");
+		throw std::domain_error("incompatible modulus");
 	w *= a.w;
 	w %= n;
 	return *this;
@@ -137,7 +138,7 @@ dynamic_cyclic math_rz::dynamic_cyclic::inv() const
 dynamic_cyclic math_rz::dynamic_cyclic::operator/=(const dynamic_cyclic& a)
 {
 	if (n != a.n)
-		throw std::exception("incompatible modulus");
+		throw std::domain_error("incompatible modulus");
 	return *this*=a.inv();
 }
 

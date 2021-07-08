@@ -16,7 +16,7 @@ namespace math_rz::linalg::decomposer
 	class QR_decomposition:public decomposer<K,n,m,QR<K,n,m>>
 	{
 		using matrix_type = matrix<K,n,m>;
-		using QR = QR<K, n, m>;
+		using QR_type = QR<K, n, m>;
 	protected:
 		cholesky<K,m> Ch;
 		real_field eps = 1e-7;
@@ -52,7 +52,7 @@ namespace math_rz::linalg::decomposer
 			return gram_schmidt(U);
 		}
 	public:
-		QR decompose(const matrix_type& A) const
+        QR_type decompose(const matrix_type& A) const
 		{
 			auto R = Ch.iterative_cholesky(A.conj_transpose() * A).conj_transpose();
 			std::vector<finite_dimensional_vector_space<K, n>> G;
@@ -76,10 +76,10 @@ namespace math_rz::linalg::decomposer
 	class QR_decomposition_lite :public QR_decomposition<K,n,m>
 	{
 		using matrix_type = matrix<K, n, m>;
-		using QR = QR<K, n, m>;
+		using QR_type = QR<K, n, m>;
 
 	public:
-		QR decompose(const matrix_type& A) const
+        QR_type decompose(const matrix_type& A) const
 		{
 			auto R = this->Ch.iterative_cholesky(A.conj_transpose() * A).conj_transpose();
 			auto Q = A * R.inv();

@@ -8,6 +8,7 @@
 #include "structure/vector/inner_product.h"
 #include <concepts>
 #include <utility>
+#include <memory>
 
 namespace math_rz::linalg
 {
@@ -119,7 +120,7 @@ namespace math_rz::linalg
 				else for (const auto& s : u.get_vect())
 					this->u.push_back(s);
 			if (this->u.size() != n)
-				throw std::exception("size not compatible");
+				throw std::domain_error("size not compatible");
 		}
 
 		/*

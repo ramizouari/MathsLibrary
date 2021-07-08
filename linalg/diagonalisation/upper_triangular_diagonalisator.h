@@ -42,13 +42,13 @@ namespace math_rz::linalg::diagonalisation
 		inverter::moore_penrose_pseudo_inverter<K, n, n> PI;
 
 	public:
-		using eigenbasis=diagonalisator<K, n>::eigenbasis;
+		using eigenbasis_type=typename diagonalisator<K, n>::eigenbasis_type;
 		
 		upper_triangular_diagonalisator(real_field _eps = 1e-5) :eps(_eps) {}
-		eigenbasis diagonalise(const matrix<K, n, n>& A) const
+        eigenbasis_type diagonalise(const matrix<K, n, n>& A) const
 		{
 			auto [B, N] = gram_schmidt(A);
-			eigenbasis EB;
+            eigenbasis_type EB;
 			EB.B = std::move(B);
 			linalg::structure::vector::L2_induced_vect_inner_product<K, n> P(A);
 			for (int i = 0; i < n; i++)
@@ -67,7 +67,7 @@ namespace math_rz::linalg::diagonalisation
 			return u;
 		}
 
-		eigenbasis eigendecomposition(const matrix<K, n, n>& _M) const
+        eigenbasis_type eigendecomposition(const matrix<K, n, n>& _M) const
 		{
 			std::vector<finite_dimensional_vector_space<K, n>> B;
 			matrix<K, n, n> E;

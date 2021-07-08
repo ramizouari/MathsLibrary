@@ -6,8 +6,38 @@
 
 namespace math_rz
 {
-	class dynamic_cyclic;
-	template<long long n,bool is_prime=false>
+    class dynamic_cyclic
+    {
+    public:
+        explicit dynamic_cyclic(integer _n, integer s = 0);
+        dynamic_cyclic(const dynamic_cyclic &o,integer s):dynamic_cyclic(o.n,s){}
+        dynamic_cyclic& operator+=(const dynamic_cyclic& b);
+        dynamic_cyclic& operator-=(const dynamic_cyclic& a);
+        dynamic_cyclic& operator*=(const dynamic_cyclic& a);
+        dynamic_cyclic& operator+=(int b);
+        dynamic_cyclic& operator-=(int a);
+        dynamic_cyclic& operator*=(int a);
+        dynamic_cyclic operator-() const;
+        operator integer& ();
+        operator const integer& () const;
+        operator long long()const;
+        bool is_zero() const;
+        bool is_one() const;
+        dynamic_cyclic inv()const;
+        dynamic_cyclic operator/=(const dynamic_cyclic& a);
+        static dynamic_cyclic primitive_root(int m);
+        static dynamic_cyclic primitive_unity_root(int n,int m);
+        static dynamic_cyclic principal_unity_root(int n, int m);
+    private:
+        integer n;
+        integer w;
+    };
+    dynamic_cyclic operator+(const dynamic_cyclic& a, const dynamic_cyclic& b);
+    dynamic_cyclic operator-(const dynamic_cyclic& a, const dynamic_cyclic& b);
+    dynamic_cyclic operator*(const dynamic_cyclic& a, const dynamic_cyclic& b);
+    dynamic_cyclic operator/(const dynamic_cyclic& a, const dynamic_cyclic& b);
+
+    template<long long n,bool is_prime=false>
 	class cyclic:public std::conditional<is_prime,field,ring>::type
 	{
 	public:
@@ -133,37 +163,6 @@ namespace math_rz
 		using Z9 = cyclic_ring<9>;
 		using Z15 = cyclic_ring<15>;
 	}
-
-	class dynamic_cyclic
-	{
-	public:
-		explicit dynamic_cyclic(integer _n, integer s = 0);
-		dynamic_cyclic(const dynamic_cyclic &o,integer s):dynamic_cyclic(o.n,s){}
-		dynamic_cyclic& operator+=(const dynamic_cyclic& b);
-		dynamic_cyclic& operator-=(const dynamic_cyclic& a);
-		dynamic_cyclic& operator*=(const dynamic_cyclic& a);
-		dynamic_cyclic& operator+=(int b);
-		dynamic_cyclic& operator-=(int a);
-		dynamic_cyclic& operator*=(int a);
-		dynamic_cyclic operator-() const;
-		operator integer& ();
-		operator const integer& () const;
-		operator long long()const;
-		bool is_zero() const;
-		bool is_one() const;
-		dynamic_cyclic inv()const;
-		dynamic_cyclic operator/=(const dynamic_cyclic& a);
-		static dynamic_cyclic primitive_root(int m);
-		static dynamic_cyclic primitive_unity_root(int n,int m);
-		static dynamic_cyclic principal_unity_root(int n, int m);
-	private:
-		integer n;
-		integer w;
-	};
-	dynamic_cyclic operator+(const dynamic_cyclic& a, const dynamic_cyclic& b);
-	dynamic_cyclic operator-(const dynamic_cyclic& a, const dynamic_cyclic& b);
-	dynamic_cyclic operator*(const dynamic_cyclic& a, const dynamic_cyclic& b);
-	dynamic_cyclic operator/(const dynamic_cyclic& a, const dynamic_cyclic& b);
 	
 }
 

@@ -7,16 +7,7 @@ namespace math_rz
 		virtual public group
 	{
 	public:
-		static enum class Identity1 {} _1;
-		using Identity0 = group::Identity0;
 		virtual ~ring() {};
-		ring(Identity0) :group(_0)
-		{
-		}
-		ring(Identity1)
-		{
-			//	*this = I1();
-		}
 		//virtual const ring& I1() const = 0;
 		//virtual const ring& I0() const = 0;
 		virtual bool is_one() const = 0;

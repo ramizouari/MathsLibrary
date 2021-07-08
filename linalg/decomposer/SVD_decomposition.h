@@ -19,16 +19,16 @@ namespace math_rz::linalg::decomposer
 	class SVD_decomposition :public decomposer<K, n, m, SVD<K, n, m>>
 	{
 		using matrix_type = matrix<K, n, m>;
-		using SVD = SVD<K, n, m>;
+		using SVD_type = SVD<K, n, m>;
 		QR_decomposition<K, n, m> QR;
 		LQ_decomposition<K, n, m> LQ;
 		integer steps = 100;
 		cholesky<K, m> Ch;
 		diagonalisation::QR_algorithm_hermitian < K, std::min(n, m)> QR_diag;
 	public:
-		SVD decompose(const matrix_type& A) const
+        SVD_type decompose(const matrix_type& A) const
 		{
-			SVD UDV;
+            SVD_type UDV;
 			UDV.U = matrix<K, n, n>(1);
 			UDV.V = matrix<K, n, n>(1);
 			auto M = A;
@@ -45,9 +45,9 @@ namespace math_rz::linalg::decomposer
 			return UDV;
 		}
 
-		SVD svd_decomposition(const matrix_type& A) const
+        SVD_type svd_decomposition(const matrix_type& A) const
 		{
-
+            return decompose(A);
 		}
 
 		finite_dimensional_vector_space<K, std::min(m,n)> singular_values(const matrix_type&A) const

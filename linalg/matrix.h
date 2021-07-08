@@ -13,7 +13,7 @@ namespace math_rz::linalg
 	{
 	protected:
 		using structure_type = math_rz::linalg::structure::matrix::metric_topology<K, n, m>;
-		inline static constexpr struct empty_matrix_t {} empty_matrix;
+		inline static constexpr struct empty_matrix_t {} empty_matrix={};
 		matrix(empty_matrix_t) {};
 	public:
 		matrix() :u(n)

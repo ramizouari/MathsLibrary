@@ -38,7 +38,7 @@ using E = math_rz::linalg::coordinate_space<K, n>;
 using F = K;
 using M = math_rz::linalg::matrix<K, 3,5>;
 constexpr int dimension = 3;
-
+constexpr int points=5e6;
 #include <fstream>
 #include "analysis/integrator/simpson_integrator.h"
 
@@ -47,7 +47,7 @@ int main()
 	using namespace std::complex_literals;
 	matrix<K, dimension> A(special::vandermonde_matrix<K, dimension>({ 1,1,1 }));
 	dynamic_cyclic SS(17, 1);
-	fft::cooley_tuckey<8> CT;
+	//fft::cooley_tuckey<8> CT;
 	fft::dynamic_cooley_tuckey DCT(dimension);
 	characterestic::faddev_leverrier<K, dimension> CP;
 	finite_dimensional_vector_space<K, dimension> u,x;
@@ -57,19 +57,25 @@ int main()
 		x[i] = i;
 	}
 	finite_dimensional_vector_space<K, 3> S({ 1,2,3 });
-	auto R = poly::fft_interpolation(u);
+	auto R = poly::fft_interpolation<3>(u);
 	cyclic<337> RR;
 	finite_dimensional_vector_space<cyclic<337>, 4> T({ 1,2,3,4 });
 	fft::dynamic_finite_ring_cooley_tuckey<337> CTR(4);
 	fft::fast_convolution FC;
-	std::vector<real_field> S1(5e5);
-	for (int i = 0; i < 5e5; i++)
+	std::vector<real_field> S1(points);
+	for (int i = 0; i < points; i++)
 		S1[i] = std::cos(i);
 	poly::polynomial<real_field> p(S1);
-	auto R1= p * p;
+	std::chrono::time_point t1=std::chrono::system_clock::now();
+    decltype(p)::set_multiplicator(new poly::multiplicator::parallel_karatsuba_multiplicator<real_field>());
+    auto R1= p * p;
 	decltype(p)::set_multiplicator(new poly::multiplicator::fast_multiplicator<real_field>());
 	decltype(p)::set_structure(new poly::structure::L2_vect_inner_product<real_field>());
-	auto R2 = p * p;
-	std::cout << (R2 - R1).norm();
+    std::chrono::time_point t2=std::chrono::system_clock::now();
+    std::cout << static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(t2-t1).count())/1000 << std::endl;
+    auto R2 = p * p;
+    std::chrono::time_point t3=std::chrono::system_clock::now();
+    std::cout << static_cast<double>(std::chrono::duration_cast<std::chrono::milliseconds>(t3-t2).count())/1000 << std::endl;
+    std::cout << (R2 - R1).norm();
 	return false;
 }

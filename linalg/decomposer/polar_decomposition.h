@@ -18,11 +18,11 @@ namespace math_rz::linalg::decomposer
 	{
 		SVD_decomposition<K, n, m> SVD;
 	public:
-		using UP = UP<K, n, m>;
-		UP decompose(const matrix<K,n,m>&A) const
+		using UP_type = UP<K, n, m>;
+        UP_type decompose(const matrix<K,n,m>&A) const
 		{
 			auto [U, D, V] = SVD.decompose(A);
-			return UP{ U,D * V };
+			return UP_type{ U,D * V };
 		}
 	};
 }

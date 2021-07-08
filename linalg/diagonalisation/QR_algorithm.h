@@ -73,8 +73,8 @@ namespace math_rz::linalg::diagonalisation
 		}
 
 	public:
-		using eigenbasis = diagonalisator<K, n>::eigenbasis;
-		using schurbasis = schurbasis<K, n>;
+		using eigenbasis_type = typename diagonalisator<K, n>::eigenbasis_type;
+		using schurbasis_type = schurbasis<K, n>;
 		finite_dimensional_vector_space<K,n> eigenvalues(const matrix<K, n ,n>& _M) const 
 		{
 			
@@ -91,9 +91,9 @@ namespace math_rz::linalg::diagonalisation
 			return E;
 		}
 
-		eigenbasis eigendecomposition(const matrix<K, n, n>& _M) const
+        eigenbasis_type eigendecomposition(const matrix<K, n, n>& _M) const
 		{
-			eigenbasis EB;
+            eigenbasis_type EB;
 			EB.B = matrix<K, n, n>(1);
 			auto M = _M;
 			int p = steps;
@@ -109,9 +109,9 @@ namespace math_rz::linalg::diagonalisation
 			return EB;
 		}
 
-		schurbasis schurdecomposition(const matrix<K, n, n>& _M) const
+        schurbasis_type schurdecomposition(const matrix<K, n, n>& _M) const
 		{
-			schurbasis EB;
+            schurbasis_type EB;
 			EB.B = matrix<K, n, n>(1);
 			auto M = _M;
 			int p = steps;
@@ -131,10 +131,10 @@ namespace math_rz::linalg::diagonalisation
 	class QR_algorithm_hermitian :virtual public QR_algorithm<K,n>,virtual public self_adjoint_diagonalisator<K,n>
 	{
 	public:
-		using eigenbasis = QR_algorithm<K, n>::eigenbasis;
-		eigenbasis eigendecomposition(const matrix<K, n, n>& _M) const
+		using eigenbasis_type = typename QR_algorithm<K, n>::eigenbasis_type;
+        eigenbasis_type eigendecomposition(const matrix<K, n, n>& _M) const
 		{
-			eigenbasis EB;
+            eigenbasis_type EB;
 			EB.B = matrix<K, n, n>(1);
 			auto M = _M;
 			int p = this->steps;

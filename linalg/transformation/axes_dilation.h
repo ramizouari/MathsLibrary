@@ -11,20 +11,20 @@ namespace math_rz::linalg
 		using K = typename E::base_field;
 		inline static constexpr int n = E::dimension;
 		K k;
-		E µ;
+		E lambda;
 	public:
-		axes_dilation(E s) :µ(s) {}
+		axes_dilation(E s) :lambda(s) {}
 		axes_dilation(std::vector<K> s) :axes_dilation(E(s)) {}
 		E& apply(E& u) const
 		{
 			for (int i = 0; i < n; i++)
-				u[i] *= µ[i];
+				u[i] *= lambda[i];
 			return u;
 		}
 
 		bool is_zero() const
 		{
-			return µ.is_zero();
+			return lambda.is_zero();
 		}
 	};
 }
