@@ -26,7 +26,8 @@ namespace math_rz
 				counter = 0;
 			}
 			counter++;
-			return complex(d1(eng),d2(eng));
+			real_field x=d1(eng),y=d2(eng);
+			return complex(x,y);
 		}
 
 		template<int n>
@@ -35,6 +36,7 @@ namespace math_rz
 			linalg::coordinate_space<complex, n> X;
 			for (int i = 0; i < n; i++)
 				X[i] = generate();
+			return X;
 		}
 
 		template<int n, int m=n>

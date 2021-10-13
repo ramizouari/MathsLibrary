@@ -7,7 +7,6 @@ namespace math_rz
 		virtual public group
 	{
 	public:
-		virtual ~ring() {};
 		//virtual const ring& I1() const = 0;
 		//virtual const ring& I0() const = 0;
 		virtual bool is_one() const = 0;
@@ -17,6 +16,7 @@ namespace math_rz
 	protected:
 		ring() {};
 	};
+    class integer;
 
 	namespace ring_constraints
 	{
@@ -36,11 +36,11 @@ namespace math_rz
 			{-a}->std::convertible_to<G>;
 		};
 
-		template<typename G>
+        template<typename G>
 		concept ring = std::is_base_of_v<math_rz::ring, G> && commutative_group<G> && requires (const G & a, const G & b)
 		{
 			{a* b}->std::convertible_to<G>;
-		};
+		} || std::is_same_v<G,integer>;
 		template<typename G>
 		concept field = ring<G> && commutative_group<G> && group<G>;
 

@@ -7,9 +7,10 @@
 # the project's entire directory structure.
 cmake_minimum_required(VERSION 3.12)
 include_directories(.)
-set(GCC_COVERAGE_COMPILE_FLAGS "-pthread")
+set(GCC_COVERAGE_COMPILE_FLAGS "-pthread --ffast-math -O3")
 SET(CMAKE_CXX_FLAGS -pthread)
 set(CMAKE_CXX_STANDARD 20)
 project (MathsLibrary)
-file(GLOB math_files CONFIGURE_DEPENDS "*.h" "*.cpp" "absalg/*.cpp")
-add_executable(MathsLibrary ${math_files})
+file(GLOB math_files CONFIGURE_DEPENDS "*.h" "integer.cpp" "complex.cpp" "real_field.cpp"  "guassian_integer.cpp" "absalg/*" "primitive_types/*" "nt/*" "nt/special/*.cpp")
+add_executable(MathsLibrary ${math_files} "main.cpp")
+add_executable(FactorisationExample ${math_files} "examples/factorisation.cpp")

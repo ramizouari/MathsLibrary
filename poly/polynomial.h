@@ -184,7 +184,7 @@ namespace math_rz::poly {
 			return dynamic_cast<poly::structure::inner_product_topology<K>*>
 				(structure_ptr.get())->dot_product(*this, q);
 		}
-		
+
 	};
 
 	template<typename K>

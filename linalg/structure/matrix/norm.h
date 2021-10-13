@@ -12,7 +12,7 @@ namespace math_rz::linalg::structure::matrix
 	class norm_topology :public metric_topology<K,n,m>
 	{
 	protected:
-		using matrix_type = metric_topology<K, n, m>::matrix_type;
+		using matrix_type = typename metric_topology<K, n, m>::matrix_type;
 	public:
 		virtual real_field norm(const matrix_type& a) const = 0;
 		real_field metric(const matrix_type& p, const matrix_type& q) const
@@ -82,7 +82,7 @@ namespace math_rz::linalg::structure::matrix
 	template<typename K, int n, int m>
 	class Lpq_vector_norm :public norm_topology<K,n,m>
 	{
-		using matrix_type = norm_topology<K, n, m>::matrix_type;
+		using matrix_type = typename norm_topology<K, n, m>::matrix_type;
 		real_field p,q;
 	public:
 		Lpq_vector_norm(real_field _p, real_field _q) :p(_p),q(_q) {}
@@ -120,7 +120,7 @@ namespace math_rz::linalg::structure::matrix
 	template<typename K, int n, int m>
 	class L22_operator_norm :public norm_topology<K, n, m>
 	{
-		using matrix_type = norm_topology<K, n, m>::matrix_type;
+		using matrix_type = typename norm_topology<K, n, m>::matrix_type;
 	public:
 		L22_operator_norm()  {}
 
@@ -133,7 +133,7 @@ namespace math_rz::linalg::structure::matrix
 	template<typename K, int n, int m>
 	class L1q_operator_norm :public norm_topology<K, n, m>
 	{
-		using matrix_type = norm_topology<K, n, m>::matrix_type;
+		using matrix_type = typename norm_topology<K, n, m>::matrix_type;
 		real_field q;
 	public:
 		L1q_operator_norm(real_field _q):q(_q) {}
@@ -155,7 +155,7 @@ namespace math_rz::linalg::structure::matrix
 	template<typename K,int n,int m>
 	class Lpinf_operator_norm :public norm_topology<K, n, m>
 	{
-		using matrix_type = norm_topology<K, n, m>::matrix_type;
+		using matrix_type = typename norm_topology<K, n, m>::matrix_type;
 		real_field p;
 	public:
 		Lpinf_operator_norm(real_field _p) :p(_p) {}

@@ -137,7 +137,7 @@ namespace math_rz::poly::multiplicator
 	class fast_multiplicator<complex> :public multiplicator<complex>
 	{
 		using R = complex;
-		linalg::fft::fast_convolution FC;
+		linalg::fft::fast_convolution<complex> FC;
 	public:
 		
 		inline static constexpr int limit = 50;
@@ -150,6 +150,24 @@ namespace math_rz::poly::multiplicator
 			return free_algebra(h);
 		}
 	};
+
+    template<int p,bool is_prime>
+    class cyclic_fast_multiplicator :public multiplicator<cyclic<p,is_prime>>
+    {
+        using R = cyclic<p,is_prime>;
+        linalg::fft::cyclic_fast_convolution<p,is_prime> FC;
+    public:
+
+        inline static constexpr int limit = 50;
+        virtual free_algebra<R> multiply(const free_algebra<R>& _p, const free_algebra<R>& _q) const
+        {
+            int n = _p.degree()+1;
+            int m = _p.degree() + 1;
+            auto h = FC(_p.get_vect(), _q.get_vect());
+            h.resize(m + n-1);
+            return free_algebra(h);
+        }
+    };
 
 	template<>
 	class fast_multiplicator<real_field> :public multiplicator<real_field>

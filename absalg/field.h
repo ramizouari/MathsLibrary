@@ -48,7 +48,7 @@ namespace math_rz
         * - The real numbers with L=id
         * - The complex numbers with L the natural conjugate
         * If the field has an absolute value, it is expected that the conjugate is compatible with the absolute value:
-        * - |w|² = w * w.conj()
+        * - |w|Â² = w * w.conj()
         */
         template<typename F>
         concept field_with_conj = field<F>&&requires(F a)

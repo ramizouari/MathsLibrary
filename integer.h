@@ -12,7 +12,6 @@ namespace math_rz {
         constexpr integer(const int m = 0):_v(m) {};
         constexpr integer(long long int m) :_v(m) {};
         constexpr integer(const double s) :_v(s) {};
-        constexpr integer(const integer &o,long long s) :integer(s) {};
         inline static integer _0() { return integer(); };
         inline static integer _1() { return integer(1); };
         integer mod(const integer& a) const;
@@ -39,4 +38,23 @@ namespace math_rz {
         long long _v;
     };
     //std::ostream& operator<<(std::ostream& H, const integer& a);
+}
+
+namespace std
+{
+    template<>
+    struct hash<math_rz::integer>
+    {
+        size_t operator()(math_rz::integer A) const
+        {
+            return H(A);
+        }
+    private:
+        hash<long long> H;
+    };
+}
+
+namespace math_rz
+{
+
 }

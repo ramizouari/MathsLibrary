@@ -108,6 +108,11 @@ namespace math_rz
 				root.emplace((std::int64_t)dynamic_cyclic::primitive_root(n));
 			return root.value();
 		}
+
+        inline static cyclic primitive_root(int m)
+        {
+            return pow(primitive_root(),(n-1)/m);
+        }
 		inline static cyclic primitive_unity_root(int m)
 		{
 			return (std::int64_t)dynamic_cyclic::primitive_unity_root(n, m);

@@ -88,7 +88,7 @@ namespace math_rz::linalg::fft
 	template<int n>
 	using reverse_cooley_tuckey = cooley_tuckey<n, true>;
 
-	unsigned long long smallest_prime_divisor(unsigned long long n)
+	inline unsigned long long smallest_prime_divisor(unsigned long long n)
 	{
 		unsigned long long s = std::ceil(std::sqrt(n));
 		for (int p = 2; p <= s; p++)
@@ -135,7 +135,7 @@ namespace math_rz::linalg::fft
 
 	};
 
-	template<unsigned int m,bool is_prime=false>
+	template<unsigned int m,bool is_prime=false, bool inverse=false>
 	class dynamic_finite_ring_cooley_tuckey
 	{
 		int n;
@@ -145,7 +145,8 @@ namespace math_rz::linalg::fft
 	public:
 		dynamic_finite_ring_cooley_tuckey(int _n) :n(_n), w(F::primitive_unity_root(n))
 		{
-
+            if constexpr (inverse)
+                w=w.inv();
 		}
 
 		std::vector<F> operator()(const std::vector<F>& a) const
@@ -154,7 +155,7 @@ namespace math_rz::linalg::fft
 				return a;
 			auto p = smallest_prime_divisor(n);
 			auto q = n / p;
-			dynamic_finite_ring_cooley_tuckey<m,is_prime> CT(q);
+			dynamic_finite_ring_cooley_tuckey<m,is_prime,inverse> CT(q);
 			std::vector<E> X(p, E(q));
 			for (int i = 0; i < n; i++)
 				X[i % p][i / p] = a[i];
@@ -173,7 +174,11 @@ namespace math_rz::linalg::fft
 		}
 	};
 
-	class fast_convolution
+	template<typename K>
+	class fast_convolution;
+
+	template<>
+	class fast_convolution<complex>
 	{
 	public:
 		std::vector<complex> operator()(const std::vector<complex>& A,const std::vector<complex>& B) const
@@ -192,4 +197,27 @@ namespace math_rz::linalg::fft
 			return inverse_FFT(H);
 		}
 	};
+
+    template<int p,bool is_prime>
+    class cyclic_fast_convolution
+    {
+        using R=cyclic<p,is_prime>;
+    public:
+        std::vector<R> operator()(const std::vector<R> &A,const std::vector<R>& B) const
+        {
+            std::vector<R> U(A),V(B);
+            int n = A.size(),m=B.size();
+            int s = std::bit_ceil<unsigned int>(n + m);
+            U.resize(s);
+            V.resize(s);
+            dynamic_finite_ring_cooley_tuckey<p,is_prime> FFT(s);
+            dynamic_finite_ring_cooley_tuckey<p,is_prime,true> inverse_FFT(s);
+            auto I = FFT(U), J = FFT(V);
+            std::vector<R> H(s);
+            auto k=cyclic<p,is_prime>(s).inv();
+            for (int i = 0; i < s; i++)
+                H[i] = I[i] * J[i]*k;
+            return inverse_FFT(H);
+        }
+    };
 }

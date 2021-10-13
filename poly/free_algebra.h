@@ -93,7 +93,7 @@ namespace math_rz::poly {
 		}
 		free_algebra& operator-=(const R& p)
 		{
-			return *this += free_algebra(p);
+			return *this -= free_algebra(p);
 		}
 
 		free_algebra& operator*=(const R& p)

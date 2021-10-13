@@ -62,7 +62,7 @@ namespace math_rz::linalg
 	class square_matrix;
 
 	template<typename K, int n>
-	class finite_dimensional_vector_space :public vector_space<K>
+	class finite_dimensional_vector_space
 	{
 	protected:
 		using structure_type = math_rz::linalg::structure::vector::metric_topology<K,n>;

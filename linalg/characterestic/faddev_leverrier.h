@@ -3,7 +3,7 @@
 #include "poly/interpolation.h"
 namespace math_rz::linalg::characterestic
 {
-	template<ring_constraints::field R, int n>
+	template<ring_constraints::ring R, int n>
 	class faddev_leverrier :public characterestic_polynomial<R, n>
 	{
 	protected:

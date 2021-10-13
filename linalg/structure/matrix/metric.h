@@ -34,7 +34,7 @@ namespace math_rz::linalg::structure::matrix
 	template<typename K,int n,int m>
 	class hamming_metric :public metric_topology<K,n,m>
 	{
-		using matrix_type = metric_topology<K, n, m>::matrix_type;
+		using matrix_type = typename metric_topology<K, n, m>::matrix_type;
 	public:
 		real_field metric(const matrix_type& p, const matrix_type& q) const
 		{

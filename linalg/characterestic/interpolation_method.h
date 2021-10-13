@@ -23,4 +23,5 @@ namespace math_rz::linalg::characterestic
 			return poly::newton_interpolation(X, Y);
 		}
 	};
+
 }
